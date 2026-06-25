@@ -118,6 +118,12 @@ v2.13 Breakout Authenticity System   ✅
 v2.14 MTF Consistency (轻量版)        ✅
 v2.15 Meta Score Engine (最终决策)     ✅
 v2.16 Position Sizing (资金管理层)     ✅
+v2.17 Execution Engine (执行模拟器)    ✅
+
+18层最终管线:
+commit → CI → backtest → metrics → evolution → rollback
+  → model selector → flow ensemble → smart money → cost basis
+  → breakout → MTF → META SCORE → POSITION SIZING → EXECUTION → REALIZED TRADE
 
 17层最终管线:
 commit → CI → backtest → metrics → evolution → rollback
@@ -281,4 +287,5 @@ position = signal_strength × confidence × risk_factor。4大风控: regime_cap
 | 🔮 | MTF Consistency | ✅ |
 | 🔮 | Meta Score Engine | ✅ |
 | 🔮 | Position Sizing | ✅ |
+| 🔮 | Execution Engine | ✅ |
 | 🔮 | 龙头链路模型（板块→交易点） | ⬜ |
