@@ -1,7 +1,7 @@
 """
-rotation/report.py — 日报生成器
+rotation/report.py — 日报生成器 v2
 
-整合 RTI/BSI/LS/Phase 四个引擎，输出结构化日报
+显式回答 Level 3 三问 + Level 4 五输出
 """
 from .models import Stock, Sector, MarketSentiment, DailyReport, RotationSignal
 from .rti import compute_rti, rank_rotation_signals, detect_news_drivers
@@ -12,80 +12,83 @@ from .data_fetcher import (
     fetch_industry_sectors, fetch_concept_sectors,
     compute_sector_stats, estimate_low_position,
     build_market_sentiment, fetch_news_for_sectors,
-    fetch_all_stocks
+    fetch_all_stocks, match_stocks_to_sectors
 )
 from datetime import datetime
 from typing import List, Dict
 
 
+def detect_fading_sectors(sectors: List[Sector]) -> List[Sector]:
+    """检测退潮板块: BSI低 + 资金流出 + 涨幅为负"""
+    fading = []
+    for s in sectors:
+        if s.bsi_score < 10 and s.net_money_flow < 0 and s.change_1d < 0:
+            fading.append(s)
+    return sorted(fading, key=lambda s: s.net_money_flow)[:5]
+
+
 def generate_daily_report() -> DailyReport:
-    """主入口: 生成完整日报"""
-    print("🧠 开始生成量化策略日报...")
+    """主入口"""
+    print("🧠 量化策略日报生成中...")
     
-    # Step 1: 获取原始数据
-    print("  [1/5] 采集数据...")
+    # Step 1: 数据
+    print("  [1/4] 全市场扫描...")
     all_stocks = fetch_all_stocks()
     industry_sectors = fetch_industry_sectors()
     concept_sectors = fetch_concept_sectors()
     sentiment = build_market_sentiment()
     news_map = fetch_news_for_sectors()
-    
-    # 合并行业+概念板块
     all_sectors = industry_sectors + concept_sectors
     
-    # Step 2: 补充板块统计
-    print(f"  [2/5] 分析{len(all_sectors)}个板块...")
-    all_sectors = compute_sector_stats(all_sectors, all_stocks)
-    
-    # 标记低位板块
-    market_avg_5d = 0  # TODO: 从历史数据计算
-    # 这里用简单启发式: 5日涨幅<0为低位
+    # Step 2: 板块成分股匹配（关键修复）
+    print(f"  [2/4] 匹配{len(all_sectors)}板块成分股...")
+    sector_names = [s.name for s in all_sectors[:50]]  # 只对前50个做精确匹配
+    sector_stocks_map = match_stocks_to_sectors(all_stocks, sector_names)
     for sec in all_sectors:
-        sec.is_low_position = sec.change_1d > 0 and (sec.change_5d < market_avg_5d)
+        sec.stocks = sector_stocks_map.get(sec.name, [])
+        sec.num_limit_up = sum(1 for s in sec.stocks if s.is_limit_up)
+        sec.num_stocks_up = sum(1 for s in sec.stocks if s.change_pct > 0)
+        if sec.stocks:
+            ratios = [s.volume_ratio for s in sec.stocks if s.volume_ratio > 0]
+            sec.volume_change = sum(ratios)/len(ratios) if ratios else 1.0
     
-    # Step 3: RTI 轮动评分
-    print("  [3/5] RTI轮动评分...")
-    rotation_signals = []
+    # Step 3: 引擎评分
+    print("  [3/4] RTI/BSI/LS/Phase评分...")
+    market_avg_5d = sum(s.change_1d for s in all_sectors) / max(len(all_sectors), 1)
     for sec in all_sectors:
-        sector_news = news_map.get(sec.name, [])
-        # 简单的新闻驱动检测
-        if not sector_news:
-            sec.has_news_driver = False
-        
-        signal = compute_rti(sec, market_avg_5d, news_map)
-        rotation_signals.append(signal)
+        sec.is_low_position = sec.change_1d > 0 and sec.change_5d < market_avg_5d
     
+    rotation_signals = [compute_rti(sec, market_avg_5d, news_map) for sec in all_sectors]
     ranked_rotations = rank_rotation_signals(rotation_signals)
     
-    # Step 4: BSI 板块强度 + LS 龙头
-    print("  [4/5] BSI板块强度 + LS龙头识别...")
     ranked_sectors = rank_sectors(all_sectors)
     strong_sectors = [s for s in ranked_sectors if s.bsi_score > 30][:5]
+    fading_sectors = detect_fading_sectors(ranked_sectors)
     
-    # 找各板块龙头
+    # 龙头识别
     all_leaders: List[Stock] = []
     for sec in strong_sectors[:3]:
         leader = find_sector_leader(sec.stocks)
         if leader:
+            leader.industry = sec.name
             all_leaders.append(leader)
     
-    # Step 5: Phase 周期 + 策略
-    print("  [5/5] Phase周期 + 策略输出...")
+    # Step 4: Phase + 策略
+    print("  [4/4] 策略输出...")
     phase = detect_phase(sentiment)
     sentiment.phase = phase
     sentiment.risk_level = compute_risk_level(sentiment, phase)
     position = get_position_advice(phase)
     
-    # 风险提示
     risk_alerts = []
-    if phase == "💨 退潮期":
-        risk_alerts.append("⚠️ 退潮信号: 涨停减少, 跌停增加, 建议减仓")
+    if phase in ["💨 退潮期", "❄️ 冰点期"]:
+        risk_alerts.append("⚠️ 市场进入退潮/冰点，建议降低仓位至30%以下")
     if len(strong_sectors) < 2:
-        risk_alerts.append("⚠️ 强势板块不足, 市场缺乏主线")
-    if sentiment.market_breadth < 0.35:
-        risk_alerts.append("⚠️ 涨跌比偏低, 整体偏弱")
+        risk_alerts.append("⚠️ 强势板块不足，市场缺乏明确主线")
+    if len(fading_sectors) > 3:
+        risk_alerts.append(f"⚠️ {len(fading_sectors)}个板块在退潮，警惕扩散下跌")
     
-    print(f"  完成: {phase} | 轮动信号{len(ranked_rotations)}个 | 强势板块{len(strong_sectors)}个 | 龙头{len(all_leaders)}只")
+    print(f"  完成 → {phase} | 轮动{len(ranked_rotations)}个 | 强势{len(strong_sectors)}个 | 龙头{len(all_leaders)}只 | 退潮{len(fading_sectors)}个")
     
     return DailyReport(
         date=datetime.now().strftime("%Y-%m-%d"),
@@ -100,15 +103,30 @@ def generate_daily_report() -> DailyReport:
 
 
 def report_to_html(report: DailyReport) -> str:
-    """日报 → HTML"""
+    """生成 HTML — Level 4 完整输出"""
     s = report.sentiment
+    pos = report.strategy
+    
+    # ── 三大核心问题 ──
+    # Q1: 哪个板块在变强？
+    strong_names = [sec.name for sec in report.strong_sectors[:3]]
+    q1 = f"🔥 变强板块: {', '.join(strong_names)}" if strong_names else "⚪ 暂无明确强势板块"
+    
+    # Q2: 哪个板块在启动？
+    rotating = [sig.sector.name for sig in report.rotation_signals if sig.rti_score >= 3]
+    q2 = f"🆕 启动板块: {', '.join(rotating)}" if rotating else "⚪ 今日无轮动启动信号"
+    
+    # Q3: 哪个板块在退潮？
+    fading = detect_fading_sectors(report.strong_sectors + [sig.sector for sig in report.rotation_signals])
+    fade_names = [s.name for s in fading[:5]]
+    q3 = f"💨 退潮板块: {', '.join(fade_names)}" if fade_names else "⚪ 无显著退潮板块"
     
     # Rotation table
     rot_rows = ""
     for sig in report.rotation_signals:
         rot_rows += f"""<tr>
             <td>{sig.sector.name}</td>
-            <td style="font-weight:700">{sig.rti_score}</td>
+            <td style="font-weight:700;color:var(--y)">{sig.rti_score}</td>
             <td>{sig.status}</td>
             <td style="font-size:11px;color:var(--t2)">{sig.reason[:80]}</td>
         </tr>"""
@@ -116,103 +134,148 @@ def report_to_html(report: DailyReport) -> str:
     # Strong sectors
     strong_rows = ""
     for sec in report.strong_sectors:
+        name = classify_bsi(sec.bsi_score)
         strong_rows += f"""<tr>
             <td>{sec.name}</td>
             <td style="font-weight:700">{sec.bsi_score}</td>
-            <td style="color:{"var(--r)" if sec.change_1d>0 else "var(--g)"}">{sec.change_1d:+.2f}%</td>
-            <td>{classify_bsi(sec.bsi_score)}</td>
+            <td style="color:{'var(--r)' if sec.change_1d>0 else 'var(--g)'}">{sec.change_1d:+.2f}%</td>
+            <td>{sec.num_limit_up}只涨停</td>
+            <td>{name}</td>
         </tr>"""
     
     # Leaders
     leader_rows = ""
-    for s in report.leaders:
+    for s in report.leaders[:8]:
+        level = classify_leader(s.leader_score)
         leader_rows += f"""<tr>
             <td><code>{s.code}</code></td>
             <td>{s.name}</td>
             <td style="font-weight:700">{s.leader_score}</td>
-            <td>{classify_leader(s.leader_score)}</td>
-            <td style="color:{"var(--r)" if s.change_pct>0 else "var(--g)"}">{s.change_pct:+.2f}%</td>
+            <td style="font-size:11px">{s.industry[:8]}</td>
+            <td style="color:{'var(--r)' if s.change_pct>0 else 'var(--g)'}">{s.change_pct:+.2f}%</td>
+            <td>{level}</td>
+        </tr>"""
+    
+    # Fading sectors
+    fade_rows = ""
+    for sec in fading[:5]:
+        fade_rows += f"""<tr>
+            <td>{sec.name}</td>
+            <td style="color:var(--g)">{sec.change_1d:+.2f}%</td>
+            <td style="color:var(--g)">{sec.net_money_flow:.1f}亿</td>
+            <td>{sec.bsi_score}</td>
         </tr>"""
     
     # Alerts
-    alerts_html = "".join(f"<p style='color:var(--y)'>⚠️ {a}</p>" for a in report.risk_alerts)
+    alerts_html = "".join(f"<p style='color:var(--y);margin:4px 0'>⚠️ {a}</p>" for a in report.risk_alerts)
     
-    pos = report.strategy
+    # 主线切换检测
+    switch_html = ""
+    if len(report.strong_sectors) >= 2 and len(fading) >= 1:
+        switch_html = f"<p style='color:var(--y)'>🔄 注意: {fading[0].name}正在退潮，{report.strong_sectors[0].name}可能成为新主线。关注切换信号。</p>"
     
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>A股量化日报 | {report.date}</title>
+<title>量化日报 | {report.date}</title>
 <style>
 :root{{--bg:#0f1117;--cd:#1a1d28;--bd:#2a2d3a;--tx:#e4e6ed;--t2:#8b8fa3;--r:#f5222d;--g:#16c784;--a:#6366f1;--y:#f59e0b}}
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;padding:24px 16px 60px;max-width:600px;margin:0 auto}}
 h1{{font-size:22px;color:var(--a);text-align:center;margin-bottom:4px}}
-.sub{{color:var(--t2);font-size:12px;text-align:center;margin-bottom:24px}}
+.sub{{color:var(--t2);font-size:11px;text-align:center;margin-bottom:20px}}
+.verdict{{background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(245,158,11,0.1));border:1px solid var(--a);border-radius:12px;padding:16px 18px;margin-bottom:20px}}
+.verdict .big{{font-size:20px;font-weight:700;color:var(--a);text-align:center;margin-bottom:10px}}
+.verdict .line{{font-size:13px;padding:4px 0;border-bottom:1px solid var(--bd)}}
+.verdict .line:last-child{{border-bottom:none}}
 .sec{{margin-bottom:24px}}
 .st{{font-size:15px;font-weight:700;margin-bottom:10px;padding-bottom:4px;border-bottom:2px solid var(--a)}}
-.card{{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:12px}}
+.card{{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:10px}}
 .grid2{{display:grid;grid-template-columns:1fr 1fr;gap:8px}}
+.grid4{{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}}
 .stat{{text-align:center;padding:10px;background:rgba(99,102,241,0.06);border-radius:8px}}
-.stat .v{{font-size:18px;font-weight:700;margin:4px 0}}
-.stat .l{{font-size:10px;color:var(--t2)}}
+.stat .v{{font-size:16px;font-weight:700;margin:4px 0}}.stat .l{{font-size:10px;color:var(--t2)}}
 table{{width:100%;border-collapse:collapse;font-size:12px}}
 th{{background:#222531;padding:6px 8px;text-align:left;color:var(--t2);border-bottom:2px solid var(--bd)}}
 td{{padding:5px 8px;border-bottom:1px solid var(--bd)}}tr:hover{{background:#222531}}
-.signal{{border-left:3px solid;padding:10px 14px;background:var(--cd);border-radius:0 8px 8px 0;margin-bottom:8px;font-size:13px}}
+.sig{{border-left:3px solid;padding:10px 14px;background:var(--cd);border-radius:0 8px 8px 0;margin-bottom:8px;font-size:13px}}
 .bull{{border-color:var(--r)}}.bear{{border-color:var(--g)}}.neut{{border-color:var(--y)}}
 .footer{{margin-top:30px;text-align:center;font-size:10px;color:var(--t2);line-height:1.8}}
-.badge{{display:inline-block;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600}}
-.badge-r{{background:rgba(245,34,45,0.15);color:var(--r)}}.badge-g{{background:rgba(22,199,132,0.15);color:var(--g)}}
 </style>
 </head><body>
-<h1>📊 A股量化日报</h1><p class="sub">{report.date} · RTI/BSI/LS 引擎生成</p>
+<h1>🧠 A股量化日报</h1><p class="sub">{report.date} · RTI/BSI/LS/Phase 四引擎 · Level 4 交易辅助系统</p>
 
-<div class="sec"><div class="st">1️⃣ 市场状态</div>
+<!-- VERDICT -->
+<div class="verdict">
+  <div class="big">{report.phase} · 仓位{pos.get('position','?')}</div>
+  <div class="line">📊 {q1}</div>
+  <div class="line">🔄 {q2}</div>
+  <div class="line">📉 {q3}</div>
+</div>
+
+<!-- 市场状态 -->
+<div class="sec"><div class="st">🏛️ 市场状态</div>
 <div class="card">
-  <div class="grid2">
+  <div class="grid4">
     <div class="stat"><div class="l">当前周期</div><div class="v">{report.phase}</div></div>
     <div class="stat"><div class="l">涨跌比</div><div class="v">{s.market_breadth:.0%}</div></div>
-    <div class="stat"><div class="l">涨停/跌停</div><div class="v">{s.limit_up_count}/{s.fall_limit_count}</div></div>
-    <div class="stat"><div class="l">风险等级</div><div class="v">{s.risk_level.upper()}</div></div>
+    <div class="stat"><div class="l">涨停</div><div class="v" style="color:var(--r)">{s.limit_up_count}</div></div>
+    <div class="stat"><div class="l">风险</div><div class="v">{s.risk_level.upper()}</div></div>
   </div>
 </div></div>
 
-<div class="sec"><div class="st">2️⃣ 板块轮动分析 (RTI)</div>
+<!-- 板块轮动 RTI -->
+<div class="sec"><div class="st">🔄 板块轮动 (RTI引擎)</div>
 <div class="card">
-  <table><tr><th>板块</th><th>RTI</th><th>状态</th><th>理由</th></tr>
-  {rot_rows or '<tr><td colspan="4" style="color:var(--t2)">今日无轮动信号</td></tr>'}
-  </table>
+  {rot_rows if rot_rows else '<p style="color:var(--t2);text-align:center;padding:12px">今日无RTI轮动信号<br><small>无低位+放量+无新闻驱动的板块异动</small></p>'}
+  {f'<table><tr><th>板块</th><th>RTI</th><th>状态</th><th>理由</th></tr>{rot_rows}</table>' if rot_rows else ''}
 </div></div>
 
-<div class="sec"><div class="st">3️⃣ 强势板块 (BSI Top 5)</div>
+<!-- 强势板块 BSI -->
+<div class="sec"><div class="st">📈 强势板块 (BSI)</div>
 <div class="card">
-  <table><tr><th>板块</th><th>BSI</th><th>涨跌</th><th>强度</th></tr>
-  {strong_rows or '<tr><td colspan="4" style="color:var(--t2)">暂无数据</td></tr>'}
-  </table>
+  {f'<table><tr><th>板块</th><th>BSI</th><th>涨跌</th><th>涨停</th><th>强度</th></tr>{strong_rows}</table>' if strong_rows else '<p style="color:var(--t2)">暂无BSI>30的强势板块</p>'}
 </div></div>
 
-<div class="sec"><div class="st">4️⃣ 龙头股池 (LS)</div>
+<!-- 龙头 LS -->
+<div class="sec"><div class="st">🏆 龙头股池 (LS)</div>
 <div class="card">
-  <table><tr><th>代码</th><th>名称</th><th>LS</th><th>等级</th><th>涨跌</th></tr>
-  {leader_rows or '<tr><td colspan="5" style="color:var(--t2)">暂无龙头数据</td></tr>'}
-  </table>
+  {f'<table><tr><th>代码</th><th>名称</th><th>LS</th><th>板块</th><th>涨跌</th><th>等级</th></tr>{leader_rows}</table>' if leader_rows else '<p style="color:var(--t2);text-align:center;padding:12px">暂无LS≥5的龙头/跟随股<br><small>需要板块内有个股突破前高+量比>2+涨幅领先</small></p>'}
 </div></div>
 
-<div class="sec"><div class="st">5️⃣ 风险提示</div>
-<div class="card">{alerts_html or '<p style="color:var(--t2)">暂无显著风险信号</p>'}</div></div>
+<!-- 退潮板块 -->
+<div class="sec"><div class="st">💨 退潮板块</div>
+<div class="card">
+  {f'<table><tr><th>板块</th><th>涨跌</th><th>资金流出</th><th>BSI</th></tr>{fade_rows}</table>' if fade_rows else '<p style="color:var(--t2)">无显著退潮板块</p>'}
+</div></div>
 
-<div class="sec"><div class="st">6️⃣ 中期策略</div>
-<div class="signal {'bull' if '80' in pos.get('position','') else ('neut' if '50' in pos.get('position','') else 'bear')}">
-  <strong>{pos.get('strategy','—')}策略</strong> · 仓位: {pos.get('position','—')}<br>
-  <span style="font-size:12px;color:var(--t2)">{pos.get('action','')}</span>
-</div>
-<div class="signal neut" style="font-size:12px;color:var(--t2)">
-  重点关注: {pos.get('focus','—')}
+<!-- 主线切换 -->
+{"<div class='sec'><div class='st'>🔄 主线切换</div><div class='card'>"+switch_html+"</div></div>" if switch_html else ""}
+
+<!-- 风险 -->
+<div class="sec"><div class="st">⚠️ 风险提示</div>
+<div class="card">{alerts_html or '<p style="color:var(--t2)">无显著风险</p>'}</div></div>
+
+<!-- 策略 -->
+<div class="sec"><div class="st">🎯 交易策略</div>
+<div class="sig {'bull' if '80' in pos.get('position','') else ('neut' if '50' in pos.get('position','') else 'bear')}">
+  <strong>{pos.get('strategy','—')}策略</strong><br>
+  <span style="font-size:13px">仓位: {pos.get('position','—')} · {pos.get('action','')}</span><br>
+  <span style="font-size:11px;color:var(--t2)">重点关注: {pos.get('focus','—')}</span>
 </div></div>
 
 <div class="footer">
-  <p>🧠 RTI/BSI/LS/Phase 量化引擎 v1.0 · 云端生成</p>
-  <p>⚠️ 免责声明: 本报告由AI自动生成，仅供参考不构成投资建议。股市有风险，投资需谨慎。</p>
+  <p>🧠 RTI/BSI/LS/Phase 量化引擎 · GitHub Actions 云端运行</p>
+  <p>⚠️ 免责声明: AI自动生成，仅供参考，不构成投资建议。股市有风险，投资需谨慎。</p>
 </div>
 </body></html>"""
+
+
+# 用于report模块级别的fading检测
+def detect_fading_sectors(sectors: List[Sector]) -> List[Sector]:
+    """检测退潮板块: BSI低 + 资金流出 + 涨幅为负"""
+    fading = []
+    for s in sectors:
+        if s.bsi_score < 10 and s.net_money_flow < 0 and s.change_1d < 0:
+            fading.append(s)
+    return sorted(fading, key=lambda s: s.net_money_flow)[:5]

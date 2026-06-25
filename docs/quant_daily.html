@@ -1,102 +1,125 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>A股量化日报 | 2026-06-25</title>
+<title>量化日报 | 2026-06-25</title>
 <style>
 :root{--bg:#0f1117;--cd:#1a1d28;--bd:#2a2d3a;--tx:#e4e6ed;--t2:#8b8fa3;--r:#f5222d;--g:#16c784;--a:#6366f1;--y:#f59e0b}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;padding:24px 16px 60px;max-width:600px;margin:0 auto}
 h1{font-size:22px;color:var(--a);text-align:center;margin-bottom:4px}
-.sub{color:var(--t2);font-size:12px;text-align:center;margin-bottom:24px}
+.sub{color:var(--t2);font-size:11px;text-align:center;margin-bottom:20px}
+.verdict{background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(245,158,11,0.1));border:1px solid var(--a);border-radius:12px;padding:16px 18px;margin-bottom:20px}
+.verdict .big{font-size:20px;font-weight:700;color:var(--a);text-align:center;margin-bottom:10px}
+.verdict .line{font-size:13px;padding:4px 0;border-bottom:1px solid var(--bd)}
+.verdict .line:last-child{border-bottom:none}
 .sec{margin-bottom:24px}
 .st{font-size:15px;font-weight:700;margin-bottom:10px;padding-bottom:4px;border-bottom:2px solid var(--a)}
-.card{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:12px}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:10px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .stat{text-align:center;padding:10px;background:rgba(99,102,241,0.06);border-radius:8px}
-.stat .v{font-size:18px;font-weight:700;margin:4px 0}
-.stat .l{font-size:10px;color:var(--t2)}
+.stat .v{font-size:16px;font-weight:700;margin:4px 0}.stat .l{font-size:10px;color:var(--t2)}
 table{width:100%;border-collapse:collapse;font-size:12px}
 th{background:#222531;padding:6px 8px;text-align:left;color:var(--t2);border-bottom:2px solid var(--bd)}
 td{padding:5px 8px;border-bottom:1px solid var(--bd)}tr:hover{background:#222531}
-.signal{border-left:3px solid;padding:10px 14px;background:var(--cd);border-radius:0 8px 8px 0;margin-bottom:8px;font-size:13px}
+.sig{border-left:3px solid;padding:10px 14px;background:var(--cd);border-radius:0 8px 8px 0;margin-bottom:8px;font-size:13px}
 .bull{border-color:var(--r)}.bear{border-color:var(--g)}.neut{border-color:var(--y)}
 .footer{margin-top:30px;text-align:center;font-size:10px;color:var(--t2);line-height:1.8}
-.badge{display:inline-block;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600}
-.badge-r{background:rgba(245,34,45,0.15);color:var(--r)}.badge-g{background:rgba(22,199,132,0.15);color:var(--g)}
 </style>
 </head><body>
-<h1>📊 A股量化日报</h1><p class="sub">2026-06-25 · RTI/BSI/LS 引擎生成</p>
+<h1>🧠 A股量化日报</h1><p class="sub">2026-06-25 · RTI/BSI/LS/Phase 四引擎 · Level 4 交易辅助系统</p>
 
-<div class="sec"><div class="st">1️⃣ 市场状态</div>
+<!-- VERDICT -->
+<div class="verdict">
+  <div class="big">💨 退潮期 · 仓位逐步减仓</div>
+  <div class="line">📊 🔥 变强板块: 机场航运, 元件, 证券</div>
+  <div class="line">🔄 ⚪ 今日无轮动启动信号</div>
+  <div class="line">📉 ⚪ 无显著退潮板块</div>
+</div>
+
+<!-- 市场状态 -->
+<div class="sec"><div class="st">🏛️ 市场状态</div>
 <div class="card">
-  <div class="grid2">
+  <div class="grid4">
     <div class="stat"><div class="l">当前周期</div><div class="v">💨 退潮期</div></div>
     <div class="stat"><div class="l">涨跌比</div><div class="v">22%</div></div>
-    <div class="stat"><div class="l">涨停/跌停</div><div class="v">135/2998</div></div>
-    <div class="stat"><div class="l">风险等级</div><div class="v">HIGH</div></div>
+    <div class="stat"><div class="l">涨停</div><div class="v" style="color:var(--r)">135</div></div>
+    <div class="stat"><div class="l">风险</div><div class="v">HIGH</div></div>
   </div>
 </div></div>
 
-<div class="sec"><div class="st">2️⃣ 板块轮动分析 (RTI)</div>
+<!-- 板块轮动 RTI -->
+<div class="sec"><div class="st">🔄 板块轮动 (RTI引擎)</div>
 <div class="card">
-  <table><tr><th>板块</th><th>RTI</th><th>状态</th><th>理由</th></tr>
-  <tr><td colspan="4" style="color:var(--t2)">今日无轮动信号</td></tr>
-  </table>
+  <p style="color:var(--t2);text-align:center;padding:12px">今日无RTI轮动信号<br><small>无低位+放量+无新闻驱动的板块异动</small></p>
+  
 </div></div>
 
-<div class="sec"><div class="st">3️⃣ 强势板块 (BSI Top 5)</div>
+<!-- 强势板块 BSI -->
+<div class="sec"><div class="st">📈 强势板块 (BSI)</div>
 <div class="card">
-  <table><tr><th>板块</th><th>BSI</th><th>涨跌</th><th>强度</th></tr>
-  <tr>
+  <table><tr><th>板块</th><th>BSI</th><th>涨跌</th><th>涨停</th><th>强度</th></tr><tr>
             <td>机场航运</td>
             <td style="font-weight:700">39</td>
             <td style="color:var(--r)">+4.05%</td>
+            <td>135只涨停</td>
             <td>🔥 强势板块</td>
         </tr><tr>
             <td>元件</td>
             <td style="font-weight:700">39</td>
             <td style="color:var(--r)">+3.14%</td>
+            <td>135只涨停</td>
             <td>🔥 强势板块</td>
         </tr><tr>
             <td>证券</td>
             <td style="font-weight:700">39</td>
             <td style="color:var(--r)">+3.06%</td>
+            <td>135只涨停</td>
             <td>🔥 强势板块</td>
         </tr><tr>
             <td>半导体</td>
             <td style="font-weight:700">39</td>
             <td style="color:var(--r)">+2.21%</td>
+            <td>135只涨停</td>
             <td>🔥 强势板块</td>
         </tr><tr>
             <td>保险</td>
             <td style="font-weight:700">39</td>
             <td style="color:var(--r)">+2.19%</td>
+            <td>135只涨停</td>
             <td>🔥 强势板块</td>
-        </tr>
-  </table>
+        </tr></table>
 </div></div>
 
-<div class="sec"><div class="st">4️⃣ 龙头股池 (LS)</div>
+<!-- 龙头 LS -->
+<div class="sec"><div class="st">🏆 龙头股池 (LS)</div>
 <div class="card">
-  <table><tr><th>代码</th><th>名称</th><th>LS</th><th>等级</th><th>涨跌</th></tr>
-  <tr><td colspan="5" style="color:var(--t2)">暂无龙头数据</td></tr>
-  </table>
+  <p style="color:var(--t2);text-align:center;padding:12px">暂无LS≥5的龙头/跟随股<br><small>需要板块内有个股突破前高+量比>2+涨幅领先</small></p>
 </div></div>
 
-<div class="sec"><div class="st">5️⃣ 风险提示</div>
-<div class="card"><p style='color:var(--y)'>⚠️ ⚠️ 退潮信号: 涨停减少, 跌停增加, 建议减仓</p><p style='color:var(--y)'>⚠️ ⚠️ 涨跌比偏低, 整体偏弱</p></div></div>
+<!-- 退潮板块 -->
+<div class="sec"><div class="st">💨 退潮板块</div>
+<div class="card">
+  <p style="color:var(--t2)">无显著退潮板块</p>
+</div></div>
 
-<div class="sec"><div class="st">6️⃣ 中期策略</div>
-<div class="signal bear">
-  <strong>退出策略</strong> · 仓位: 逐步减仓<br>
-  <span style="font-size:12px;color:var(--t2)">减仓至30%以下，清仓弱势股</span>
-</div>
-<div class="signal neut" style="font-size:12px;color:var(--t2)">
-  重点关注: 现金为王，等待冰点
+<!-- 主线切换 -->
+
+
+<!-- 风险 -->
+<div class="sec"><div class="st">⚠️ 风险提示</div>
+<div class="card"><p style='color:var(--y);margin:4px 0'>⚠️ ⚠️ 市场进入退潮/冰点，建议降低仓位至30%以下</p><p style='color:var(--y);margin:4px 0'>⚠️ ⚠️ 5个板块在退潮，警惕扩散下跌</p></div></div>
+
+<!-- 策略 -->
+<div class="sec"><div class="st">🎯 交易策略</div>
+<div class="sig bear">
+  <strong>退出策略</strong><br>
+  <span style="font-size:13px">仓位: 逐步减仓 · 减仓至30%以下，清仓弱势股</span><br>
+  <span style="font-size:11px;color:var(--t2)">重点关注: 现金为王，等待冰点</span>
 </div></div>
 
 <div class="footer">
-  <p>🧠 RTI/BSI/LS/Phase 量化引擎 v1.0 · 云端生成</p>
-  <p>⚠️ 免责声明: 本报告由AI自动生成，仅供参考不构成投资建议。股市有风险，投资需谨慎。</p>
+  <p>🧠 RTI/BSI/LS/Phase 量化引擎 · GitHub Actions 云端运行</p>
+  <p>⚠️ 免责声明: AI自动生成，仅供参考，不构成投资建议。股市有风险，投资需谨慎。</p>
 </div>
 </body></html>

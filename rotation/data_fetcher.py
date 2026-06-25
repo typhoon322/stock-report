@@ -103,6 +103,54 @@ def fetch_all_stocks() -> List[Stock]:
     return stocks
 
 
+def fetch_sector_constituents(sector_name: str) -> List[str]:
+    """获取板块成分股代码列表"""
+    codes = []
+    try:
+        # 先搜索板块代码
+        import akshare as ak
+        # 行业板块
+        df_industries = ak.stock_board_industry_name_em()
+        match = df_industries[df_industries['板块名称'] == sector_name]
+        if len(match) > 0:
+            board_code = match.iloc[0]['板块代码']
+            df_cons = ak.stock_board_industry_cons_em(symbol=board_code)
+            codes = df_cons['代码'].tolist()
+            return codes
+        # 概念板块
+        df_concepts = ak.stock_board_concept_name_em()
+        match = df_concepts[df_concepts['板块名称'] == sector_name]
+        if len(match) > 0:
+            board_code = match.iloc[0]['板块代码']
+            df_cons = ak.stock_board_concept_cons_em(symbol=board_code)
+            codes = df_cons['代码'].tolist()
+    except:
+        pass
+    return codes
+
+
+def match_stocks_to_sectors(all_stocks: List[Stock], sector_names: List[str]) -> Dict[str, List[Stock]]:
+    """将个股匹配到所属板块（优先用成分股API，fallback名称匹配）"""
+    result: Dict[str, List[Stock]] = {name: [] for name in sector_names}
+    
+    # 先尝试用成分股API批量获取（只对前10个板块，避免太慢）
+    for sector_name in sector_names[:10]:
+        codes = fetch_sector_constituents(sector_name)
+        if codes:
+            code_set = set(codes)
+            result[sector_name] = [s for s in all_stocks if s.code in code_set]
+    
+    # 对没有成分股的板块，用名称模糊匹配
+    for sector_name in sector_names:
+        if not result.get(sector_name):
+            result[sector_name] = [
+                s for s in all_stocks 
+                if sector_name in s.industry or s.industry in sector_name
+            ]
+    
+    return result
+
+
 def compute_sector_stats(sectors: List[Sector], all_stocks: List[Stock]) -> List[Sector]:
     """用全市场数据补充板块统计（涨停数、成交量变化、成分股等）"""
     for sec in sectors:
