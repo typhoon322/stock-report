@@ -119,6 +119,13 @@ v2.14 MTF Consistency (轻量版)        ✅
 v2.15 Meta Score Engine (最终决策)     ✅
 v2.16 Position Sizing (资金管理层)     ✅
 v2.17 Execution Engine (执行模拟器)    ✅
+v2.18 Ablation Engine (系统验证)      ✅
+
+19层最终管线:
+commit → CI → backtest → metrics → evolution → rollback
+  → model selector → flow ensemble → smart money → cost basis
+  → breakout → MTF → meta score → position sizing → execution
+  → ABLATION VALIDATION → KNOWLEDGE UPDATE
 
 18层最终管线:
 commit → CI → backtest → metrics → evolution → rollback
