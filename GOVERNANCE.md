@@ -117,11 +117,12 @@ v2.12 Cost Basis Reconstruction     ✅
 v2.13 Breakout Authenticity System   ✅
 v2.14 MTF Consistency (轻量版)        ✅
 v2.15 Meta Score Engine (最终决策)     ✅
+v2.16 Position Sizing (资金管理层)     ✅
 
-16层决策链:
+17层最终管线:
 commit → CI → backtest → metrics → evolution → rollback
   → model selector → flow ensemble → smart money → cost basis
-  → breakout → MTF → META SCORE → LONG/HOLD/SHORT
+  → breakout → MTF → META SCORE → POSITION SIZING → EXECUTION
 ```
 
 ---
@@ -241,6 +242,26 @@ code commit → CI Gate → backtest → metrics → PR report → EVOLUTION LOG
 
 ---
 
+## 18. Meta Score Engine (v2.15)
+
+将所有子系统信号压缩成一个可交易决策分数。6信号 → 动态权重 → Meta Score → LONG/HOLD/SHORT。
+
+**三大风险降级:** liquidity_trap→SHORT, distribution→禁LONG, failed_breakout→HOLD
+
+**模块:** `rotation/meta/`
+
+---
+
+## 19. Position Sizing (v2.16)
+
+position = signal_strength × confidence × risk_factor。4大风控: regime_cap / breakout_risk / flow_reversal / max_cap。
+
+**仓位分级:** 轻仓(<20%) / 中仓(20-50%) / 重仓(50-80%) / 满仓(>80%)
+
+**模块:** `rotation/position/`
+
+---
+
 ## 16. 升级路线
 
 | 优先级 | 模块 | 状态 |
@@ -256,6 +277,8 @@ code commit → CI Gate → backtest → metrics → PR report → EVOLUTION LOG
 | 🚀 | Flow-Weighted Ensemble | ✅ |
 | 🚀 | Smart Money Behavior | ✅ |
 | 🧱 | Cost Basis Reconstruction | ✅ |
-| 🔮 | 主力成本区重建 | ✅ |
-| 🔮 | 假突破识别 | ✅ |
-| 🔮 | 多时间周期一致性 | ⬜ |
+| 🔮 | Breakout Authenticity | ✅ |
+| 🔮 | MTF Consistency | ✅ |
+| 🔮 | Meta Score Engine | ✅ |
+| 🔮 | Position Sizing | ✅ |
+| 🔮 | 龙头链路模型（板块→交易点） | ⬜ |
