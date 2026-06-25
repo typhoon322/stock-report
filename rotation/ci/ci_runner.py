@@ -85,6 +85,19 @@ class CIGate:
         report = generate_ci_report(self.model_name, metrics, drift, decision)
         paths = save_ci_report(report)
         
+        # Step 6: 记录进化日志
+        print("  [6] 进化日志...")
+        try:
+            from rotation.evolution.tracker import log_model_evolution
+            log_model_evolution(
+                model_version=self.model_name,
+                metrics=metrics,
+                drift=drift,
+                ci_pass=all_pass,
+            )
+        except Exception as e:
+            print(f"    ⚠ 进化日志失败: {e}")
+        
         self.result = {
             "model": self.model_name,
             "decision": decision,
