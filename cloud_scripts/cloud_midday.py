@@ -38,10 +38,20 @@ def sina_idx(code):
     except: pass
     return None
 
-PORTFOLIO = {
-    "600487":"亨通光电","600522":"中天科技","002745":"木林森","600733":"北汽蓝谷",
-    "513060":"恒生医疗ETF","512170":"医疗ETF","515790":"光伏ETF"
-}
+# Load portfolio from config
+PORTFOLIO_FILE = os.path.join(ROOT, "portfolio.json")
+PORTFOLIO = {}
+try:
+    with open(PORTFOLIO_FILE) as f:
+        pf = json.load(f)
+        for s in pf.get("stocks", []):
+            PORTFOLIO[s["code"]] = s["name"]
+    print(f"  持仓: {len(PORTFOLIO)}只")
+except:
+    PORTFOLIO = {
+        "600487":"亨通光电","600522":"中天科技","002745":"木林森","600733":"北汽蓝谷",
+        "513060":"恒生医疗ETF","512170":"医疗ETF","515790":"光伏ETF"
+    }
 
 print(f"☁️ 云端午盘分析 {TODAY_STR}")
 

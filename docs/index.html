@@ -2,62 +2,264 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>A股每日报告</title>
 <style>
 :root{--bg:#0f1117;--cd:#1a1d28;--bd:#2a2d3a;--tx:#e4e6ed;--t2:#8b8fa3;--a:#6366f1;--r:#f5222d;--g:#16c784;--y:#f59e0b}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 16px}
-h1{font-size:26px;color:var(--a);margin-bottom:4px}
-.sub{color:var(--t2);font-size:13px;margin-bottom:36px}
-.links{display:flex;flex-direction:column;gap:14px;width:100%;max-width:420px}
-.link{display:flex;align-items:center;gap:14px;background:var(--cd);border:1px solid var(--bd);border-radius:14px;padding:18px 20px;text-decoration:none;color:var(--tx);transition:all .15s;-webkit-tap-highlight-color:transparent}
-.link:active{background:#222531;border-color:var(--a)}
-.link .icon{font-size:28px;flex-shrink:0}
-.link .info{flex:1;min-width:0}
-.link .info .t{font-size:15px;font-weight:700;margin-bottom:2px}
-.link .info .time{font-size:12px;color:var(--t2)}
-.link .arrow{color:var(--t2);font-size:16px}
-.badge{display:inline-block;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;margin-left:6px;vertical-align:2px}
-.badge-live{background:rgba(22,199,132,0.15);color:var(--g)}
-.footer{margin-top:48px;font-size:11px;color:var(--t2);text-align:center;line-height:1.8}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;padding:24px 16px 60px;max-width:500px;margin:0 auto}
+h1{font-size:24px;color:var(--a);text-align:center;margin-bottom:2px}
+.sub{color:var(--t2);font-size:12px;text-align:center;margin-bottom:28px}
+.section{margin-bottom:24px}
+.sec-title{font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;justify-content:space-between}
+.sec-title .badge{font-size:10px;color:var(--t2);font-weight:400}
+.btn{background:var(--a);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.btn-sm{font-size:11px;padding:3px 10px}
+.btn-outline{background:transparent;border:1px solid var(--bd);color:var(--tx)}
+.btn-del{background:rgba(245,34,45,0.15);color:var(--r);border:none;padding:3px 8px;border-radius:6px;font-size:11px;cursor:pointer}
+.link-card{display:flex;align-items:center;gap:12px;background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:14px 16px;text-decoration:none;color:var(--tx);transition:all .15s;margin-bottom:10px;-webkit-tap-highlight-color:transparent}
+.link-card:active{background:#222531;border-color:var(--a)}
+.link-card .icon{font-size:24px;flex-shrink:0}
+.link-card .info{flex:1;min-width:0}
+.link-card .info .t{font-size:14px;font-weight:700}
+.link-card .info .d{font-size:11px;color:var(--t2);margin-top:1px}
+.stock-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--cd);border:1px solid var(--bd);border-radius:10px;margin-bottom:6px;font-size:13px;transition:all .15s}
+.stock-row.focus{border-color:var(--y);background:rgba(245,158,11,0.05)}
+.stock-row .code{font-family:'SF Mono',monospace;font-size:11px;color:var(--a);width:50px;flex-shrink:0}
+.stock-row .name{flex:1;font-weight:600;font-size:13px}
+.stock-row .note{font-size:10px;color:var(--t2);width:60px;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stock-row .star{font-size:16px;cursor:pointer;flex-shrink:0;opacity:.4;transition:all .15s}
+.stock-row.focus .star{opacity:1}
+.stock-row .actions{display:flex;gap:4px;flex-shrink:0}
+
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:100;display:none;align-items:flex-end;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--cd);border-radius:16px 16px 0 0;width:100%;max-width:500px;padding:20px;max-height:80vh;overflow-y:auto}
+.modal h3{font-size:16px;margin-bottom:16px}
+.modal .field{margin-bottom:12px}
+.modal label{font-size:11px;color:var(--t2);display:block;margin-bottom:4px}
+.modal input,.modal select{width:100%;padding:10px 12px;background:#0f1117;border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-size:14px;outline:none}
+.modal input:focus{border-color:var(--a)}
+.modal .hint{font-size:10px;color:var(--t2);margin-top:4px}
+.modal .btn-row{display:flex;gap:8px;margin-top:16px}
+.modal .btn-row .btn{flex:1;padding:12px;text-align:center;border-radius:10px;font-size:14px}
+.modal .btn-save{background:var(--a);color:#fff;border:none}
+.modal .btn-cancel{background:transparent;border:1px solid var(--bd);color:var(--tx)}
+
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--a);color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;z-index:200;opacity:0;transition:opacity .3s}
+.toast.show{opacity:1}
+.up{color:var(--r)}.down{color:var(--g)}
+
+.footer{margin-top:32px;text-align:center;font-size:10px;color:var(--t2);line-height:1.8}
 </style>
 </head>
 <body>
+
 <h1>📊 A股每日报告</h1>
-<p class="sub">全自动云端生成 · 手机随时查看 ☁️</p>
-<div class="links">
-<a class="link" href="morning_report.html">
-  <span class="icon">🏙️</span>
-  <span class="info">
-    <span class="t">早盘报告 <span class="badge badge-live">8:15</span></span>
-    <span class="time">美股收盘 · 日韩市场 · 全球商品</span>
-  </span>
-  <span class="arrow">→</span>
-</a>
-<a class="link" href="midday_report.html">
-  <span class="icon">🌤️</span>
-  <span class="info">
-    <span class="t">午盘分析 <span class="badge badge-live">11:35</span></span>
-    <span class="time">盘面扫描 · 板块轮动 · 持仓建议</span>
-  </span>
-  <span class="arrow">→</span>
-</a>
-<a class="link" href="closing_report.html">
-  <span class="icon">🌙</span>
-  <span class="info">
-    <span class="t">收盘总结 <span class="badge badge-live">15:05</span></span>
-    <span class="time">全天复盘 · 持仓表现 · 明日展望</span>
-  </span>
-  <span class="arrow">→</span>
-</a>
+<p class="sub">云端自动生成 · 手机随时查看</p>
+
+<!-- === 报告入口 === -->
+<div class="section">
+  <div class="sec-title">📋 今日报告</div>
+  <a class="link-card" href="morning_report.html">
+    <span class="icon">🏙️</span><span class="info"><span class="t">早盘报告</span><span class="d">8:15 · 美股收盘+日韩+商品</span></span>
+  </a>
+  <a class="link-card" href="midday_report.html">
+    <span class="icon">🌤️</span><span class="info"><span class="t">午盘分析</span><span class="d">11:35 · 盘面+板块+持仓</span></span>
+  </a>
+  <a class="link-card" href="closing_report.html">
+    <span class="icon">🌙</span><span class="info"><span class="t">收盘总结</span><span class="d">15:05 · 全天复盘+明日展望</span></span>
+  </a>
 </div>
-<p class="footer">
-  ☁️ 由 GitHub Actions 自动运行 · 每个交易日更新<br>
-  添加此页到手机桌面，随时查看 ⚡<br><br>
-  <span style="color:var(--t2)">⚠️ 数据仅供参考，不构成投资建议</span>
-</p>
+
+<!-- === 持仓管理 === -->
+<div class="section">
+  <div class="sec-title">
+    <span>📌 我的持仓 <span class="badge" id="stockCount">7只</span></span>
+    <button class="btn btn-sm" onclick="openAddModal()">+ 添加</button>
+  </div>
+  <div id="stockList"></div>
+  <p style="font-size:10px;color:var(--t2);margin-top:8px;text-align:center">⭐ 点击星标设为重点关注 · 点击 X 移除 · 添加修改后自动保存</p>
+</div>
+
+<!-- === 添加/编辑弹窗 === -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h3 id="modalTitle">添加股票</h3>
+    <div class="field">
+      <label>股票代码</label>
+      <input id="editCode" type="text" placeholder="如: 600487" maxlength="6">
+    </div>
+    <div class="field">
+      <label>股票名称</label>
+      <input id="editName" type="text" placeholder="如: 亨通光电">
+    </div>
+    <div class="field">
+      <label>持仓成本 (¥)</label>
+      <input id="editCost" type="number" step="0.01" placeholder="买入均价">
+    </div>
+    <div class="field">
+      <label>备注</label>
+      <input id="editNote" type="text" placeholder="如: 光纤龙头 / 新能源">
+    </div>
+    <div class="field">
+      <label>重点关注</label>
+      <select id="editFocus">
+        <option value="1">⭐ 是</option>
+        <option value="0">否</option>
+      </select>
+    </div>
+    <div class="hint" id="editHint"></div>
+    <div class="btn-row">
+      <button class="btn btn-cancel" onclick="closeModal()">取消</button>
+      <button class="btn btn-save" onclick="saveStock()">保存</button>
+      <input type="hidden" id="editIndex" value="-1">
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="footer">
+  ☁️ GitHub Actions 云端运行 · 每个交易日更新<br>
+  ⚠️ 数据仅供参考，不构成投资建议
+</div>
+
+<script>
+// Default portfolio
+const DEFAULT = [
+  {code:"600487",name:"亨通光电",focus:true,cost:78,note:"光纤龙头"},
+  {code:"600522",name:"中天科技",focus:true,cost:44,note:"光纤通信"},
+  {code:"002745",name:"木林森",focus:false,cost:12.5,note:"LED"},
+  {code:"600733",name:"北汽蓝谷",focus:true,cost:16.5,note:"新能源车"},
+  {code:"513060",name:"恒生医疗ETF",focus:false,cost:1.14,note:"港股医疗"},
+  {code:"512170",name:"医疗ETF",focus:false,cost:0.58,note:"A股医疗"},
+  {code:"515790",name:"光伏ETF",focus:false,cost:1.00,note:"光伏"},
+];
+
+function loadPortfolio() {
+  try {
+    const raw = localStorage.getItem('portfolio');
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return JSON.parse(JSON.stringify(DEFAULT));
+}
+
+function savePortfolio(data) {
+  localStorage.setItem('portfolio', JSON.stringify(data));
+  renderList();
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1500);
+}
+
+function renderList() {
+  const data = loadPortfolio();
+  document.getElementById('stockCount').textContent = `${data.length}只`;
+  
+  // Sort: focus first
+  data.sort((a,b) => (b.focus?1:0) - (a.focus?1:0));
+  
+  let html = '';
+  data.forEach((s, i) => {
+    html += `<div class="stock-row${s.focus?' focus':''}" onclick="openEditModal(${i})">
+      <span class="code">${s.code}</span>
+      <span class="name">${s.name}</span>
+      <span class="note">${s.note||''}</span>
+      <span class="star" onclick="event.stopPropagation();toggleFocus(${i})">⭐</span>
+      <span class="actions">
+        <button class="btn-del" onclick="event.stopPropagation();deleteStock(${i})">✕</button>
+      </span>
+    </div>`;
+  });
+  document.getElementById('stockList').innerHTML = html || '<p style="color:var(--t2);text-align:center;padding:20px">暂无持仓，点击 + 添加</p>';
+}
+
+function openAddModal() {
+  document.getElementById('modalTitle').textContent = '添加股票';
+  document.getElementById('editCode').value = '';
+  document.getElementById('editName').value = '';
+  document.getElementById('editCost').value = '';
+  document.getElementById('editNote').value = '';
+  document.getElementById('editFocus').value = '0';
+  document.getElementById('editIndex').value = '-1';
+  document.getElementById('editHint').textContent = '';
+  document.getElementById('modal').classList.add('show');
+}
+
+function openEditModal(index) {
+  const data = loadPortfolio();
+  const s = data[index];
+  document.getElementById('modalTitle').textContent = '编辑股票';
+  document.getElementById('editCode').value = s.code;
+  document.getElementById('editName').value = s.name;
+  document.getElementById('editCost').value = s.cost||'';
+  document.getElementById('editNote').value = s.note||'';
+  document.getElementById('editFocus').value = s.focus?'1':'0';
+  document.getElementById('editIndex').value = index;
+  document.getElementById('editHint').textContent = `代码: ${s.code}`;
+  document.getElementById('modal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+}
+
+function saveStock() {
+  const code = document.getElementById('editCode').value.trim();
+  const name = document.getElementById('editName').value.trim();
+  const cost = parseFloat(document.getElementById('editCost').value) || null;
+  const note = document.getElementById('editNote').value.trim();
+  const focus = document.getElementById('editFocus').value === '1';
+  const index = parseInt(document.getElementById('editIndex').value);
+  
+  if (!code || !name) { toast('代码和名称不能为空'); return; }
+  if (!/^\d{6}$/.test(code)) { toast('代码格式: 6位数字'); return; }
+  
+  const data = loadPortfolio();
+  
+  if (index >= 0) {
+    data[index] = {code, name, focus, cost, note};
+    toast('已更新');
+  } else {
+    // Check duplicate
+    if (data.some(s => s.code === code)) { toast('代码已存在'); return; }
+    data.push({code, name, focus, cost, note});
+    toast('已添加');
+  }
+  
+  savePortfolio(data);
+  closeModal();
+}
+
+function toggleFocus(index) {
+  const data = loadPortfolio();
+  data[index].focus = !data[index].focus;
+  savePortfolio(data);
+  toast(data[index].focus ? '已标为重点关注' : '已取消重点关注');
+}
+
+function deleteStock(index) {
+  const data = loadPortfolio();
+  const name = data[index].name;
+  if (confirm(`确定移除 ${name}？`)) {
+    data.splice(index, 1);
+    savePortfolio(data);
+    toast(`已移除 ${name}`);
+  }
+}
+
+// Close modal on overlay click
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+renderList();
+</script>
 </body>
 </html>
