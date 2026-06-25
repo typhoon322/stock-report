@@ -1,0 +1,53 @@
+{
+  "timestamp": "2026-06-25T23:22:57.511931",
+  "regime": "risk_off",
+  "signals": [
+    {
+      "model": "RTI_v2",
+      "signal": 1,
+      "signal_label": "LONG",
+      "confidence": 0.75,
+      "target": "sector",
+      "reason": "轮动信号"
+    },
+    {
+      "model": "LS_model",
+      "signal": -1,
+      "signal_label": "SHORT",
+      "confidence": 0.8,
+      "target": "stock",
+      "reason": "无龙头+退潮"
+    },
+    {
+      "model": "BSI_model",
+      "signal": 0,
+      "signal_label": "HOLD",
+      "confidence": 0.4,
+      "target": "sector",
+      "reason": "弱势"
+    }
+  ],
+  "weights": {
+    "RTI_v1.0": 0.2355,
+    "RTI_v1.1": 0.2948,
+    "RTI_v1.2": 0.1754,
+    "RTI_v1.3": 0.2943
+  },
+  "conflict": {
+    "has_conflict": true,
+    "long_models": [
+      "RTI_v2"
+    ],
+    "short_models": [
+      "LS_model"
+    ],
+    "severity": "high"
+  },
+  "voting": {
+    "weighted_score": -0.0167,
+    "agreement": 0.3333,
+    "entropy": 1.585,
+    "decision": "HOLD",
+    "confidence": 0.125
+  }
+}
