@@ -32,8 +32,9 @@ class EnsembleVoter:
         regime: str = "rotation",
         conflict_strategy: str = "confidence_weighted",
         flow_result: Dict = None,
+        smart_money_result: Dict = None,
     ) -> Dict:
-        """执行投票 (支持资金流权重)"""
+        """执行投票 (支持资金流权重 + 主力行为校验)"""
         if not self.signals:
             return {"decision": "HOLD", "error": "no_signals"}
         
@@ -69,6 +70,7 @@ class EnsembleVoter:
             "timestamp": datetime.now().isoformat(),
             "regime": regime,
             "flow_weighted": flow_weights is not None,
+            "smart_money": None,
             "signals": [s.to_dict() for s in self.signals],
             "weights": {k: round(v, 4) for k, v in self.weights.items()},
             "conflict": conflict,
@@ -80,6 +82,40 @@ class EnsembleVoter:
                 "confidence": round(min(abs(score) * 1.5 + agreement * 0.3, 1.0), 3),
             },
         }
+        
+        # 保存报告
+        
+        # Step 4b: 主力行为校验 (覆盖决策)
+        if smart_money_result:
+            behavior = smart_money_result.get("behavior", "")
+            trade = smart_money_result.get("trade_implication", {})
+            ensemble_decision = self.result["voting"]["decision"]
+            
+            # distribution / accumulation 覆盖投票决策
+            if behavior == "distribution" and ensemble_decision == "LONG":
+                self.result["voting"]["decision"] = "HOLD"
+                self.result["voting"]["confidence"] *= 0.5
+                self.result["smart_money"] = {
+                    "override": True,
+                    "reason": f"主力出货({behavior}) → 覆盖LONG为HOLD",
+                    "behavior": behavior,
+                    "score": smart_money_result.get("score", 0),
+                }
+            elif behavior == "markup" and ensemble_decision == "HOLD":
+                self.result["voting"]["confidence"] *= 1.3
+                self.result["smart_money"] = {
+                    "override": False,
+                    "boost": True,
+                    "reason": f"主力拉升({behavior}) → 提升HOLD置信度",
+                    "behavior": behavior,
+                }
+            else:
+                self.result["smart_money"] = {
+                    "override": False,
+                    "behavior": behavior,
+                    "score": smart_money_result.get("score", 0),
+                    "confidence": smart_money_result.get("confidence", 0),
+                }
         
         # 保存报告
         os.makedirs(os.path.dirname(REPORT_PATH), exist_ok=True)

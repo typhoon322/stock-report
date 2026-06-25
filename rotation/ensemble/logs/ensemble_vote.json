@@ -1,7 +1,13 @@
 {
-  "timestamp": "2026-06-25T23:26:06.182299",
-  "regime": "risk_off",
-  "flow_weighted": true,
+  "timestamp": "2026-06-25T23:39:27.089182",
+  "regime": "rotation",
+  "flow_weighted": false,
+  "smart_money": {
+    "override": false,
+    "behavior": "accumulation",
+    "score": 0.708,
+    "confidence": 0.376
+  },
   "signals": [
     {
       "model": "RTI_v2",
@@ -15,29 +21,30 @@
       "model": "LS_model",
       "signal": -1,
       "signal_label": "SHORT",
-      "confidence": 0.8,
+      "confidence": 0.6,
       "target": "stock",
-      "reason": "退潮防御"
+      "reason": "龙头退潮"
     },
     {
       "model": "BSI_model",
-      "signal": 0,
-      "signal_label": "HOLD",
-      "confidence": 0.4,
+      "signal": 1,
+      "signal_label": "LONG",
+      "confidence": 0.55,
       "target": "sector",
-      "reason": "弱势"
+      "reason": "板块偏强"
     }
   ],
   "weights": {
-    "RTI_v1.0": 0.2355,
-    "RTI_v1.1": 0.2948,
-    "RTI_v1.2": 0.1754,
-    "RTI_v1.3": 0.2943
+    "RTI_v1.0": 0.2413,
+    "RTI_v1.1": 0.2816,
+    "RTI_v1.2": 0.1998,
+    "RTI_v1.3": 0.2774
   },
   "conflict": {
     "has_conflict": true,
     "long_models": [
-      "RTI_v2"
+      "RTI_v2",
+      "BSI_model"
     ],
     "short_models": [
       "LS_model"
@@ -45,10 +52,10 @@
     "severity": "high"
   },
   "voting": {
-    "weighted_score": -0.0167,
-    "agreement": 0.3333,
-    "entropy": 1.585,
+    "weighted_score": 0.2333,
+    "agreement": 0.6667,
+    "entropy": 0.9183,
     "decision": "HOLD",
-    "confidence": 0.125
+    "confidence": 0.55
   }
 }
