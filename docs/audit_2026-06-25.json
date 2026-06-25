@@ -1,0 +1,70 @@
+{
+  "version": "3.0",
+  "generated_at": "2026-06-25T21:31:15.421943",
+  "date": "2026-06-25",
+  "market_state": {
+    "date": "2026-06-25",
+    "market_phase": "💨 退潮期",
+    "risk_level": "high",
+    "index_trend": "偏弱",
+    "advance_decline_ratio": 0.29,
+    "limit_up_count": 135,
+    "fall_limit_count": 2998,
+    "market_breadth": 0.225
+  },
+  "sectors_top": [
+    {
+      "sector": "机场航运",
+      "BSI": 39,
+      "change_1d": 4.05,
+      "net_money_flow": 12.85,
+      "num_limit_up": 135,
+      "num_stocks_up": 1230,
+      "status": "强势板块"
+    },
+    {
+      "sector": "元件",
+      "BSI": 39,
+      "change_1d": 3.14,
+      "net_money_flow": 112.24,
+      "num_limit_up": 135,
+      "num_stocks_up": 1230,
+      "status": "强势板块"
+    },
+    {
+      "sector": "证券",
+      "BSI": 39,
+      "change_1d": 3.06,
+      "net_money_flow": 57.78,
+      "num_limit_up": 135,
+      "num_stocks_up": 1230,
+      "status": "强势板块"
+    },
+    {
+      "sector": "半导体",
+      "BSI": 39,
+      "change_1d": 2.21,
+      "net_money_flow": 80.68,
+      "num_limit_up": 135,
+      "num_stocks_up": 1230,
+      "status": "强势板块"
+    },
+    {
+      "sector": "保险",
+      "BSI": 39,
+      "change_1d": 2.19,
+      "net_money_flow": 2.72,
+      "num_limit_up": 135,
+      "num_stocks_up": 1230,
+      "status": "强势板块"
+    }
+  ],
+  "leaders": [],
+  "rotation_signals": [],
+  "performance_track": [],
+  "strategy": {
+    "position": "逐步减仓",
+    "action": "减仓至30%以下，清仓弱势股",
+    "focus": "现金为王，等待冰点"
+  }
+}
