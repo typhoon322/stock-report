@@ -100,10 +100,23 @@ rotation/eval/<module_name>_eval.py
 ## 7. 当前系统定位
 
 ```
-RTI v1 (rule + ML hybrid)
-→ RTI v1.5 (backtest validated)
-→ RTI v2   (ML dominant)  
-→ RTI v3   (regime adaptive)
+RTI v1 (rule + ML hybrid)          ✅
+RTI v1.5 (backtest validated)      ✅
+RTI v2   (ML dominant)             ✅
+RTI v3   (regime adaptive)         ⬜
+
+系统治理层:
+v2.5 CI Gate + PR Audit            ✅
+v2.6 Model Evolution Log           ✅
+v2.7 Auto Rollback Immune System   ✅
+v2.8 Model Brain (自适应择优)        ✅
+v2.9 Ensemble Voting (模型委员会)    ✅
+v2.10 Flow-Weighted Ensemble       ✅
+v2.11 Smart Money Behavior (认知层) ✅
+
+12层决策链:
+commit → CI → backtest → metrics → evolution → rollback
+  → model selector → flow-weighted ensemble → smart money → production
 ```
 
 ---
@@ -184,3 +197,48 @@ code commit → CI Gate → backtest → metrics → PR report → EVOLUTION LOG
 3. 为什么？ → `diff.py` 归因分析
 
 **报告:** `rotation/evolution/reports/evolution_report.md`
+
+---
+
+## 12. Flow-Weighted Ensemble (v2.10)
+
+资金流驱动投票权重，flow_alignment × regime_multiplier 动态调整每个模型的投票权。
+
+**四种资金状态:** inflow_strong / rotation / distribution / neutral
+
+**权重公式:** model_weight = base × regime_multiplier × (1 + alignment × 0.25)
+
+**关键逻辑:** distribution 期 RTI 降权 25%, LS 防守权重 ↑40%
+
+**模块:** `rotation/flow/`
+
+---
+
+## 13. Smart Money Behavior (v2.11)
+
+从 OHLCV 微观结构识别四种主力行为: accumulation / markup / distribution / manipulation
+
+**10 维特征:** price_momentum, volume_spike, volume_dry_up, breakout_strength, pullback_depth, rebound_speed, range_contraction, shadow_ratio, position_zone, intraday_bias
+
+**Ensemble 覆盖:** distribution → 强制 HOLD; markup → 提升置信度
+
+**模块:** `rotation/smart_money/`
+
+---
+
+## 14. 升级路线
+
+| 优先级 | 模块 | 状态 |
+|--------|------|------|
+| 🥇 | RTI backtest + IC 系统 | ✅ |
+| 🥈 | drift detection | ✅ |
+| 🥉 | 龙头链路模型 | ⬜ |
+| 🚀 | CI Gate + PR Audit | ✅ |
+| 🚀 | Model Evolution Log | ✅ |
+| 🚀 | Auto Rollback | ✅ |
+| 🚀 | Model Brain Selector | ✅ |
+| 🚀 | Ensemble Voting | ✅ |
+| 🚀 | Flow-Weighted Ensemble | ✅ |
+| 🚀 | Smart Money Behavior | ✅ |
+| 🔮 | 主力成本区重建 | ⬜ |
+| 🔮 | 假突破识别 | ⬜ |
