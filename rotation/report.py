@@ -1,18 +1,22 @@
 """
-rotation/report.py — 日报生成器 v2
+rotation/report.py — 日报生成器 v3 (RTI 2.0)
 
 显式回答 Level 3 三问 + Level 4 五输出
+使用 RTI 2.0 管线: 异常扫描→试探→扩散→确认
 """
 from .models import Stock, Sector, MarketSentiment, DailyReport, RotationSignal
 from .rti import compute_rti, rank_rotation_signals, detect_news_drivers
+from .rti2 import (
+    compute_rti2, compute_flow_shift, compute_acceleration,
+    detect_old_leader_decay, RotationPipeline
+)
 from .bsi import rank_sectors, classify_bsi
 from .ls import find_leaders, classify_leader, find_sector_leader
 from .phase import detect_phase, get_position_advice, compute_risk_level
 from .data_fetcher import (
     fetch_industry_sectors, fetch_concept_sectors,
-    compute_sector_stats, estimate_low_position,
-    build_market_sentiment, fetch_news_for_sectors,
-    fetch_all_stocks, match_stocks_to_sectors
+    fetch_all_stocks, match_stocks_to_sectors,
+    build_market_sentiment, fetch_news_for_sectors
 )
 from datetime import datetime
 from typing import List, Dict
@@ -28,11 +32,11 @@ def detect_fading_sectors(sectors: List[Sector]) -> List[Sector]:
 
 
 def generate_daily_report() -> DailyReport:
-    """主入口"""
-    print("🧠 量化策略日报生成中...")
+    """主入口 — RTI 2.0 四阶段管线"""
+    print("🧠 量化日报 v3 (RTI 2.0) 生成中...")
     
     # Step 1: 数据
-    print("  [1/4] 全市场扫描...")
+    print("  [1/5] 全市场扫描...")
     all_stocks = fetch_all_stocks()
     industry_sectors = fetch_industry_sectors()
     concept_sectors = fetch_concept_sectors()
@@ -40,9 +44,9 @@ def generate_daily_report() -> DailyReport:
     news_map = fetch_news_for_sectors()
     all_sectors = industry_sectors + concept_sectors
     
-    # Step 2: 板块成分股匹配（关键修复）
-    print(f"  [2/4] 匹配{len(all_sectors)}板块成分股...")
-    sector_names = [s.name for s in all_sectors[:50]]  # 只对前50个做精确匹配
+    # Step 2: 板块成分股匹配
+    print(f"  [2/5] 匹配{len(all_sectors)}板块成分股...")
+    sector_names = [s.name for s in all_sectors[:50]]
     sector_stocks_map = match_stocks_to_sectors(all_stocks, sector_names)
     for sec in all_sectors:
         sec.stocks = sector_stocks_map.get(sec.name, [])
@@ -52,48 +56,95 @@ def generate_daily_report() -> DailyReport:
             ratios = [s.volume_ratio for s in sec.stocks if s.volume_ratio > 0]
             sec.volume_change = sum(ratios)/len(ratios) if ratios else 1.0
     
-    # Step 3: 引擎评分
-    print("  [3/4] RTI/BSI/LS/Phase评分...")
-    market_avg_5d = sum(s.change_1d for s in all_sectors) / max(len(all_sectors), 1)
-    for sec in all_sectors:
-        sec.is_low_position = sec.change_1d > 0 and sec.change_5d < market_avg_5d
-    
-    rotation_signals = [compute_rti(sec, market_avg_5d, news_map) for sec in all_sectors]
-    ranked_rotations = rank_rotation_signals(rotation_signals)
-    
+    # Step 3: BSI + Phase
+    print("  [3/5] BSI/Phase...")
     ranked_sectors = rank_sectors(all_sectors)
     strong_sectors = [s for s in ranked_sectors if s.bsi_score > 30][:5]
     fading_sectors = detect_fading_sectors(ranked_sectors)
-    
-    # 龙头识别
-    all_leaders: List[Stock] = []
-    for sec in strong_sectors[:3]:
-        leader = find_sector_leader(sec.stocks)
-        if leader:
-            leader.industry = sec.name
-            all_leaders.append(leader)
-    
-    # Step 4: Phase + 策略
-    print("  [4/4] 策略输出...")
     phase = detect_phase(sentiment)
     sentiment.phase = phase
     sentiment.risk_level = compute_risk_level(sentiment, phase)
+    
+    # Step 4: RTI 2.0 管线 — 核心升级
+    print("  [4/5] RTI 2.0 四阶段管线...")
+    # 标记低位板块
+    market_avg_5d = sum(s.change_1d for s in all_sectors) / max(len(all_sectors), 1)
+    for sec in all_sectors:
+        sec.is_low_position = sec.change_1d > 0 and (sec.change_5d < market_avg_5d or sec.change_5d < 0)
+    
+    # 旧主线: BSI最高的3个板块(简化)
+    old_leaders = [s.name for s in strong_sectors[:3]]
+    
+    # FlowShift
+    flow_shifts = compute_flow_shift(all_sectors, old_leaders)
+    
+    # 旧主线衰减
+    old_leader_sectors = [s for s in all_sectors if s.name in old_leaders]
+    decay_signals = detect_old_leader_decay(old_leader_sectors, sector_stocks_map)
+    
+    # RTI 2.0 评分
+    rti2_signals = []
+    for sec in all_sectors:
+        shift_score = flow_shifts.get(sec.name, 0)
+        accel = compute_acceleration(sec)
+        is_low = sec.is_low_position
+        has_news = bool(news_map.get(sec.name))
+        is_decaying = sec.name in decay_signals
+        
+        score, stage, reasons = compute_rti2(
+            sec, all_sectors, shift_score, accel, is_low, has_news, is_decaying
+        )
+        if score >= 2:  # 只保留有意义的信号
+            rti2_signals.append({
+                "sector": sec, "score": score, "stage": stage,
+                "reasons": reasons, "flow_shift": shift_score,
+                "acceleration": accel,
+            })
+    
+    rti2_signals.sort(key=lambda x: x['score'], reverse=True)
+    
+    # 四阶段管线
+    pipeline = RotationPipeline(all_sectors)
+    leaders = []  # LS leaders will be filled below
+    pipeline_result = pipeline.run(leaders)
+    
+    # Step 5: LS + 策略
+    print("  [5/5] LS龙头+策略...")
+    all_leaders = []
+    for sec in strong_sectors[:3]:
+        ldr = find_sector_leader(sec.stocks)
+        if ldr:
+            ldr.industry = sec.name
+            all_leaders.append(ldr)
+    
+    # 重新跑管线(有了龙头数据)
+    if all_leaders:
+        pipeline_result = pipeline.run(all_leaders)
+    
     position = get_position_advice(phase)
     
     risk_alerts = []
+    decayed = list(decay_signals.keys())
+    if decayed:
+        risk_alerts.append(f"⚠️ 旧主线衰减: {', '.join(decayed)} — 关注切换信号")
     if phase in ["💨 退潮期", "❄️ 冰点期"]:
-        risk_alerts.append("⚠️ 市场进入退潮/冰点，建议降低仓位至30%以下")
-    if len(strong_sectors) < 2:
-        risk_alerts.append("⚠️ 强势板块不足，市场缺乏明确主线")
-    if len(fading_sectors) > 3:
-        risk_alerts.append(f"⚠️ {len(fading_sectors)}个板块在退潮，警惕扩散下跌")
+        risk_alerts.append("⚠️ 市场退潮/冰点，建议降低仓位至30%以下")
+    if pipeline_result['stage4_confirmed']:
+        new = [s.name for s in pipeline_result['stage4_confirmed']]
+        risk_alerts.append(f"🔄 新主线确认: {', '.join(new)} — 可加仓")
     
-    print(f"  完成 → {phase} | 轮动{len(ranked_rotations)}个 | 强势{len(strong_sectors)}个 | 龙头{len(all_leaders)}只 | 退潮{len(fading_sectors)}个")
+    confirmed_names = [s.name for s in pipeline_result.get('stage4_confirmed', [])]
+    diffused_names = [s.name for s in pipeline_result.get('stage3_diffused', [])]
+    
+    print(f"  完成 → {phase} | 管线: 扫描{len(pipeline_result['stage1_scanning'])}→试探{len(pipeline_result['stage2_probings'])}→扩散{len(pipeline_result['stage3_diffused'])}→确认{len(pipeline_result['stage4_confirmed'])}")
     
     return DailyReport(
         date=datetime.now().strftime("%Y-%m-%d"),
         sentiment=sentiment,
-        rotation_signals=ranked_rotations[:8],
+        rotation_signals=[RotationSignal(
+            sector=sig['sector'], rti_score=sig['score'],
+            status=sig['stage'], reason=" | ".join(sig['reasons']),
+        ) for sig in rti2_signals[:8]],
         strong_sectors=strong_sectors,
         leaders=all_leaders,
         phase=phase,
@@ -203,7 +254,7 @@ td{{padding:5px 8px;border-bottom:1px solid var(--bd)}}tr:hover{{background:#222
 .footer{{margin-top:30px;text-align:center;font-size:10px;color:var(--t2);line-height:1.8}}
 </style>
 </head><body>
-<h1>🧠 A股量化日报</h1><p class="sub">{report.date} · RTI/BSI/LS/Phase 四引擎 · Level 4 交易辅助系统</p>
+<h1>🧠 A股量化日报</h1><p class="sub">{report.date} · RTI 2.0 四引擎 · 资金迁移+轮动管线</p>
 
 <!-- VERDICT -->
 <div class="verdict">
@@ -265,7 +316,7 @@ td{{padding:5px 8px;border-bottom:1px solid var(--bd)}}tr:hover{{background:#222
 </div></div>
 
 <div class="footer">
-  <p>🧠 RTI/BSI/LS/Phase 量化引擎 · GitHub Actions 云端运行</p>
+  <p>🧠 RTI 2.0 / BSI / LS / Phase 量化引擎 · GitHub Actions 云端运行</p>
   <p>⚠️ 免责声明: AI自动生成，仅供参考，不构成投资建议。股市有风险，投资需谨慎。</p>
 </div>
 </body></html>"""
