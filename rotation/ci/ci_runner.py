@@ -98,6 +98,21 @@ class CIGate:
         except Exception as e:
             print(f"    ⚠ 进化日志失败: {e}")
         
+        # Step 7: 回滚检查
+        print("  [7] 回滚引擎...")
+        rollback_result = None
+        try:
+            from rotation.rollback import run_rollback_check
+            rollback_result = run_rollback_check(
+                new_model_version=self.model_name,
+                new_metrics=metrics,
+                drift=drift,
+                ci_pass=all_pass,
+            )
+            self.result["rollback"] = rollback_result
+        except Exception as e:
+            print(f"    ⚠ 回滚检查失败: {e}")
+        
         self.result = {
             "model": self.model_name,
             "decision": decision,

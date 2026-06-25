@@ -163,5 +163,24 @@ RTI v1 (rule + ML hybrid)
 
 **PR 决策流程:**
 ```
-PR提交 → CI Gate → backtest → metrics → 审计报告 → PR评论 → merge decision
+code commit → CI Gate → backtest → metrics → PR report → EVOLUTION LOG → trend analysis
 ```
+
+---
+
+## 11. Model Evolution Log (v2.5)
+
+每次 CI 运行自动记录模型进化轨迹到 `rotation/evolution/logs/evolution_log.jsonl`。
+
+**核心能力:**
+- 📈 追踪 IC/Precision/MaxDD 随时间变化
+- 🏆 自动识别最佳改进和最差退化
+- ⚠️ Plateau 检测 (IC 增长停滞)
+- 📊 进化时间线表格
+
+**三个关键问题:**
+1. 我改了什么？ → `change_summary` + `change_type`
+2. 模型变好了还是变差了？ → `ic_delta` + `precision_delta`
+3. 为什么？ → `diff.py` 归因分析
+
+**报告:** `rotation/evolution/reports/evolution_report.md`
