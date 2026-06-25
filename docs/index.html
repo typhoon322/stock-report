@@ -311,30 +311,27 @@ document.getElementById('gearIcon').addEventListener('click', function() {
 
 async function triggerAction(type) {
   const status = document.getElementById('adminStatus');
-  status.textContent = '⏳ 执行中...';
   
-  if (type === 'quant') {
-    window.open('https://github.com/typhoon322/stock-report/actions/workflows/midday-report.yml', '_blank');
-    status.textContent = '📡 已跳转 GitHub Actions · 云端运行中 (约90秒)';
-  } else if (type === 'all') {
-    window.open('https://github.com/typhoon322/stock-report/actions', '_blank');
-    status.textContent = '📡 前往 GitHub Actions 手动触发各工作流';
-  } else if (type === 'audit') {
-    status.textContent = '📋 审计文件由量化日报自动生成 · 查看 docs/audit_bundle.json';
-  } else if (type === 'history') {
-    window.open('https://github.com/typhoon322/stock-report/actions/workflows/weekly-report.yml', '_blank');
-    status.textContent = '📡 历史数据由 GitHub Actions 自动采集';
-  } else {
-    const urls = {
-      morning: 'morning_report.html',
-      midday: 'midday_report.html',
-      closing: 'closing_report.html',
-      weekly: 'weekly_report.html',
-    };
-    if (urls[type]) {
-      window.open(urls[type], '_blank');
-      status.textContent = `📄 已打开: ${type} 报告`;
-    }
+  const actions = {
+    quant:   'https://github.com/typhoon322/stock-report/actions/workflows/midday-report.yml',
+    all:     'https://github.com/typhoon322/stock-report/actions',
+    audit:   'https://github.com/typhoon322/stock-report/actions/workflows/midday-report.yml',
+    history: 'https://github.com/typhoon322/stock-report/actions/workflows/weekly-report.yml',
+    morning: 'https://github.com/typhoon322/stock-report/actions/workflows/morning-report.yml',
+    midday:  'https://github.com/typhoon322/stock-report/actions/workflows/midday-report.yml',
+    closing: 'https://github.com/typhoon322/stock-report/actions/workflows/closing-report.yml',
+    weekly:  'https://github.com/typhoon322/stock-report/actions/workflows/weekly-report.yml',
+  };
+  
+  const labels = {
+    quant: '量化日报', all: '全部报告', audit: '审计+自检', history: '历史数据',
+    morning: '早盘', midday: '午盘', closing: '收盘', weekly: '周报',
+  };
+  
+  const url = actions[type];
+  if (url) {
+    window.open(url, '_blank');
+    status.innerHTML = `📡 已打开 Actions 页面<br><b>点右侧 "Run workflow" → 绿色按钮</b> 即可在云端执行「${labels[type]}」<br><small>约90秒后刷新报告页面查看结果</small>`;
   }
 }
 </script>
