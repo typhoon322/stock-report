@@ -1,0 +1,188 @@
+{
+  "timestamp": "2026-06-26 00:48",
+  "market": {
+    "phase": "💨 退潮期",
+    "breadth": 0.225,
+    "limit_up": 135,
+    "fall_limit": 2998,
+    "risk": "medium",
+    "strategy": "退出",
+    "position_advice": "逐步减仓"
+  },
+  "sectors": [
+    {
+      "name": "机场航运",
+      "bsi": 24,
+      "chg": 4.05,
+      "flow": 12.8
+    },
+    {
+      "name": "元件",
+      "bsi": 24,
+      "chg": 3.14,
+      "flow": 112.2
+    },
+    {
+      "name": "证券",
+      "bsi": 24,
+      "chg": 3.06,
+      "flow": 57.8
+    },
+    {
+      "name": "半导体",
+      "bsi": 24,
+      "chg": 2.21,
+      "flow": 80.7
+    },
+    {
+      "name": "保险",
+      "bsi": 23,
+      "chg": 2.19,
+      "flow": 2.7
+    },
+    {
+      "name": "白酒",
+      "bsi": 23,
+      "chg": 1.64,
+      "flow": 6.1
+    },
+    {
+      "name": "游戏",
+      "bsi": 23,
+      "chg": 1.51,
+      "flow": 6.8
+    },
+    {
+      "name": "电子化学品",
+      "bsi": 23,
+      "chg": 1.27,
+      "flow": -13.9
+    },
+    {
+      "name": "其他电子",
+      "bsi": 23,
+      "chg": 0.93,
+      "flow": -1.7
+    },
+    {
+      "name": "黑色家电",
+      "bsi": 22,
+      "chg": 0.29,
+      "flow": 0.5
+    }
+  ],
+  "futures": {
+    "黄金": {
+      "price": 4232.5,
+      "chg": 0.84,
+      "code": "GC27Q"
+    },
+    "原油": {
+      "price": 66.54,
+      "chg": 0.38,
+      "code": "CL27V"
+    },
+    "铜": {
+      "price": 6.43,
+      "chg": 1.38,
+      "code": "HG27U"
+    },
+    "白银": {
+      "price": 60.73,
+      "chg": -0.77,
+      "code": "SI27U"
+    },
+    "A50": {
+      "price": 15780.0,
+      "chg": -0.47,
+      "code": "CN00Y"
+    }
+  },
+  "flow": {
+    "regime": "neutral",
+    "direction": {
+      "direction": 0,
+      "strength": 0
+    }
+  },
+  "smart_money": {
+    "behavior": "accumulation",
+    "score": 0.693,
+    "confidence": 0.346
+  },
+  "cost_basis": {
+    "dense_zone": {
+      "low": 99.12,
+      "high": 100.74,
+      "total_density": 0.608
+    },
+    "vwap": 99.94,
+    "position": "in_cost_zone",
+    "bias": "range_trading"
+  },
+  "breakout": {
+    "detected": true,
+    "candidate": true,
+    "volume_ratio": 1.0
+  },
+  "mtf": {
+    "score": -3,
+    "status": "strong_bearish",
+    "agreement": 1.0,
+    "short": "下降趋势",
+    "mid": "下降趋势",
+    "long": "下降趋势"
+  },
+  "meta": {
+    "decision": "HOLD",
+    "score": 0.3299,
+    "confidence": 0.495,
+    "reason": "Meta Score +0.33 在观望区间",
+    "components": {
+      "rti": {
+        "signal": 0.7,
+        "weight": 0.246,
+        "contribution": 0.1722
+      },
+      "flow": {
+        "signal": 0.3,
+        "weight": 0.209,
+        "contribution": 0.0627
+      },
+      "smart_money": {
+        "signal": 0.5,
+        "weight": 0.19,
+        "contribution": 0.095
+      },
+      "cost_basis": {
+        "signal": 0.0,
+        "weight": 0.142,
+        "contribution": 0.0
+      },
+      "breakout": {
+        "signal": 0.0,
+        "weight": 0.128,
+        "contribution": 0.0
+      },
+      "mtf": {
+        "signal": 0.0,
+        "weight": 0.085,
+        "contribution": 0.0
+      }
+    }
+  },
+  "position": {
+    "direction": "HOLD",
+    "size": 0.0,
+    "level": "零仓位",
+    "risk": "N/A"
+  },
+  "weights": {
+    "rti": 0.2725,
+    "flow": 0.2305,
+    "smart_money": 0.1774,
+    "cost_basis": 0.1451,
+    "breakout": 0.1018,
+    "mtf": 0.0728
+  }
+}
