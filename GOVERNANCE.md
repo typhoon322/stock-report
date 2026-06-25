@@ -115,10 +115,11 @@ v2.10 Flow-Weighted Ensemble       ✅
 v2.11 Smart Money Behavior (认知层) ✅
 v2.12 Cost Basis Reconstruction     ✅
 v2.13 Breakout Authenticity System   ✅
+v2.14 MTF Consistency (轻量版)        ✅
 
-14层决策链:
+15层决策链:
 commit → CI → backtest → metrics → evolution → rollback
-  → model selector → flow-weighted ensemble → smart money → cost basis → breakout authenticity → production
+  → model selector → flow-weighted ensemble → smart money → cost basis → breakout → MTF → production
 ```
 
 ---
