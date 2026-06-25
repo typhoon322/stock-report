@@ -116,10 +116,12 @@ v2.11 Smart Money Behavior (认知层) ✅
 v2.12 Cost Basis Reconstruction     ✅
 v2.13 Breakout Authenticity System   ✅
 v2.14 MTF Consistency (轻量版)        ✅
+v2.15 Meta Score Engine (最终决策)     ✅
 
-15层决策链:
+16层决策链:
 commit → CI → backtest → metrics → evolution → rollback
-  → model selector → flow-weighted ensemble → smart money → cost basis → breakout → MTF → production
+  → model selector → flow ensemble → smart money → cost basis
+  → breakout → MTF → META SCORE → LONG/HOLD/SHORT
 ```
 
 ---
