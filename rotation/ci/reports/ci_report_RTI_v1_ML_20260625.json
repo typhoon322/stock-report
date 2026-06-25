@@ -1,0 +1,22 @@
+{
+  "model": "RTI_v1_ML",
+  "timestamp": "2026-06-25T22:25:00.617041",
+  "decision": "REJECTED ❌ — failed: Precision@Top10%, Hit Rate",
+  "metrics": {
+    "IC": 0.2975,
+    "precision_top10": 0.0,
+    "precision_top5": 0.0,
+    "recall_main_theme": 0.0,
+    "hit_rate": 0.0,
+    "sharpe_proxy": 3.0639,
+    "max_drawdown": 0.0,
+    "return_over_benchmark": 10.2423
+  },
+  "drift": {
+    "drift_score": 0.14,
+    "drift_status": "stable",
+    "alert": false,
+    "details": {}
+  },
+  "details": {}
+}
