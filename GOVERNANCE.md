@@ -113,10 +113,11 @@ v2.8 Model Brain (自适应择优)        ✅
 v2.9 Ensemble Voting (模型委员会)    ✅
 v2.10 Flow-Weighted Ensemble       ✅
 v2.11 Smart Money Behavior (认知层) ✅
+v2.12 Cost Basis Reconstruction     ✅
 
-12层决策链:
+13层决策链:
 commit → CI → backtest → metrics → evolution → rollback
-  → model selector → flow-weighted ensemble → smart money → production
+  → model selector → flow-weighted ensemble → smart money → cost basis → production
 ```
 
 ---
@@ -226,7 +227,17 @@ code commit → CI Gate → backtest → metrics → PR report → EVOLUTION LOG
 
 ---
 
-## 14. 升级路线
+## 15. Cost Basis Reconstruction (v2.12)
+
+通过 Volume Profile 重建筹码成本结构: 分桶统计成交量 → 识别密集区/支撑/阻力 → 判断当前价格位置 → 吸筹/派发增强识别。
+
+**核心输出:** 成本密集区间 / VWAP / 支撑阻力 / 浮盈状态 / 吸筹vs派发信号
+
+**模块:** `rotation/cost_basis/`
+
+---
+
+## 16. 升级路线
 
 | 优先级 | 模块 | 状态 |
 |--------|------|------|
@@ -240,5 +251,6 @@ code commit → CI Gate → backtest → metrics → PR report → EVOLUTION LOG
 | 🚀 | Ensemble Voting | ✅ |
 | 🚀 | Flow-Weighted Ensemble | ✅ |
 | 🚀 | Smart Money Behavior | ✅ |
-| 🔮 | 主力成本区重建 | ⬜ |
+| 🧱 | Cost Basis Reconstruction | ✅ |
+| 🔮 | 主力成本区重建 | ✅ |
 | 🔮 | 假突破识别 | ⬜ |
