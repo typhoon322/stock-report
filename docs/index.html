@@ -128,6 +128,27 @@ h1{font-size:24px;color:var(--a);text-align:center;margin-bottom:2px}
   </div>
 </div>
 
+<!-- ⚙️ 隐藏管理面板 (点3次触发) -->
+<div style="text-align:center;padding:20px 0 0;opacity:0.15;transition:opacity .3s" id="adminTrigger">
+  <span style="font-size:20px;cursor:pointer;user-select:none" id="gearIcon">⚙️</span>
+</div>
+<div id="adminPanel" style="display:none;background:var(--cd);border:1px solid var(--y);border-radius:12px;padding:16px;margin-top:12px">
+  <h4 style="color:var(--y);margin-bottom:12px;font-size:13px">⚙️ 管理面板</h4>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <button class="btn btn-sm btn-outline" onclick="triggerAction('quant')">🧠 重新生成量化日报</button>
+    <button class="btn btn-sm btn-outline" onclick="triggerAction('all')">📊 重新生成全部报告</button>
+    <button class="btn btn-sm btn-outline" onclick="triggerAction('audit')">📋 运行审计+自检</button>
+    <button class="btn btn-sm btn-outline" onclick="triggerAction('history')">📦 采集历史数据(60天)</button>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-sm btn-outline" onclick="triggerAction('morning')">🏙️ 早盘</button>
+      <button class="btn btn-sm btn-outline" onclick="triggerAction('midday')">🌤️ 午盘</button>
+      <button class="btn btn-sm btn-outline" onclick="triggerAction('closing')">🌙 收盘</button>
+      <button class="btn btn-sm btn-outline" onclick="triggerAction('weekly')">📊 周报</button>
+    </div>
+  </div>
+  <div id="adminStatus" style="margin-top:10px;font-size:11px;color:var(--t2)"></div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <div class="footer">
@@ -268,6 +289,54 @@ document.getElementById('modal').addEventListener('click', function(e) {
 });
 
 renderList();
+
+// ⚙️ 隐藏管理面板 (点3次触发)
+let gearTaps = 0;
+let gearTimer = null;
+document.getElementById('gearIcon').addEventListener('click', function() {
+  gearTaps++;
+  if (gearTaps === 1) {
+    gearTimer = setTimeout(() => { gearTaps = 0; }, 1500);
+  }
+  if (gearTaps >= 3) {
+    clearTimeout(gearTimer);
+    gearTaps = 0;
+    const panel = document.getElementById('adminPanel');
+    const show = panel.style.display === 'none';
+    panel.style.display = show ? 'block' : 'none';
+    document.getElementById('adminTrigger').style.opacity = show ? '0.8' : '0.15';
+    if (show) toast('🔓 管理面板已打开');
+  }
+});
+
+async function triggerAction(type) {
+  const status = document.getElementById('adminStatus');
+  status.textContent = '⏳ 执行中...';
+  
+  if (type === 'quant') {
+    window.open('https://github.com/typhoon322/stock-report/actions/workflows/midday-report.yml', '_blank');
+    status.textContent = '📡 已跳转 GitHub Actions · 云端运行中 (约90秒)';
+  } else if (type === 'all') {
+    window.open('https://github.com/typhoon322/stock-report/actions', '_blank');
+    status.textContent = '📡 前往 GitHub Actions 手动触发各工作流';
+  } else if (type === 'audit') {
+    status.textContent = '📋 审计文件由量化日报自动生成 · 查看 docs/audit_bundle.json';
+  } else if (type === 'history') {
+    window.open('https://github.com/typhoon322/stock-report/actions/workflows/weekly-report.yml', '_blank');
+    status.textContent = '📡 历史数据由 GitHub Actions 自动采集';
+  } else {
+    const urls = {
+      morning: 'morning_report.html',
+      midday: 'midday_report.html',
+      closing: 'closing_report.html',
+      weekly: 'weekly_report.html',
+    };
+    if (urls[type]) {
+      window.open(urls[type], '_blank');
+      status.textContent = `📄 已打开: ${type} 报告`;
+    }
+  }
+}
 </script>
 </body>
 </html>

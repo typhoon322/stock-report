@@ -1,6 +1,6 @@
 {
   "date": "2026-06-25",
-  "generated_at": "2026-06-25T21:31:15.422847",
+  "generated_at": "2026-06-25T21:37:42.870698",
   "checks": {
     "RTI_validity": "PASS (无信号日, 退潮/冰点期正常)",
     "signal_density": "normal — 退潮期无信号",
