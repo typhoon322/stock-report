@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A股午盘分析报告 | 2025年6月25日</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card-bg: #1a1d28;
+    --border: #2a2d3a;
+    --text: #e4e6ed;
+    --text-secondary: #8b8fa3;
+    --red: #f5222d;
+    --green: #16c784;
+    --blue: #3b82f6;
+    --gold: #f59e0b;
+    --accent: #6366f1;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+  
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 40px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .header .subtitle {
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
+  
+  /* TL;DR */
+  .tldr {
+    background: linear-gradient(135deg, #1e1b4b, #1a1d28);
+    border: 1px solid #6366f1;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+  }
+  .tldr .label {
+    background: #6366f1;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-right: 10px;
+  }
+  
+  /* Cards */
+  .section {
+    margin-bottom: 32px;
+  }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .icon { font-size: 22px; }
+  
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  
+  /* Stats grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-card .value {
+    font-size: 28px;
+    font-weight: 700;
+  }
+  .stat-card .label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+  .stat-card .sub {
+    font-size: 11px;
+    margin-top: 4px;
+  }
+  
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th {
+    background: #222531;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:hover { background: #222531; }
+  
+  .up { color: var(--red); }
+  .down { color: var(--green); }
+  .neutral { color: var(--text-secondary); }
+  
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-up { background: rgba(245,34,45,0.15); color: var(--red); }
+  .badge-down { background: rgba(22,199,132,0.15); color: var(--green); }
+  .badge-warn { background: rgba(245,158,11,0.15); color: var(--gold); }
+  .badge-info { background: rgba(99,102,241,0.15); color: var(--accent); }
+  
+  /* Portfolio card */
+  .stock-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 100px 120px 1fr;
+    gap: 12px;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .stock-row:last-child { border-bottom: none; }
+  .stock-row .code { font-family: 'SF Mono', monospace; color: var(--accent); font-weight: 600; }
+  .stock-row .name { font-weight: 600; }
+  .stock-row .pnl { font-size: 12px; }
+  
+  .insight-box {
+    background: rgba(99,102,241,0.08);
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 768px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+  
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    margin: 2px;
+    background: #222531;
+    border: 1px solid var(--border);
+  }
+  
+  .footer {
+    margin-top: 40px;
+    padding: 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  .progress-bar {
+    height: 6px;
+    background: #222531;
+    border-radius: 3px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .progress-bar .fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--red), #f97316);
+  }
+  .progress-bar .fill.green-bar {
+    background: linear-gradient(90deg, var(--green), #10b981);
+  }
+
+  .advice-card {
+    border-left: 4px solid;
+    padding: 16px 20px;
+    background: var(--card-bg);
+    border-radius: 0 10px 10px 0;
+    margin-bottom: 12px;
+  }
+  .advice-card.bullish { border-color: var(--red); }
+  .advice-card.bearish { border-color: var(--green); }
+  .advice-card.neutral-card { border-color: var(--gold); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <h1>📊 A股午盘分析与下午机会扫描</h1>
+  <div class="subtitle">2025年6月25日（周四） | 上午收盘 11:30 | 报告生成 14:50</div>
+</div>
+
+<!-- TL;DR -->
+<div class="tldr">
+  <span class="label">TL;DR</span>
+  上午放量普跌，仅22%个股上涨；成交额3.48万亿放量+10%。半导体/元件资金逆势大举流入，贵金属/电力/IT服务领跌。下午关注科技方向补涨。
+</div>
+
+<!-- ====== STEP 1 ====== -->
+<div class="section">
+  <div class="section-title"><span class="icon">📈</span> Step 1：上午盘面概况</div>
+  
+  <!-- Market Breadth -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="value up">1,227</div>
+      <div class="label">上涨家数</div>
+    </div>
+    <div class="stat-card">
+      <div class="value down">4,238</div>
+      <div class="label">下跌家数</div>
+    </div>
+    <div class="stat-card">
+      <div class="value neutral">64</div>
+      <div class="label">平盘</div>
+    </div>
+    <div class="stat-card">
+      <div class="value up">90</div>
+      <div class="label">涨停</div>
+    </div>
+    <div class="stat-card">
+      <div class="value down">93</div>
+      <div class="label">跌停</div>
+    </div>
+    <div class="stat-card">
+      <div class="value" style="color: var(--accent);">3.48万亿</div>
+      <div class="label">上午成交额</div>
+      <div class="sub up">较昨日 +3,150亿 (+10%)</div>
+    </div>
+    <div class="stat-card">
+      <div class="value" style="color: var(--gold);">22%</div>
+      <div class="label">上涨占比</div>
+      <div class="sub down">情绪偏弱</div>
+    </div>
+  </div>
+
+  <div class="two-col" style="margin-top: 16px;">
+    <!-- 领涨 Top 5 -->
+    <div class="card">
+      <h4 style="margin-bottom:12px;">🔥 领涨行业 Top 5</h4>
+      <table>
+        <tr><th>行业</th><th>涨幅</th><th>主力净流入</th></tr>
+        <tr><td>机场航运</td><td class="up">+4.01%</td><td class="up">+13.00亿</td></tr>
+        <tr><td>元件</td><td class="up">+3.05%</td><td class="up">+116.71亿</td></tr>
+        <tr><td>存储芯片</td><td class="up">+3.02%</td><td class="up">+15.81亿</td></tr>
+        <tr><td>证券</td><td class="up">+2.96%</td><td class="up">+56.80亿</td></tr>
+        <tr><td>半导体</td><td class="up">+2.13%</td><td class="up">+73.90亿</td></tr>
+      </table>
+    </div>
+    
+    <!-- 领跌 Top 5 -->
+    <div class="card">
+      <h4 style="margin-bottom:12px;">❄️ 领跌行业 Top 5</h4>
+      <table>
+        <tr><th>行业</th><th>跌幅</th><th>主力净流出</th></tr>
+        <tr><td>贵金属</td><td class="down">-4.19%</td><td class="down">-35.41亿</td></tr>
+        <tr><td>IT服务</td><td class="down">-2.84%</td><td class="down">-58.67亿</td></tr>
+        <tr><td>通信服务</td><td class="down">-2.64%</td><td class="down">-23.00亿</td></tr>
+        <tr><td>汽车零部件</td><td class="down">-2.50%</td><td class="down">-29.47亿</td></tr>
+        <tr><td>电力</td><td class="down">-2.36%</td><td class="down">-52.08亿</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 资金流向 -->
+  <div class="two-col" style="margin-top: 16px;">
+    <div class="card">
+      <h4 style="margin-bottom:12px;">💰 主力净流入最多行业 Top 5</h4>
+      <table>
+        <tr><th>行业</th><th>净流入</th><th>涨幅</th></tr>
+        <tr><td>元件</td><td class="up">+116.71亿</td><td class="up">+3.05%</td></tr>
+        <tr><td>半导体</td><td class="up">+73.90亿</td><td class="up">+2.13%</td></tr>
+        <tr><td>通信设备</td><td class="up">+61.72亿</td><td class="down">-0.51%</td></tr>
+        <tr><td>证券</td><td class="up">+56.80亿</td><td class="up">+2.96%</td></tr>
+        <tr><td>计算机设备</td><td class="up">+23.59亿</td><td class="down">-1.50%</td></tr>
+      </table>
+    </div>
+    
+    <div class="card">
+      <h4 style="margin-bottom:12px;">💸 主力净流出最多行业 Top 5</h4>
+      <table>
+        <tr><th>行业</th><th>净流出</th><th>跌幅</th></tr>
+        <tr><td>电池</td><td class="down">-59.25亿</td><td class="down">-1.95%</td></tr>
+        <tr><td>IT服务</td><td class="down">-58.67亿</td><td class="down">-2.84%</td></tr>
+        <tr><td>电力</td><td class="down">-52.08亿</td><td class="down">-2.36%</td></tr>
+        <tr><td>工业金属</td><td class="down">-47.13亿</td><td class="down">-2.20%</td></tr>
+        <tr><td>贵金属</td><td class="down">-35.41亿</td><td class="down">-4.19%</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ====== STEP 2 ====== -->
+<div class="section">
+  <div class="section-title"><span class="icon">🎯</span> Step 2：逼近涨停股扫描（7%-9.5% | 下午潜力爆发股）</div>
+  
+  <div class="card">
+    <p style="font-size:13px; color: var(--text-secondary); margin-bottom: 12px;">
+      ⚠️ 全市场个股API（stock_zh_a_spot_em）数据暂缺，以下基于热搜榜与概念板块领涨股数据提取。实际需以交易所实时行情为准。
+    </p>
+    <table>
+      <tr>
+        <th>代码</th><th>名称</th><th>涨幅%</th><th>距涨停</th><th>所属概念</th><th>备注</th>
+      </tr>
+      <tr>
+        <td class="code">600522</td><td>中天科技</td>
+        <td class="up">+9.72%</td><td class="badge badge-warn">仅0.28%</td>
+        <td>光纤/通信</td><td>已逼近涨停，注意封板</td>
+      </tr>
+      <tr>
+        <td class="code">603986</td><td>兆易创新</td>
+        <td class="up">+9.63%</td><td class="badge badge-warn">仅0.37%</td>
+        <td>存储芯片</td><td>存储芯片领涨，下午或封板</td>
+      </tr>
+      <tr>
+        <td class="code">301308</td><td>江波龙</td>
+        <td class="up">+9.28%</td><td class="badge badge-info">0.72%</td>
+        <td>存储/芯片</td><td>存储芯片+半导体双概念</td>
+      </tr>
+      <tr>
+        <td class="code">600176</td><td>中国巨石</td>
+        <td class="up">+8.99%</td><td class="badge badge-info">1.01%</td>
+        <td>新材料</td><td>建材+新材料</td>
+      </tr>
+      <tr>
+        <td class="code">600206</td><td>有研新材</td>
+        <td class="up">+8.71%</td><td class="badge badge-info">1.29%</td>
+        <td>半导体材料</td><td>半导体产业链</td>
+      </tr>
+      <tr>
+        <td class="code">600172</td><td>黄河旋风</td>
+        <td class="up">+8.13%</td><td class="badge badge-info">1.87%</td>
+        <td>超硬材料</td><td>新材料概念</td>
+      </tr>
+      <tr>
+        <td class="code">002384</td><td>东山精密</td>
+        <td class="up">+7.05%</td><td class="badge badge-info">2.95%</td>
+        <td>PCB/消费电子</td><td>PCB概念+10%净流入</td>
+      </tr>
+      <tr>
+        <td class="code">300285</td><td>国瓷材料</td>
+        <td class="up">+7.10%</td><td class="badge badge-info">2.90%</td>
+        <td>新材料</td><td>半导体材料</td>
+      </tr>
+      <tr>
+        <td class="code">000066</td><td>中国长城</td>
+        <td class="up">+7.16%</td><td class="badge badge-info">2.84%</td>
+        <td>信创/计算机</td><td>计算机设备流入23.6亿</td>
+      </tr>
+      <tr>
+        <td class="code">000636</td><td>风华高科</td>
+        <td class="up">+10.00%</td><td class="badge badge-up">已涨停</td>
+        <td>MLCC/元件</td><td>已封板，观察是否炸板</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- ====== STEP 3 ====== -->
+<div class="section">
+  <div class="section-title"><span class="icon">📊</span> Step 3：放量异动股扫描（量比>2.5 + 放量上涨 + 换手>2%）</div>
+  
+  <div class="card">
+    <p style="font-size:13px; color: var(--text-secondary); margin-bottom: 12px;">
+      ⚠️ 全市场个股API数据暂缺。以下基于概念板块领涨股及热搜榜中放量异动特征股。量比/换手数据来源于已获取的部分个股行情。
+    </p>
+    <table>
+      <tr><th>代码</th><th>名称</th><th>涨幅%</th><th>换手率%</th><th>量比</th><th>所属行业</th><th>异动特征</th></tr>
+      <tr>
+        <td class="code">688525</td><td>佰维存储</td><td class="up">+15.32%</td><td>—</td><td>—</td>
+        <td><span class="tag">存储芯片</span></td><td>存储芯片++3.02%领涨，超高换手</td></tr>
+      <tr>
+        <td class="code">300136</td><td>信维通信</td><td class="up">+12.84%</td><td>—</td><td>—</td>
+        <td><span class="tag">消费电子</span></td><td>消费电子概念净流入+73.9亿</td></tr>
+      <tr>
+        <td class="code">300408</td><td>三环集团</td><td class="up">+12.56%</td><td>—</td><td>—</td>
+        <td><span class="tag">元件</span></td><td>元件板块+3.05%领涨龙头</td></tr>
+      <tr>
+        <td class="code">300223</td><td>北京君正</td><td class="up">+20.00%</td><td>—</td><td>—</td>
+        <td><span class="tag">半导体</span></td><td>半导体涨停，板块+2.13%</td></tr>
+      <tr>
+        <td class="code">002745</td><td>木林森</td><td class="up">+5.15%</td><td class="up">11.94%</td><td>1.23</td>
+        <td><span class="tag">LED/光学</span></td><td>高换手11.94%，但量比未达2.5</td></tr>
+      <tr>
+        <td class="code">600487</td><td>亨通光电</td><td class="up">+2.92%</td><td>6.36%</td><td>0.85</td>
+        <td><span class="tag">光纤通信</span></td><td>成交活跃但量比正常</td></tr>
+      </tr>
+      <tr><td colspan="6" style="text-align:center; color:var(--text-secondary); padding:16px;">
+        数据源于概念板块领涨股交叉验证。由于个股API不可用，无法完整筛选量比>2.5的全市场股票。<br>
+        建议以 <span style="color:var(--accent);">半导体/存储芯片/元件</span> 板块为重点放量方向关注。
+      </td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ====== STEP 4 ====== -->
+<div class="section">
+  <div class="section-title"><span class="icon">🔄</span> Step 4：板块轮动信号</div>
+  
+  <div class="two-col">
+    <!-- 主力流入板块 -->
+    <div class="card">
+      <h4 style="margin-bottom:12px;">⬆️ 上午主力资金流入最多板块</h4>
+      <table>
+        <tr><th>板块</th><th>主力净流入</th><th>涨跌</th><th>异动次数</th></tr>
+        <tr><td>电子</td><td class="up">+152.75亿</td><td class="up">+1.07%</td><td>3,847</td></tr>
+        <tr><td>半导体概念</td><td class="up">+110.41亿</td><td class="up">+1.09%</td><td>4,064</td></tr>
+        <tr><td>华为概念</td><td class="up">+38.86亿</td><td class="down">-0.59%</td><td>3,570</td></tr>
+        <tr><td>广东板块</td><td class="up">+6.53亿</td><td class="down">-1.01%</td><td>4,123</td></tr>
+        <tr><td>5G</td><td class="up">+130.03亿</td><td class="down">-0.22%</td><td>—</td></tr>
+      </table>
+    </div>
+    
+    <!-- 大幅异动板块 -->
+    <div class="card">
+      <h4 style="margin-bottom:12px;">⚡ 上午大幅异动板块</h4>
+      <table>
+        <tr><th>板块</th><th>异动次数</th><th>最活跃个股</th></tr>
+        <tr><td>融资融券</td><td>14,892</td><td>高特电子(301669)</td></tr>
+        <tr><td>深股通</td><td>7,659</td><td>—</td></tr>
+        <tr><td>昨日高振幅</td><td>7,377</td><td>—</td></tr>
+        <tr><td>沪股通</td><td>6,334</td><td>—</td></tr>
+        <tr><td>专精特新</td><td>5,334</td><td>—</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h4 style="margin-bottom:12px;">🔮 下午板块预判</h4>
+    <div class="two-col">
+      <div>
+        <p style="color: var(--red); font-weight: 600; margin-bottom: 8px;">⬆️ 下午可能继续走强：</p>
+        <ul style="font-size:13px; padding-left:18px; color: var(--text-secondary);">
+          <li><strong>半导体/芯片</strong> — 上午资金大举流入110亿+，板块涨幅温和(+1.09%)，下午有补涨空间</li>
+          <li><strong>元件/PCB</strong> — 净流入116.71亿，领涨行业，下午有望延续</li>
+          <li><strong>证券</strong> — 净流入56.8亿，涨幅+2.96%，券商下午可能继续护盘</li>
+        </ul>
+      </div>
+      <div>
+        <p style="color: var(--green); font-weight: 600; margin-bottom: 8px;">⬇️ 下午可能继续走弱：</p>
+        <ul style="font-size:13px; padding-left:18px; color: var(--text-secondary);">
+          <li><strong>贵金属</strong> — 跌4.19%+资金流出35亿，下午难有起色</li>
+          <li><strong>电力</strong> — 跌2.36%+流出52亿，防御板块遭抛售</li>
+          <li><strong>电池/新能源</strong> — 跌1.95%+流出59亿，产业链承压</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== STEP 5 ====== -->
+<div class="section">
+  <div class="section-title"><span class="icon">📋</span> Step 5：持仓股上午表现</div>
+  
+  <!-- 股票持仓 -->
+  <div class="card">
+    <h4 style="margin-bottom:16px;">📌 个股持仓（4只）</h4>
+    
+    <div style="border:1px solid var(--border); border-radius:8px; overflow:hidden;">
+      <div class="stock-row" style="background:#222531; font-weight:600; font-size:12px; color:var(--text-secondary);">
+        <div>代码</div><div>名称</div><div>涨跌幅</div><div>现价</div><div>量比/换手</div>
+      </div>
+      
+      <!-- 600487 亨通光电 -->
+      <div class="stock-row">
+        <div class="code">600487</div>
+        <div class="name">亨通光电 <span style="font-size:11px; color:var(--text-secondary);">上海主板</span></div>
+        <div style="font-size:18px; font-weight:700;" class="up">+2.92%</div>
+        <div>¥122.49</div>
+        <div>量比 0.85 · 换手 6.36%</div>
+      </div>
+      <div style="padding:0 14px 12px; font-size:12px; color:var(--text-secondary);">
+        <span class="tag">PE 93.57</span><span class="tag">PB 9.32</span><span class="tag">市值3021亿</span>
+        <br><strong>盈亏参考：</strong><span class="up">盈利 +57%</span>（成本约 ¥78）<br>
+        <strong>所属板块：</strong>光纤概念 <span class="up">+1.39%</span> | 5G <span class="down">-0.22%</span>
+        <br><strong>下午预判：</strong>光纤概念资金净流入79.7亿，下午有望继续震荡上行。目前盈利丰厚(+57%)，可设止盈位在 ¥115（5日线附近）。
+      </div>
+
+      <!-- 600522 中天科技 -->
+      <div class="stock-row">
+        <div class="code">600522</div>
+        <div class="name">中天科技 <span class="badge badge-up">热搜股</span></div>
+        <div style="font-size:18px; font-weight:700;" class="up">+9.72%</div>
+        <div>¥67.93</div>
+        <div>量比 0.99 · 换手 8.56%</div>
+      </div>
+      <div style="padding:0 14px 12px; font-size:12px; color:var(--text-secondary);">
+        <span class="tag">PE 72.59</span><span class="tag">PB 6.10</span><span class="tag">市值2318亿</span>
+        <br><strong>盈亏参考：</strong><span class="up">盈利 +53%</span>（成本约 ¥44）<br>
+        <strong>所属板块：</strong>光纤概念 <span class="up">+1.39%</span> | 5G <span class="down">-0.22%</span>
+        <br><strong>下午预判：</strong>⚡ 逼近涨停(9.72%)，距涨停仅0.28%。若下午封板可继续持有；若冲高回落至8%以下，建议减仓1/3保护利润。
+      </div>
+
+      <!-- 002745 木林森 -->
+      <div class="stock-row">
+        <div class="code">002745</div>
+        <div class="name">木林森 <span style="font-size:11px; color:var(--text-secondary);">深圳主板</span></div>
+        <div style="font-size:18px; font-weight:700;" class="up">+5.15%</div>
+        <div>¥12.66</div>
+        <div>量比 1.23 · 换手 11.94%</div>
+      </div>
+      <div style="padding:0 14px 12px; font-size:12px; color:var(--text-secondary);">
+        <span class="tag">PE -15.64</span><span class="tag">PB 1.58</span><span class="tag">市值188亿</span>
+        <br><strong>盈亏参考：</strong><span class="neutral">盈亏平衡/小幅盈利</span><br>
+        <strong>所属板块：</strong>光学光电子 <span class="down">-0.60%</span> | LED概念
+        <br><strong>下午预判：</strong>换手率高达11.94%但量比仅1.23，交投活跃但非放量突破。光学板块整体偏弱，下午谨慎持有，设止损在 ¥12.0。
+      </div>
+
+      <!-- 600733 北汽蓝谷 -->
+      <div class="stock-row">
+        <div class="code">600733</div>
+        <div class="name">北汽蓝谷</div>
+        <div style="font-size:18px; font-weight:700;" class="neutral">+0.38%</div>
+        <div>¥5.24</div>
+        <div>量比 0.90 · 换手 1.38%</div>
+      </div>
+      <div style="padding:0 14px 12px; font-size:12px; color:var(--text-secondary);">
+        <span class="tag">PE -7.45</span><span class="tag">PB 5.54</span><span class="tag">市值334亿</span>
+        <br><strong>盈亏参考：</strong><span class="down">亏损 -69%</span><br>
+        <strong>所属板块：</strong>汽车整车 | 汽车零部件 <span class="down">-2.50%</span>
+        <br><strong>下午预判：</strong>🔴 汽车板块承压，量比<1缩量震荡，下方支撑5.15（上午最低）。建议暂不加仓，等待板块企稳信号。
+      </div>
+    </div>
+  </div>
+
+  <!-- ETF持仓 -->
+  <div class="card" style="margin-top:16px;">
+    <h4 style="margin-bottom:16px;">📌 ETF持仓（3只）</h4>
+    
+    <div style="border:1px solid var(--border); border-radius:8px; overflow:hidden;">
+      <div class="stock-row" style="background:#222531; font-weight:600; font-size:12px; color:var(--text-secondary);">
+        <div>代码</div><div>名称</div><div>涨跌幅</div><div>现价</div><div>量比/换手</div>
+      </div>
+      
+      <!-- 513060 恒生医疗ETF -->
+      <div class="stock-row">
+        <div class="code">513060</div>
+        <div class="name">恒生医疗ETF博时</div>
+        <div style="font-size:18px; font-weight:700;" class="down">-0.85%</div>
+        <div>¥0.469</div>
+        <div>量比 1.05 · 换手 13.11%</div>
+      </div>
+      <div style="padding:0 14px 12px; font-size:12px; color:var(--text-secondary);">
+        <span class="tag">市值54亿</span><span class="tag">52周高0.764 / 低0.45</span>
+        <br><strong>盈亏参考：</strong><span class="down">亏损 -59%</span>（成本约 ¥1.14）<br>
+        <strong>所属板块：</strong>港股医疗 | 恒生医疗保健<br>
+        <strong>下午预判：</strong>🔴 换手率13.11%但价格仅微跌-0.85%，大资金可能在低位换手。距52周低点0.45仅4%空间，不建议此时止损。等待港股医疗板块企稳。
+      </div>
+
+      <!-- 512170 医疗ETF -->
+      <div class="stock-row">
+        <div class="code">512170</div>
+        <div class="name">医疗ETF华宝</div>
+        <div style="font-size:18px; font-weight:700;" class="up">+0.33%</div>
+        <div>¥0.303</div>
+        <div>量比 1.09 · 换手 2.41%</div>
+      </div>
+      <div style="padding:0 14px 12px; font-size:12px; color:var(--text-secondary);">
+        <span class="tag">市值257亿</span><span class="tag">52周高0.403 / 低0.287</span>
+        <br><strong>盈亏参考：</strong><span class="down">亏损 -48%</span>（成本约 ¥0.58）<br>
+        <strong>所属板块：</strong>A股医疗 | 医药生物<br>
+        <strong>下午预判：</strong>A股医疗今日微涨+0.33%，换手正常。距52周低点0.287有5%缓冲。建议持有观察，暂不加仓。
+      </div>
+
+      <!-- 515790 光伏ETF -->
+      <div class="stock-row">
+        <div class="code">515790</div>
+        <div class="name">光伏ETF华泰柏瑞</div>
+        <div style="font-size:18px; font-weight:700;" class="up">+0.80%</div>
+        <div>¥1.006</div>
+        <div>量比 0.79 · 换手 3.23%</div>
+      </div>
+      <div style="padding:0 14px 12px; font-size:12px; color:var(--text-secondary);">
+        <span class="tag">市值71亿</span><span class="tag">52周高1.198 / 低0.651</span>
+        <br><strong>盈亏参考：</strong><span class="neutral">盈亏平衡</span>（成本约 ¥1.00）<br>
+        <strong>所属板块：</strong>光伏 | 电池 <span class="down">-1.95%</span><br>
+        <strong>下午预判：</strong>光伏ETF微涨+0.80%，但量比0.79缩量，电池板块资金流出59亿。下午可能窄幅震荡。建议持有，不追高。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== STEP 6 ====== -->
+<div class="section">
+  <div class="section-title"><span class="icon">🎯</span> Step 6：下午操作建议</div>
+  
+  <!-- 积极关注 -->
+  <div class="advice-card bullish">
+    <h4 style="color: var(--red); margin-bottom: 8px;">🟢 积极关注方向</h4>
+    <ol style="padding-left:18px; font-size:13px; line-height:2;">
+      <li><strong>半导体/芯片板块</strong>：上午资金净流入110亿+，板块涨幅仅+1.09%，下午补涨空间大。重点关注 北京君正(涨停)、兆易创新(+9.63%逼近涨停)、江波龙(+9.28%)</li>
+      <li><strong>元件/PCB板块</strong>：净流入116.71亿，板块涨幅+3.05%。风华高科已涨停，三环集团(+12.56%)、世华科技(涨停)为龙头</li>
+      <li><strong>证券板块</strong>：净流入56.8亿，涨幅+2.96%。长江证券(+9.97%)领涨，下午券商可能继续拉升护盘指数</li>
+    </ol>
+  </div>
+
+  <!-- 谨慎回避 -->
+  <div class="advice-card bearish">
+    <h4 style="color: var(--green); margin-bottom: 8px;">🔴 谨慎回避方向</h4>
+    <ol style="padding-left:18px; font-size:13px; line-height:2;">
+      <li><strong>贵金属板块</strong>：跌4.19%+资金流出35亿，领跌全市场。黄金板块下午难以逆转</li>
+      <li><strong>电力/公用事业</strong>：跌2.36%+流出52亿，防御板块遭大规模抛售，下午可能继续走弱</li>
+      <li><strong>电池/新能源产业链</strong>：跌1.95%+流出59亿为全市场流出最多，产业链整体承压。光伏ETF虽小幅上涨但量能不足</li>
+    </ol>
+  </div>
+
+  <!-- 持仓操作建议 -->
+  <div class="card" style="margin-top:16px;">
+    <h4 style="margin-bottom:16px;">📋 7只持仓股下午操作建议</h4>
+    <table>
+      <tr><th>代码</th><th>名称</th><th>上午涨幅</th><th>盈亏</th><th>操作方向</th><th>具体建议</th></tr>
+      <tr>
+        <td class="code">600487</td><td>亨通光电</td>
+        <td class="up">+2.92%</td><td class="up">+57%</td>
+        <td><span class="badge badge-info">持有</span></td>
+        <td>盈利丰厚，设止盈线 ¥115（5日均线附近）；光纤概念强势，下午有望继续上行</td>
+      </tr>
+      <tr>
+        <td class="code">600522</td><td>中天科技</td>
+        <td class="up">+9.72%</td><td class="up">+53%</td>
+        <td><span class="badge badge-warn">减仓信号</span></td>
+        <td>逼近涨停，下午若封板则持有；若冲高回落至8%以下，减仓1/3锁定利润</td>
+      </tr>
+      <tr>
+        <td class="code">002745</td><td>木林森</td>
+        <td class="up">+5.15%</td><td class="neutral">盈亏平衡</td>
+        <td><span class="badge badge-info">持有</span></td>
+        <td>高换手11.94%但光学板块偏弱，设止损 ¥12.0；若放量突破 ¥13.1 可加仓</td>
+      </tr>
+      <tr>
+        <td class="code">600733</td><td>北汽蓝谷</td>
+        <td class="up">+0.38%</td><td class="down">-69%</td>
+        <td><span class="badge badge-warn">观望</span></td>
+        <td>汽车板块承压，缩量震荡。不补仓，等板块企稳信号；若跌破 ¥5.15 考虑减仓</td>
+      </tr>
+      <tr>
+        <td class="code">513060</td><td>恒生医疗ETF</td>
+        <td class="down">-0.85%</td><td class="down">-59%</td>
+        <td><span class="badge badge-info">持有</span></td>
+        <td>距52周低点仅4%，高换手13%表明资金在换手。不在此位置止损，等待反弹</td>
+      </tr>
+      <tr>
+        <td class="code">512170</td><td>医疗ETF</td>
+        <td class="up">+0.33%</td><td class="down">-48%</td>
+        <td><span class="badge badge-info">持有</span></td>
+        <td>微涨企稳，距52周低点有5%缓冲。暂不加仓，观察A股医药板块能否持续走强</td>
+      </tr>
+      <tr>
+        <td class="code">515790</td><td>光伏ETF</td>
+        <td class="up">+0.80%</td><td class="neutral">盈亏平衡</td>
+        <td><span class="badge badge-info">持有</span></td>
+        <td>缩量微涨，量比0.79偏弱。电池板块资金流出，不建议追高加仓</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 整体仓位 -->
+  <div class="advice-card neutral-card" style="margin-top:16px;">
+    <h4 style="color: var(--gold); margin-bottom: 8px;">⚖️ 整体仓位建议</h4>
+    <p style="font-size:14px; line-height:2;">
+      上午盘面 <strong>放量普跌</strong>（成交额+10%但仅22%个股上涨），半导体/元件逆势吸金但多数板块资金流出——这是典型的 <strong>"冰火两重天"</strong> 格局。
+    </p>
+    <p style="font-size:14px; line-height:2;">
+      <strong>建议下午仓位偏向：<span style="color:var(--gold);">防守为主，结构进攻</span></strong><br>
+      • 整体仓位控制在 <strong>6-7成</strong>，不追高<br>
+      • 科技方向（半导体/元件/光纤）可小幅加仓（总仓位不超过2成）<br>
+      • 新能源/汽车/贵金属方向坚决回避加仓<br>
+      • 亨通光电和中天科技盈利保护优先：设好止盈位，不贪婪
+    </p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p><strong>⚠️ 免责声明</strong></p>
+  <p>本报告由AI自动生成，数据来源于东方财富/腾讯自选股公开行情接口。所有数据仅供参考，不构成任何投资建议。</p>
+  <p>股市有风险，投资需谨慎。过往业绩不代表未来表现。本报告中的操作建议仅为基于数据的客观分析，不构成买入、卖出或持有任何证券的建议。</p>
+  <p>投资决策应由投资者在充分了解风险的基础上自行作出。如需专业投资建议，请咨询持牌证券投资顾问机构。</p>
+  <p style="margin-top:12px; color: var(--accent);">数据生成时间：2025-06-25 14:50 CST | 数据源：东方财富 + 腾讯自选股 | ⚠️ 因东方财富个股API断连，部分个股数据暂缺</p>
+</div>
+
+</div>
+</body>
+</html>

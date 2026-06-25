@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>A股每日报告</title>
+<style>
+:root{--bg:#0f1117;--cd:#1a1d28;--bd:#2a2d3a;--tx:#e4e6ed;--t2:#8b8fa3;--a:#6366f1;--r:#f5222d;--g:#16c784;--y:#f59e0b}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 16px}
+h1{font-size:26px;color:var(--a);margin-bottom:4px}
+.sub{color:var(--t2);font-size:13px;margin-bottom:36px}
+.links{display:flex;flex-direction:column;gap:14px;width:100%;max-width:420px}
+.link{display:flex;align-items:center;gap:14px;background:var(--cd);border:1px solid var(--bd);border-radius:14px;padding:18px 20px;text-decoration:none;color:var(--tx);transition:all .15s;-webkit-tap-highlight-color:transparent}
+.link:active{background:#222531;border-color:var(--a)}
+.link .icon{font-size:28px;flex-shrink:0}
+.link .info{flex:1;min-width:0}
+.link .info .t{font-size:15px;font-weight:700;margin-bottom:2px}
+.link .info .time{font-size:12px;color:var(--t2)}
+.link .arrow{color:var(--t2);font-size:16px}
+.badge{display:inline-block;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;margin-left:6px;vertical-align:2px}
+.badge-live{background:rgba(22,199,132,0.15);color:var(--g)}
+.footer{margin-top:48px;font-size:11px;color:var(--t2);text-align:center;line-height:1.8}
+</style>
+</head>
+<body>
+<h1>📊 A股每日报告</h1>
+<p class="sub">全自动云端生成 · 手机随时查看 ☁️</p>
+<div class="links">
+<a class="link" href="morning_report.html">
+  <span class="icon">🏙️</span>
+  <span class="info">
+    <span class="t">早盘报告 <span class="badge badge-live">8:15</span></span>
+    <span class="time">美股收盘 · 日韩市场 · 全球商品</span>
+  </span>
+  <span class="arrow">→</span>
+</a>
+<a class="link" href="midday_report.html">
+  <span class="icon">🌤️</span>
+  <span class="info">
+    <span class="t">午盘分析 <span class="badge badge-live">11:35</span></span>
+    <span class="time">盘面扫描 · 板块轮动 · 持仓建议</span>
+  </span>
+  <span class="arrow">→</span>
+</a>
+<a class="link" href="closing_report.html">
+  <span class="icon">🌙</span>
+  <span class="info">
+    <span class="t">收盘总结 <span class="badge badge-live">15:05</span></span>
+    <span class="time">全天复盘 · 持仓表现 · 明日展望</span>
+  </span>
+  <span class="arrow">→</span>
+</a>
+</div>
+<p class="footer">
+  ☁️ 由 GitHub Actions 自动运行 · 每个交易日更新<br>
+  添加此页到手机桌面，随时查看 ⚡<br><br>
+  <span style="color:var(--t2)">⚠️ 数据仅供参考，不构成投资建议</span>
+</p>
+</body>
+</html>

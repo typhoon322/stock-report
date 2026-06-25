@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A股早盘报告 | 2025年6月25日（周四）</title>
+<style>
+  :root {
+    --bg: #0f1117; --card-bg: #1a1d28; --border: #2a2d3a;
+    --text: #e4e6ed; --text2: #8b8fa3;
+    --red: #f5222d; --green: #16c784; --blue: #3b82f6;
+    --gold: #f59e0b; --accent: #6366f1;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+
+  .header {
+    text-align: center; padding: 36px 0 28px;
+    border-bottom: 1px solid var(--border); margin-bottom: 28px;
+  }
+  .header h1 { font-size: 26px; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+  .header .sub { color: var(--text2); font-size: 13px; }
+
+  .tldr {
+    background: linear-gradient(135deg, #1e1b4b, #1a1d28);
+    border: 1px solid var(--accent); border-radius: 10px;
+    padding: 16px 22px; margin-bottom: 28px; font-size: 15px; font-weight: 600;
+  }
+  .tldr .label { background: var(--accent); color: #fff; padding: 2px 10px; border-radius: 4px; font-size: 11px; margin-right: 8px; }
+
+  .section { margin-bottom: 28px; }
+  .section-title {
+    font-size: 18px; font-weight: 700; margin-bottom: 14px;
+    padding-bottom: 6px; border-bottom: 2px solid var(--accent);
+  }
+
+  /* Grid cards */
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 768px) { .grid-3, .grid-2 { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 20px;
+  }
+  .idx-card { text-align: center; padding: 16px; }
+  .idx-card .name { font-size: 12px; color: var(--text2); }
+  .idx-card .price { font-size: 22px; font-weight: 700; margin: 6px 0; }
+  .idx-card .chg { font-size: 14px; font-weight: 600; }
+  .idx-card .detail { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+  .up { color: var(--red); }
+  .down { color: var(--green); }
+  .neutral { color: var(--text2); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #222531; padding: 8px 10px; text-align: left; font-weight: 600; color: var(--text2); border-bottom: 2px solid var(--border); }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--border); }
+  tr:hover { background: #222531; }
+
+  .badge { display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge-bull { background: rgba(245,34,45,0.12); color: var(--red); }
+  .badge-bear { background: rgba(22,199,132,0.12); color: var(--green); }
+  .badge-warn { background: rgba(245,158,11,0.12); color: var(--gold); }
+  .badge-info { background: rgba(99,102,241,0.12); color: var(--accent); }
+
+  .news-item {
+    padding: 8px 12px; border-left: 3px solid var(--border);
+    margin-bottom: 6px; font-size: 13px; border-radius: 0 6px 6px 0;
+  }
+  .news-item.high { border-color: var(--red); background: rgba(245,34,45,0.05); }
+  .news-item.mid { border-color: var(--gold); background: rgba(245,158,11,0.05); }
+  .news-item .time { font-size: 11px; color: var(--text2); }
+
+  .sentiment-bar {
+    display: flex; align-items: center; gap: 10px; margin: 10px 0;
+  }
+  .sentiment-bar .label { font-size: 12px; font-weight: 600; min-width: 70px; }
+  .sentiment-bar .bar-bg {
+    flex: 1; height: 8px; background: #222531; border-radius: 4px; overflow: hidden;
+  }
+  .sentiment-bar .bar-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, var(--green), var(--red));
+  }
+
+  .signal-box {
+    border-left: 4px solid; padding: 12px 16px;
+    background: var(--card-bg); border-radius: 0 8px 8px 0; margin-bottom: 10px;
+  }
+  .signal-box.bull { border-color: var(--red); }
+  .signal-box.bear { border-color: var(--green); }
+  .signal-box.neut { border-color: var(--gold); }
+
+  .footer {
+    margin-top: 36px; padding: 20px; background: var(--card-bg);
+    border: 1px solid var(--border); border-radius: 10px;
+    text-align: center; font-size: 11px; color: var(--text2); line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <h1>🌅 A股早盘报告</h1>
+  <div class="sub">2025年6月25日 周四 | 报告生成 15:18 CST</div>
+</div>
+
+<!-- TL;DR -->
+<div class="tldr">
+  <span class="label">TL;DR</span>
+  美股隔夜涨跌互现（道指+0.35%，纳指-0.43%），恒指续跌1.65%。原油黄金弱势，铜走强。A股今日面临外围偏空压力，关注科技/半导体能否延续昨日强势。
+</div>
+
+<!-- ====== 1. 美股收盘 ====== -->
+<div class="section">
+  <div class="section-title">🇺🇸 1. 美股隔夜收盘（6月24日）</div>
+  <div class="grid-3">
+    <div class="card idx-card">
+      <div class="name">标普500</div>
+      <div class="price">7,358</div>
+      <div class="chg down">-0.10%</div>
+      <div class="detail">高 7,428 · 低 7,337 · 5日 -0.83%</div>
+    </div>
+    <div class="card idx-card">
+      <div class="name">道琼斯</div>
+      <div class="price">51,849</div>
+      <div class="chg up">+0.35%</div>
+      <div class="detail">高 52,249 · 低 51,618 · 5日 +0.69%</div>
+    </div>
+    <div class="card idx-card">
+      <div class="name">纳斯达克</div>
+      <div class="price">25,477</div>
+      <div class="chg down">-0.43%</div>
+      <div class="detail">高 25,841 · 低 25,355 · 5日 -2.09%</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h4 style="margin-bottom:10px; font-size:14px;">📊 美股盘面解读</h4>
+    <ul style="font-size:13px; padding-left:18px; color:var(--text2); line-height:2;">
+      <li><strong>道指小涨、科技股承压</strong>：纳指连续两日下跌（-2.09%近5日），科技板块获利回吐明显</li>
+      <li><strong>标普500窄幅震荡</strong>：微跌0.10%，高开低走但收盘守住7350上方</li>
+      <li><strong>对A股传导</strong>：科技股走弱可能压制A股半导体/芯片板块今日开盘情绪。但道指企稳提供一定支撑</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ====== 2. 亚太市场 ====== -->
+<div class="section">
+  <div class="section-title">🌏 2. 亚太市场早盘</div>
+  <div class="grid-2">
+    <div class="card idx-card">
+      <div class="name">恒生指数</div>
+      <div class="price">23,026</div>
+      <div class="chg down">-1.65%</div>
+      <div class="detail">实时行情 · Sina数据源</div>
+    </div>
+    <div class="card idx-card">
+      <div class="name">日经225 / KOSPI</div>
+      <div class="price" style="font-size:15px; color:var(--text2);">数据暂缺</div>
+      <div class="chg" style="color:var(--gold);">⚠ yfinance限频</div>
+      <div class="detail">需在美股收盘后(4:00AM后)或开盘后获取</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h4 style="margin-bottom:10px; font-size:14px;">📊 亚太盘面解读</h4>
+    <ul style="font-size:13px; padding-left:18px; color:var(--text2); line-height:2;">
+      <li><strong>恒生指数续跌1.65%</strong>：跟随美股科技股调整，港股半导体/科技板块回落。对A股科技板块开盘情绪偏空</li>
+      <li><strong>日韩指数</strong>：数据源限制中（yfinance被限频，Sinajs日经/韩股API需进一步调试）。建议关注日经225期货作为代理指标</li>
+      <li><strong>A50期货</strong>：数据暂缺（CME合约名称变更导致匹配失败）</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ====== 3. 全球商品 ====== -->
+<div class="section">
+  <div class="section-title">🛢️ 3. 全球商品与汇率</div>
+  <div class="grid-2">
+    <div class="card">
+      <h4 style="margin-bottom:12px;">商品期货</h4>
+      <table>
+        <tr><th>品种</th><th>最新价</th><th>涨跌</th><th>信号</th></tr>
+        <tr>
+          <td>COMEX铜</td><td>13,128.5</td>
+          <td class="up">+0.78%</td>
+          <td><span class="badge badge-bull">偏多</span> 工业金属走强</td>
+        </tr>
+        <tr>
+          <td>COMEX白银</td><td>60.115</td>
+          <td class="down">-1.78%</td>
+          <td><span class="badge badge-bear">偏空</span></td>
+        </tr>
+        <tr>
+          <td>天然气</td><td>3.398</td>
+          <td class="up">+0.03%</td>
+          <td><span class="badge badge-info">平稳</span></td>
+        </tr>
+        <tr>
+          <td>COMEX黄金</td><td colspan="3" style="color:var(--text2);">数据暂缺（合约匹配问题）</td>
+        </tr>
+        <tr>
+          <td>NYMEX原油</td><td colspan="3" style="color:var(--text2);">数据暂缺（合约匹配问题）</td>
+        </tr>
+      </table>
+    </div>
+    <div class="card">
+      <h4 style="margin-bottom:12px;">外汇</h4>
+      <table>
+        <tr><th>指标</th><th>数值</th><th>解读</th></tr>
+        <tr>
+          <td>USD/CNY 中间价</td>
+          <td style="font-weight:700;">7.1771</td>
+          <td>央行指导价</td>
+        </tr>
+        <tr>
+          <td>中行汇买价</td>
+          <td>7.1512</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>中行汇卖价</td>
+          <td>7.1807</td>
+          <td></td>
+        </tr>
+      </table>
+      <div style="margin-top:12px; font-size:12px; color:var(--text2);">
+        💡 人民币在7.18附近震荡，汇率压力可控，对A股北向资金影响中性。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 4. 重大新闻 ====== -->
+<div class="section">
+  <div class="section-title">📰 4. 隔夜重大新闻</div>
+  <div class="card">
+    <div style="font-size:12px; color:var(--text2); margin-bottom:10px;">
+      来源：Sina 全球财经 | 筛选关键词：美联储/央行/芯片/AI/关税/原油/政策 | 共20条 → 高相关9条
+    </div>
+    <div class="news-item high">
+      <span style="color:var(--red);">🔴</span>
+      <span class="time">15:21</span>
+      消息人士称，伊拉克官员已考虑退出OPEC，尽管目前该国仍计划保留成员国身份并争取更高产量配额
+    </div>
+    <div class="news-item mid">
+      <span style="color:var(--gold);">🟡</span>
+      <span class="time">15:21</span>
+      路透调查：韩元超过印尼盾成为最不受欢迎的亚洲货币。对印尼盾的看空情绪触及四月中旬低点
+    </div>
+    <div class="news-item mid">
+      <span style="color:var(--gold);">🟡</span>
+      <span class="time">15:21</span>
+      6月25日沪深两市涨停分析：创业板指放量上涨近3%、科创50涨近4%，存储芯片、半导体概念持续爆发，全市下跌个股超4200只
+    </div>
+    <div style="margin-top:12px; padding: 10px; background: rgba(99,102,241,0.08); border-radius: 8px; font-size:12px; color:var(--text2);">
+      ⚠ 注：以下9条高相关新闻完整内容见 JSON 数据文件。报告生成时间非早盘时段，实时新闻可能已更新。<br>
+      🔑 <strong>关键关注点</strong>：① 伊拉克或退出OPEC → 原油供给端扰动 ② 存储芯片/半导体持续爆发 → 科技主线延续性 ③ 韩元走弱 → 亚太资金流向
+    </div>
+  </div>
+</div>
+
+<!-- ====== 5. 今日预判 ====== -->
+<div class="section">
+  <div class="section-title">🎯 5. 今日A股开盘预判</div>
+
+  <div class="signal-box bull">
+    <strong style="color:var(--red);">🟢 偏多因素</strong>
+    <ul style="padding-left:16px; font-size:13px; margin-top:6px; color:var(--text2);">
+      <li>道指企稳+0.35%，全球风险偏好未崩溃</li>
+      <li>铜价+0.78%，工业金属走强预示经济需求</li>
+      <li>半导体/存储芯片昨日A股爆发，短线资金可能继续追逐</li>
+    </ul>
+  </div>
+
+  <div class="signal-box bear">
+    <strong style="color:var(--green);">🔴 偏空因素</strong>
+    <ul style="padding-left:16px; font-size:13px; margin-top:6px; color:var(--text2);">
+      <li>纳指-0.43%+恒指-1.65%，科技股外围承压</li>
+      <li>美股纳指5日累计-2.09%，科技板块调整信号</li>
+      <li>白银-1.78%，贵金属避险情绪降温但工业需求存疑</li>
+    </ul>
+  </div>
+
+  <div class="signal-box neut">
+    <strong style="color:var(--gold);">⚖️ 综合判断</strong>
+    <p style="font-size:13px; color:var(--text2); margin-top:6px;">
+      外围环境 <strong>偏空但未崩盘</strong>。美股科技回调+港股弱势构成压力，但铜价上涨、道指企稳、人民币稳定提供支撑。
+      今日A股大概率 <strong>低开震荡</strong>，关注开盘30分钟半导体板块能否延续昨日强势。
+      如果半导体低开后快速收复 → 科技主线延续；如果半导体低开低走 → 警惕短线获利了结。
+    </p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p><strong>⚠️ 免责声明</strong></p>
+  <p>本报告由AI自动生成，数据来源：Sina财经、东方财富、中行外汇牌价、yfinance。所有数据仅供参考，不构成投资建议。</p>
+  <p>股市有风险，投资需谨慎。本报告中的分析仅为基于公开数据的客观呈现，不构成买入、卖出或持有任何证券的建议。</p>
+  <p style="margin-top:8px; color:var(--accent);">
+    📡 数据采集: fetch_morning.py v2 | 美股·Sina | 恒生·Sina实时 | 期货·东方财富 | 外汇·中行 | 新闻·Sina
+  </p>
+</div>
+
+</div>
+</body>
+</html>
