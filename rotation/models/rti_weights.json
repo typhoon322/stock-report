@@ -1,0 +1,15 @@
+{
+  "change_1d": 3.8214,
+  "change_3d": 3.8214,
+  "change_5d": 3.8214,
+  "volume_change": 0.0,
+  "num_stocks_up": 0.0,
+  "num_limit_up": 0.0,
+  "net_money_flow": -0.2195,
+  "has_news_driver": 0.0,
+  "low_position": 0.0515,
+  "intercept": -13.75730683436942,
+  "training_date": "2026-06-25",
+  "n_samples": 5220,
+  "positive_rate": 0.1
+}
