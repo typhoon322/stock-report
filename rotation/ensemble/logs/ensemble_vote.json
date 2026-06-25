@@ -1,6 +1,7 @@
 {
-  "timestamp": "2026-06-25T23:22:57.511931",
+  "timestamp": "2026-06-25T23:26:06.182299",
   "regime": "risk_off",
+  "flow_weighted": true,
   "signals": [
     {
       "model": "RTI_v2",
@@ -8,7 +9,7 @@
       "signal_label": "LONG",
       "confidence": 0.75,
       "target": "sector",
-      "reason": "轮动信号"
+      "reason": "反弹信号"
     },
     {
       "model": "LS_model",
@@ -16,7 +17,7 @@
       "signal_label": "SHORT",
       "confidence": 0.8,
       "target": "stock",
-      "reason": "无龙头+退潮"
+      "reason": "退潮防御"
     },
     {
       "model": "BSI_model",

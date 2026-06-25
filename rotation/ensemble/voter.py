@@ -31,14 +31,30 @@ class EnsembleVoter:
         self,
         regime: str = "rotation",
         conflict_strategy: str = "confidence_weighted",
+        flow_result: Dict = None,
     ) -> Dict:
-        """执行投票"""
+        """执行投票 (支持资金流权重)"""
         if not self.signals:
             return {"decision": "HOLD", "error": "no_signals"}
         
         # Step 1: 构建模型池 + 计算权重
         pool = build_ensemble_pool()
         self.weights = compute_dynamic_weights(pool, regime)
+        
+        # Step 1b: 资金流权重覆盖
+        flow_weights = None
+        if flow_result:
+            try:
+                from rotation.flow.flow_weight import compute_flow_adjusted_weights
+                model_types = {m["name"]: m.get("type", "rule") for m in pool}
+                model_signals = {s.model_name: s.signal for s in self.signals}
+                flow_weights = compute_flow_adjusted_weights(
+                    self.weights, model_types, model_signals,
+                    flow_result["regime"], flow_result["direction"]["direction"]
+                )
+                self.weights = flow_weights
+            except Exception as e:
+                print(f"  ⚠ 资金流权重失败: {e}")
         
         # Step 2: 冲突检测 + 解决
         conflict = detect_conflict(self.signals)
@@ -52,6 +68,7 @@ class EnsembleVoter:
         self.result = {
             "timestamp": datetime.now().isoformat(),
             "regime": regime,
+            "flow_weighted": flow_weights is not None,
             "signals": [s.to_dict() for s in self.signals],
             "weights": {k: round(v, 4) for k, v in self.weights.items()},
             "conflict": conflict,
