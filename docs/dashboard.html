@@ -25,6 +25,17 @@ td{padding:5px 8px;border-bottom:1px solid var(--bd)}
 .decision{text-align:center;padding:16px;border-radius:10px;font-size:24px;font-weight:700;margin-bottom:10px}
 .footer{text-align:center;padding:20px;font-size:10px;color:var(--t2);line-height:1.6}
 a{color:var(--a);font-size:12px}
+/* Legend */
+.leg-wrap{max-width:900px;margin:0 auto;padding:0 12px 12px}
+.leg-toggle{display:block;width:100%;padding:10px;background:var(--cd);border:1px solid var(--bd);border-radius:8px;color:var(--t2);font-size:12px;cursor:pointer;text-align:center;transition:all .2s}
+.leg-toggle:hover{color:var(--tx);border-color:var(--a)}
+.leg-body{display:none;background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-top:8px;column-count:3;column-gap:16px}
+.leg-body.show{display:block}
+@media(max-width:700px){.leg-body{column-count:2}}
+@media(max-width:400px){.leg-body{column-count:1}}
+.leg-item{break-inside:avoid;margin-bottom:10px;font-size:11px;line-height:1.5}
+.leg-item .k{font-weight:700;color:var(--a);font-family:monospace;font-size:12px}
+.leg-item .d{color:var(--t2)}
 </style></head><body>
 <div class="header"><h1>🧠 A股量化仪表盘</h1><div class="ts">2026-06-26 00:48 · 20层系统实时数据 · <a href="index.html">←返回首页</a></div></div>
 
@@ -136,6 +147,24 @@ a{color:var(--a);font-size:12px}
   </div>
 </div>
 
+</div>
+
+<div class="leg-wrap">
+  <button class="leg-toggle" onclick="document.getElementById('lg').classList.toggle('show');this.textContent=document.getElementById('lg').classList.contains('show')?'📖 收起指标说明 ▲':'📖 指标说明 ▼'">📖 指标说明 ▼</button>
+  <div class="leg-body" id="lg">
+    <div class="leg-item"><span class="k">BSI</span><br><span class="d">板块强度指数。加权涨幅+涨停+量+资金持续性，>30为强主线</span></div>
+    <div class="leg-item"><span class="k">RTI</span><br><span class="d">轮动识别指数。低位+放量+无新闻驱动=潜在新主线信号</span></div>
+    <div class="leg-item"><span class="k">LS</span><br><span class="d">龙头评分。最早启动+突破前高+放量+资金集中，>7分龙头</span></div>
+    <div class="leg-item"><span class="k">MTF</span><br><span class="d">多周期一致性。Short/Mid/Long三周期趋势，-3~+3评分，0为分歧</span></div>
+    <div class="leg-item"><span class="k">Meta Score</span><br><span class="d">综合决策评分。6子系统加权融合，>+0.35做多、<-0.35做空</span></div>
+    <div class="leg-item"><span class="k">VWAP</span><br><span class="d">成交量加权均价。反映市场平均持仓成本</span></div>
+    <div class="leg-item"><span class="k">Flow</span><br><span class="d">资金流分析。Regime: inflow_strong/rotation/distribution/neutral</span></div>
+    <div class="leg-item"><span class="k">Smart Money</span><br><span class="d">主力行为识别。accumulation吸筹/markup拉升/distribution出货/manipulation洗盘</span></div>
+    <div class="leg-item"><span class="k">Cost Basis</span><br><span class="d">筹码成本区重建。Volume Profile重建密集区/支撑/阻力</span></div>
+    <div class="leg-item"><span class="k">Breakout</span><br><span class="d">真假突破识别。genuine_breakout真突破/liquidity_trap诱多/failed_breakout失败</span></div>
+    <div class="leg-item"><span class="k">涨跌比 (Breadth)</span><br><span class="d">上涨家数/总家数。>60%强势、<30%弱势</span></div>
+    <div class="leg-item"><span class="k">动态权重</span><br><span class="d">PnL反哺学习。每个模块权重=历史表现×当前市场状态修饰</span></div>
+  </div>
 </div>
 
 <div class="footer">
