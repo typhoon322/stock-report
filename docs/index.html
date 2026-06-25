@@ -129,8 +129,8 @@ h1{font-size:24px;color:var(--a);text-align:center;margin-bottom:2px}
 </div>
 
 <!-- ⚙️ 隐藏管理面板 (点3次触发) -->
-<div style="text-align:center;padding:20px 0 0;opacity:0.15;transition:opacity .3s" id="adminTrigger">
-  <span style="font-size:20px;cursor:pointer;user-select:none" id="gearIcon">⚙️</span>
+<div style="text-align:center;padding:20px 0 0;opacity:0.3;transition:opacity .3s" id="adminTrigger">
+  <span style="font-size:24px;cursor:pointer;user-select:none;display:inline-block;padding:8px" id="gearIcon" title="连点3次打开管理面板">⚙️</span>
 </div>
 <div id="adminPanel" style="display:none;background:var(--cd);border:1px solid var(--y);border-radius:12px;padding:16px;margin-top:12px">
   <h4 style="color:var(--y);margin-bottom:12px;font-size:13px">⚙️ 管理面板</h4>
@@ -304,7 +304,7 @@ document.getElementById('gearIcon').addEventListener('click', function() {
     const panel = document.getElementById('adminPanel');
     const show = panel.style.display === 'none';
     panel.style.display = show ? 'block' : 'none';
-    document.getElementById('adminTrigger').style.opacity = show ? '0.8' : '0.15';
+    document.getElementById('adminTrigger').style.opacity = show ? '0.8' : '0.3';
     if (show) toast('🔓 管理面板已打开');
   }
 });
