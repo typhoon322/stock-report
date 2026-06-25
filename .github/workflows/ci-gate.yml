@@ -1,0 +1,88 @@
+name: 🧪 CI Gate — Model Audit
+on:
+  pull_request:
+    paths:
+      - 'rotation/**'
+      - 'cloud_scripts/**'
+  workflow_dispatch:
+
+jobs:
+  ci-audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      
+      - name: Run CI Gate
+        id: ci
+        run: |
+          python -c "
+          import json
+          from rotation.ci import CIGate
+          from rotation.history import build_history
+          from rotation.audit_builder import build_dataset_from_history
+          from rotation.rti_ml import RTIMLModel
+          import numpy as np
+          
+          # 加载历史数据
+          history = build_history(days=30)
+          bundles = build_dataset_from_history(history)
+          
+          if bundles:
+              # 加载模型
+              model = RTIMLModel()
+              model.load()
+              
+              X = [b.to_feature_vector() for b in bundles]
+              labels = [b.becomes_main_theme_3d for b in bundles]
+              
+              if model.trained:
+                  predictions = model.predict_batch(bundles)
+              else:
+                  predictions = [0.5] * len(bundles)
+              
+              returns = [b.change_1d / 100 for b in bundles]
+              benchmark = [0.0] * len(returns)
+              
+              hist_rets = returns[:max(1, len(returns)//2)]
+              recent_rets = returns[max(1, len(returns)//2):]
+              
+              gate = CIGate('RTI_v1_ML')
+              result = gate.run(predictions, labels, returns, benchmark, hist_rets, recent_rets)
+              
+              # Save result
+              import os
+              os.makedirs('rotation/ci/reports', exist_ok=True)
+              with open('rotation/ci/reports/ci_latest.json', 'w') as f:
+                  json.dump(result, f, indent=2, default=str)
+              
+              print(f'CI_DECISION={result[\"decision\"]}')
+          else:
+              print('CI_SKIP=insufficient_data')
+          " 2>&1
+      
+      - name: Post CI Report to PR
+        if: github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python -c "
+          from rotation.ci.pr_report import build_researcher_report, main
+          main()
+          "
+      
+      - name: Update CI status
+        if: always()
+        run: |
+          echo "CI Gate completed. Check PR comments for audit report."

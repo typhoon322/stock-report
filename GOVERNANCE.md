@@ -1,6 +1,7 @@
-# 📌 Work Buddy 标准执行指引 v1
+# 📌 Work Buddy 标准执行指引 v1.1
 
 > 适用于：Stock-Report 量化系统所有开发任务  
+> 最后更新：2025-06-25 · CI v2.5 PR 审计报告系统已上线
 > 目标：保证所有模块可训练 / 可回测 / 可演进  
 > 最后更新：2025-06-25
 
@@ -136,9 +137,31 @@ RTI v1 (rule + ML hybrid)
 
 ## 9. 升级路线
 
-| 优先级 | 模块 |
-|--------|------|
-| 🥇 | RTI backtest + IC 系统 |
-| 🥈 | drift detection（市场结构变化检测） |
-| 🥉 | 龙头链路模型（板块→交易点） |
-| 🚀 | Work Buddy 自动验收 CI 系统 |
+| 优先级 | 模块 | 状态 |
+|--------|------|------|
+| 🥇 | RTI backtest + IC 系统 | ✅ |
+| 🥈 | drift detection（市场结构变化检测） | ✅ |
+| 🥉 | 龙头链路模型（板块→交易点） | ⬜ |
+| 🚀 | Work Buddy 自动验收 CI 系统 | ✅ |
+| 🚀 | CI → PR 自动审计报告 | ✅ v2.5 |
+
+---
+
+## 10. CI PR 审计报告 (v2.5)
+
+每次 PR 涉及 `rotation/` 或 `cloud_scripts/` 变更时:
+
+1. GitHub Actions 自动运行 CI Gate
+2. 回测 + 6项指标评估 + drift检测
+3. 自动生成"研究员级别"审计报告
+4. 写回 PR 评论，包含:
+   - 📈 Performance (IC/Precision/Sharpe/MaxDD/Alpha)
+   - 🧭 Signal Quality (假阳性率/稳定性)
+   - 🧠 Drift Analysis (市场结构状态)
+   - ⚠️ Key Observations (自动洞察)
+   - 🟢 Decision (APPROVED/REJECTED + 修复建议)
+
+**PR 决策流程:**
+```
+PR提交 → CI Gate → backtest → metrics → 审计报告 → PR评论 → merge decision
+```
