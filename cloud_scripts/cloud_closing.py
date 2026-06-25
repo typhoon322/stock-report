@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 cloud_closing.py — 收盘总结 (云端自包含版)
-输出: reports/closing_report.html
+输出: docs/closing_report.html
 """
 import akshare as ak
 import pandas as pd

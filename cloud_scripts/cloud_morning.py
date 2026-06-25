@@ -2,7 +2,7 @@
 """
 cloud_morning.py — 早盘报告 (云端自包含版)
 运行: python cloud_scripts/cloud_morning.py
-输出: reports/morning_report.html
+输出: docs/morning_report.html
 """
 import akshare as ak
 import pandas as pd

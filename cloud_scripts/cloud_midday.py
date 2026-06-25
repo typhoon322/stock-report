@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 cloud_midday.py — 午盘分析 (云端自包含版)
-输出: reports/midday_report.html
+输出: docs/midday_report.html
 """
 import akshare as ak
 import pandas as pd
