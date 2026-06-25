@@ -1,0 +1,13 @@
+{
+  "version": "weights_rotation_20260626_0039.json",
+  "timestamp": "2026-06-26T00:39:13.821386",
+  "regime": "rotation",
+  "weights": {
+    "rti": 0.2725,
+    "flow": 0.2305,
+    "smart_money": 0.1774,
+    "cost_basis": 0.1451,
+    "breakout": 0.1018,
+    "mtf": 0.0728
+  }
+}

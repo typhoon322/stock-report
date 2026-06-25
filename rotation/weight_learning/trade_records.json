@@ -1,0 +1,41 @@
+[
+  {
+    "timestamp": "2026-06-26T00:39:13.817656",
+    "signals": {
+      "rti": 0.8,
+      "flow": 0.7,
+      "smart_money": 0.6,
+      "cost_basis": 0.5,
+      "breakout": -0.3,
+      "mtf": -0.2
+    },
+    "meta_score": 0.4891,
+    "pnl": 0.025
+  },
+  {
+    "timestamp": "2026-06-26T00:39:13.819486",
+    "signals": {
+      "rti": 0.9,
+      "flow": 0.8,
+      "smart_money": 0.5,
+      "cost_basis": 0.4,
+      "breakout": -0.4,
+      "mtf": -0.3
+    },
+    "meta_score": 0.4973,
+    "pnl": 0.032
+  },
+  {
+    "timestamp": "2026-06-26T00:39:13.820870",
+    "signals": {
+      "rti": 0.85,
+      "flow": 0.75,
+      "smart_money": 0.7,
+      "cost_basis": 0.4,
+      "breakout": -0.5,
+      "mtf": -0.2
+    },
+    "meta_score": 0.5125,
+    "pnl": 0.028
+  }
+]
