@@ -254,7 +254,7 @@ td{{padding:5px 8px;border-bottom:1px solid var(--bd)}}tr:hover{{background:#222
 .footer{{margin-top:30px;text-align:center;font-size:10px;color:var(--t2);line-height:1.8}}
 </style>
 </head><body>
-<h1>🧠 A股量化日报</h1><p class="sub">{report.date} · RTI 2.0 四引擎 · 资金迁移+轮动管线</p>
+<h1>🧠 量化日报</h1><p class="sub">{report.date} · RTI 2.0 四引擎 · 资金迁移+轮动管线</p>
 
 <!-- VERDICT -->
 <div class="verdict">

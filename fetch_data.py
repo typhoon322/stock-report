@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-A股午盘数据采集脚本 v2 — 多数据源并行采集 + 交叉验证
+市场午盘数据采集脚本 v2 — 多数据源并行采集 + 交叉验证
 数据源：东方财富（主力）→ 新浪（备份）→ 腾讯自选股（单股补全）
 """
 import akshare as ak
@@ -123,7 +123,7 @@ def compare_sources(df_em, df_sina):
 # ============================================================
 
 print("=" * 60)
-print("A股午盘数据采集 v2 (多源并行)")
+print("市场午盘数据采集 v2 (多源并行)")
 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 print("=" * 60)
 

@@ -1,5 +1,5 @@
 """
-rotation/ — A股量化轮动策略引擎
+rotation/ — 量化轮动策略引擎
 """
 from .models import Stock, Sector, MarketSentiment, RotationSignal, DailyReport
 from .rti import compute_rti, rank_rotation_signals, detect_news_drivers

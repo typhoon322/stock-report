@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-A股收盘总结 v1 — 全天盘面总结 + 持仓复盘 + 明日展望
-运行时机：A股收盘后 15:05
+市场收盘总结 v1 — 全天盘面总结 + 持仓复盘 + 明日展望
+运行时机：市场收盘后 15:05
 
 数据源:
-  A股收盘:  Sinajs (hq.sinajs.cn) — 四大指数收盘
+  市场收盘:  Sinajs (hq.sinajs.cn) — 四大指数收盘
   市场广度: westock-data changedist
   板块资金: AKShare (概念+行业)
   全球期货: 东方财富 (futures_global_spot_em)
@@ -67,7 +67,7 @@ def fetch_sina_index(code):
     return None
 
 report = {
-    "title": "A股收盘总结",
+    "title": "市场收盘总结",
     "date": TODAY_STR,
     "weekday": ["周一","周二","周三","周四","周五","周六","周日"][TODAY.weekday()],
     "generated_at": TODAY.strftime("%Y-%m-%d %H:%M:%S"),
@@ -81,11 +81,11 @@ report = {
 }
 
 print("=" * 60)
-print(f"📊 A股收盘数据采集 — {TODAY_STR} {report['weekday']}")
+print(f"📊 市场收盘数据采集 — {TODAY_STR} {report['weekday']}")
 print("=" * 60)
 
-# [1] A股收盘指数
-print("\n[1/5] A股收盘指数 (Sinajs)...")
+# [1] 市场收盘指数
+print("\n[1/5] 市场收盘指数 (Sinajs)...")
 for name, code in [
     ("上证指数", "s_sh000001"), ("深证成指", "s_sz399001"),
     ("创业板指", "s_sz399006"), ("科创50", "s_sh000688"),

@@ -131,7 +131,7 @@ sec_up_label = "🔥 领涨 Top 5" if sec_up_has_gainers else "🔻 抗跌 Top 5
 html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>A股收盘 | {TODAY_STR}</title>
+<title>收盘报告 | {TODAY_STR}</title>
 <style>
 :root{{--bg:#0f1117;--cd:#1a1d28;--bd:#2a2d3a;--tx:#e4e6ed;--t2:#8b8fa3;--r:#f5222d;--g:#16c784;--a:#6366f1;--y:#f59e0b}}
 *{{margin:0;padding:0;box-sizing:border-box}}
@@ -155,10 +155,10 @@ td{{padding:6px 10px;border-bottom:1px solid var(--bd)}}tr:hover{{background:#22
 .sec{{margin-bottom:24px}}
 </style>
 </head><body><div class="c">
-<div class="h"><h1>🌙 A股收盘总结</h1><div class="s">{TODAY_STR} {WEEKDAY} · AI自动生成 · 云端运行 ☁️</div></div>
+<div class="h"><h1>🌙 市场收盘总结</h1><div class="s">{TODAY_STR} {WEEKDAY} · AI自动生成 · 云端运行 ☁️</div></div>
 <div class="tldr">📊 全天收盘：上证{v(data['indices'].get('上证指数',{}).get('p','—'))}{v(data['indices'].get('上证指数',{}).get('c','—'),'')}%，科创50{v(data['indices'].get('科创50',{}).get('c','—'),'')}%，深证{v(data['indices'].get('深证成指',{}).get('c','—'),'')}%</div>
 
-<div class="sec"><div class="st">🇨🇳 A股收盘指数</div><div class="g6">{idx_html}</div></div>
+<div class="sec"><div class="st">🇨🇳 主要指数</div><div class="g6">{idx_html}</div></div>
 
 <div class="sec"><div class="st">📈 行业板块</div><div class="g2">
 <div class="card"><h4 style="color:var(--r);margin-bottom:8px">{sec_up_label}</h4><table><tr><th>行业</th><th>涨跌</th><th>净流入</th></tr>{sec_up or '<tr><td colspan="3" style="color:var(--t2)">暂缺</td></tr>'}</table></div>

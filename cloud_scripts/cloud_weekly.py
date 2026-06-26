@@ -26,7 +26,7 @@ def try_fetch(func, name):
     return result
 
 data = {
-    "title": f"A股周报 — 截至{TO.strftime('%Y-%m-%d')}",
+    "title": f"周报深度分析 — 截至{TO.strftime('%Y-%m-%d')}",
     "period": f"{DAYS[0]} 至 {DAYS[-1]}",
     "generated_at": TO.isoformat(),
     "daily_indices": {},
@@ -59,8 +59,8 @@ for name, sym in [("标普500",".INX"),("道琼斯",".DJI"),("纳斯达克",".IX
             print(f"   {name}: {w1['close']:,.0f} 周涨跌{wchg:+.2f}%")
     except: pass
 
-# ── 2. A股指数本周 ──
-print("\n[2] A股本周...")
+# ── 2. 指数本周 ──
+print("\n[2] 本周指数...")
 try:
     for idx_name in ["上证指数","深证成指","创业板指","科创50"]:
         try:
@@ -75,7 +75,7 @@ try:
                                   "low":to_f(r['最低']),"chg":to_f(r['涨跌幅']),
                                   "vol":to_f(r.get('成交量',0))})
                 wchg = round((daily[-1]['close']-daily[0]['open'])/daily[0]['open']*100,2) if daily else None
-                data["daily_indices"][f"A股-{idx_name}"] = {"weekly_chg":wchg, "daily":daily}
+                data["daily_indices"][f"{idx_name}"] = {"weekly_chg":wchg, "daily":daily}
                 print(f"   {idx_name}: {daily[-1]['close']:,.0f} 周涨跌{wchg:+.2f}%")
         except: pass
 except: pass
@@ -190,7 +190,7 @@ try:
     for k,v in data.get("daily_indices",{}).items():
         if isinstance(v, dict) and v.get("weekly_chg") is not None:
             c = v['weekly_chg']
-            idx_cards += f"<div class='ic'><div class='nm'>{k.replace('A股-','')}</div><div class='pr' style='color:{"var(--r)" if c>0 else "var(--g)"}'>{c:+.2f}%</div><div class='lb'>周涨跌</div></div>"
+            idx_cards += f"<div class='ic'><div class='nm'>{k.replace('','')}</div><div class='pr' style='color:{"var(--r)" if c>0 else "var(--g)"}'>{c:+.2f}%</div><div class='lb'>周涨跌</div></div>"
     
     portfolio_rows = ""
     for s in data.get("portfolio_config", []):

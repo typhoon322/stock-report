@@ -203,7 +203,7 @@ sec_up_label = "🔥 领涨 Top 5" if sec_up_has_gainers else "🔻 抗跌 Top 5
 html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>A股午盘 | {TODAY_STR}</title>
+<title>午盘报告 | {TODAY_STR}</title>
 <style>
 :root{{--bg:#0f1117;--cd:#1a1d28;--bd:#2a2d3a;--tx:#e4e6ed;--t2:#8b8fa3;--r:#f5222d;--g:#16c784;--a:#6366f1;--y:#f59e0b}}
 *{{margin:0;padding:0;box-sizing:border-box}}
@@ -231,7 +231,7 @@ td{{padding:6px 10px;border-bottom:1px solid var(--bd)}}tr:hover{{background:#22
 </style>
 </head>
 <body><div class="c">
-<div class="h"><h1>📊 A股午盘分析</h1><div class="s">{TODAY_STR} · AI自动生成 · 云端运行 ☁️{DATA_WARNING}</div></div>
+<div class="h"><h1>📊 市场午盘分析</h1><div class="s">{TODAY_STR} · AI自动生成 · 云端运行 ☁️{DATA_WARNING}</div></div>
 <div class="tldr">📈 {tl}</div>
 
 <div class="sec"><div class="st">📊 上午盘面概况</div>

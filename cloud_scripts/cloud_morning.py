@@ -178,7 +178,7 @@ html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>A股早盘 | {TODAY_STR}</title>
+<title>早盘报告 | {TODAY_STR}</title>
 <style>
 :root{{--bg:#0f1117;--card:#1a1d28;--bdr:#2a2d3a;--tx:#e4e6ed;--t2:#8b8fa3;--r:#f5222d;--g:#16c784;--b:#3b82f6;--y:#f59e0b;--a:#6366f1}}
 *{{margin:0;padding:0;box-sizing:border-box}}
@@ -214,17 +214,17 @@ tr:hover{{background:#222531}}
 </style>
 </head>
 <body><div class="c">
-<div class="h"><h1>🌅 A股早盘报告</h1><div class="sub">{TODAY_STR} {WEEKDAY} · AI自动生成 · 云端运行 ☁️</div></div>
-<div class="tldr"><span class="l">TL;DR</span>{f'美股隔夜{us_trend_note}A股昨收{pct(data.get("a",{}).get("上证指数",{}).get("chg"))}，恒指{pct(data.get("asia",{}).get("恒生指数",{}).get("chg"))}。今日关注外围情绪传导与科技板块持续性。'}</div>
+<div class="h"><h1>🌅 早盘报告</h1><div class="sub">{TODAY_STR} {WEEKDAY} · AI自动生成 · 云端运行 ☁️</div></div>
+<div class="tldr"><span class="l">TL;DR</span>{f'美股隔夜{us_trend_note}昨收{pct(data.get("a",{}).get("上证指数",{}).get("chg"))}，恒指{pct(data.get("asia",{}).get("恒生指数",{}).get("chg"))}。今日关注外围情绪传导与科技板块持续性。'}</div>
 
 <div class="sec"><div class="st">🇺🇸 美股隔夜收盘</div><div class="g3">{us_cards}</div></div>
-<div class="sec"><div class="st">🇨🇳 A股前日收盘</div><div class="g4">{a_cards}</div></div>
+<div class="sec"><div class="st">🇨🇳 前日收盘</div><div class="g4">{a_cards}</div></div>
 <div class="sec"><div class="st">🌏 亚太早盘</div><div class="g2">{asia_cards}</div></div>
 <div class="sec"><div class="st">🛢️ 全球商品</div><div class="card"><table><tr><th>品种</th><th>最新价</th><th>涨跌</th></tr>{fut_rows}</table></div></div>
 <div class="sec"><div class="st">💱 外汇参考</div><div class="card"><p>USD/CNY中间价: <strong>{fx_val or '—'}</strong></p></div></div>
 <div class="sec"><div class="st">📰 全球要闻</div><div class="card">{news_items or '<p style="color:var(--t2)">暂缺</p>'}</div></div>
 <div class="sec"><div class="st">🎯 今日预判</div>
-<div class="sig bull"><strong style="color:var(--r)">偏多</strong> 美股道指企稳、A股昨日科创50+3.87%科技主线延续</div>
+<div class="sig bull"><strong style="color:var(--r)">偏多</strong> 美股道指企稳、昨日科创50+3.87%科技主线延续</div>
 <div class="sig bear"><strong style="color:var(--g)">偏空</strong> 纳指回调-0.43%、恒指-1.75%亚太偏弱</div>
 <div class="sig neut"><strong style="color:var(--y)">综合</strong> 外围偏空但国内科技主线强劲，今日大概率低开震荡，关注半导体持续性</div>
 </div>

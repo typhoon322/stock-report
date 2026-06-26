@@ -1,7 +1,7 @@
 # Stock-Report 量化策略系统 — 开发者手册
 
 > 版本: v3.1 | 最后更新: 2026-06-26 (v2.21: 云雾报告系统重构)
-> 定位: A股中期资金轮动识别与交易决策辅助系统  
+> 定位: 中期资金轮动识别与交易决策辅助系统  
 > 运行: GitHub Actions 云端 + WorkBuddy 本地自动化  
 > 输出: 6份日报/周报 HTML → GitHub Pages 手机端访问  
 > 数据源: AKShare (东方财富/Sina) + Sinajs 实时 + 中行外汇
@@ -334,7 +334,7 @@ LS = 2×(最早启动) + 2×(突破20日高点) + 1×(量比>2)
 ### 4.3 数据源Fallback策略
 
 个股全量: 东方财富(主) → 新浪(备) 双源并行  
-A股指数: Sinajs 实时 (最稳定)  
+主要指数: Sinajs 实时 (最稳定)  
 全球指数: 东方财富(主) → yfinance(备)  
 日韩: Sinajs `int_nikkei` (KOSPI用yfinance)
 
@@ -453,7 +453,7 @@ score, signal, components = compute_rti3(..., weights={"w1_flow_shift": 0.30, ..
 ## 十、待优化项
 
 - [ ] 行业板块API偶发超时，影响龙头识别数据管道
-- [ ] A股指数历史数据需改用 Sina 源 (当前东方财富偶发断连)
+- [ ] 主要指数历史数据需改用 Sina 源 (当前东方财富偶发断连)
 - [ ] KOSPI 需要更稳定的数据源
 - [ ] Dashboard 成本结构和突破分析仍用 FALLBACK 数据，需接入实时API
 

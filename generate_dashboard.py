@@ -286,7 +286,7 @@ phase_badge = "r" if "退潮" in phase else "g"
 html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>A股量化仪表盘 | {NOW[:10]}</title>
+<title>量化仪表盘 | {NOW[:10]}</title>
 <style>
 :root{{--bg:#0f1117;--cd:#1a1d28;--bd:#2a2d3a;--tx:#e4e6ed;--t2:#8b8fa3;--r:#f5222d;--g:#16c784;--a:#6366f1;--y:#f59e0b}}
 *{{margin:0;padding:0;box-sizing:border-box}}
@@ -320,7 +320,7 @@ a{{color:var(--a);font-size:12px}}
 .leg-item .k{{font-weight:700;color:var(--a);font-family:monospace;font-size:12px}}
 .leg-item .d{{color:var(--t2)}}
 </style></head><body>
-<div class="header"><h1>🧠 A股量化仪表盘</h1><div class="ts">{NOW_BJT} · 20层系统实时数据 · <a href="index.html">←返回首页</a></div></div>
+<div class="header"><h1>🧠 量化仪表盘</h1><div class="ts">{NOW_BJT} · 20层系统实时数据 · <a href="index.html">←返回首页</a></div></div>
 
 <div class="grid">
 
