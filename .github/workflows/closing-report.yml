@@ -19,8 +19,8 @@ jobs:
         run: pip install -r requirements.txt
       - name: Generate report
         run: python cloud_scripts/cloud_closing.py
-      - name: Shadow Mode (signal snapshot + trades + health)
-        run: python -m rotation.shadow.runner
+      - name: Daily Archive (raw + signal + trade)
+        run: python -m rotation.archive.runner
       - name: Commit & push
         run: |
           git config user.name "github-actions[bot]"
