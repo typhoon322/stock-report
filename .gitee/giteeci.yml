@@ -1,0 +1,123 @@
+version: '1.0'
+name: stock-report-pipeline
+displayName: A股量化报告系统
+
+triggers:
+  push:
+    branches:
+      - main
+  schedule:
+    # Beijing Time (UTC+8) — Gitee Go 使用 UTC 时间
+    # 8:15 AM BJT = 0:15 UTC
+    - cron: '15 0 * * 1-5'
+      branches:
+        - main
+    # 11:35 AM BJT = 3:35 UTC
+    - cron: '35 3 * * 1-5'
+      branches:
+        - main
+    # 15:05 PM BJT = 7:05 UTC
+    - cron: '5 7 * * 1-5'
+      branches:
+        - main
+    # 15:45 PM BJT (周五周报) = 7:45 UTC
+    - cron: '45 7 * * 5'
+      branches:
+        - main
+
+stages:
+  - name: install
+    displayName: 安装依赖
+    steps:
+      - step: shell@latest
+        image: python:3.12
+        name: pip_install
+        displayName: pip install
+        script: |
+          python --version
+          pip install --upgrade pip
+          pip install -i https://mirrors.aliyun.com/pypi/simple/ -r requirements.txt
+          echo "✅ 依赖安装完成"
+
+  - name: generate-reports
+    displayName: 生成报告
+    steps:
+      - step: shell@latest
+        image: python:3.12
+        name: run_all
+        displayName: 全量报告生成
+        script: |
+          export TZ=Asia/Shanghai
+          echo "📅 $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S %Z')"
+          
+          # 根据 cron 触发时间判断当前应生成的报告
+          HOUR=$(TZ=Asia/Shanghai date +%H)
+          MINUTE=$(TZ=Asia/Shanghai date +%M)
+          WEEKDAY=$(TZ=Asia/Shanghai date +%u)
+          
+          echo "北京时刻: ${HOUR}:${MINUTE}  星期${WEEKDAY}"
+          
+          # 早盘 8:15 → 运行 morning
+          if [ "$HOUR" = "08" ]; then
+            echo "🏙️ 生成早盘报告..."
+            python cloud_scripts/cloud_morning.py || echo "⚠ 早盘失败"
+          fi
+          
+          # 午盘 11:35 → 运行 midday
+          if [ "$HOUR" = "11" ] || [ "$HOUR" = "12" ]; then
+            echo "🌤️ 生成午盘报告..."
+            python cloud_scripts/cloud_midday.py || echo "⚠ 午盘失败"
+          fi
+          
+          # 收盘 15:05 → 运行 closing + archive + dashboard
+          if [ "$HOUR" = "15" ]; then
+            echo "🌙 生成收盘报告..."
+            python cloud_scripts/cloud_closing.py || echo "⚠ 收盘失败"
+            
+            echo "📦 每日归档..."
+            python -m rotation.archive.runner || echo "⚠ 归档失败"
+            
+            echo "📊 生成仪表盘..."
+            python generate_dashboard.py || echo "⚠ 仪表盘失败"
+          fi
+          
+          # 周五 15:45 → 额外运行周报
+          if [ "$HOUR" = "15" ] && [ "$WEEKDAY" = "5" ]; then
+            echo "📊 生成周报..."
+            python cloud_scripts/cloud_weekly.py || echo "⚠ 周报失败"
+          fi
+          
+          # 手动/PR触发 → 全量运行
+          if [ -z "$HOUR" ] || [ "$HOUR" = "00" ]; then
+            echo "🔧 手动触发 → 全量生成"
+            python cloud_scripts/cloud_morning.py || echo "⚠ morning"
+            python cloud_scripts/cloud_midday.py || echo "⚠ midday"
+            python cloud_scripts/cloud_closing.py || echo "⚠ closing"
+            python cloud_scripts/cloud_weekly.py || echo "⚠ weekly"
+            python -m rotation.archive.runner || echo "⚠ archive"
+            python generate_dashboard.py || echo "⚠ dashboard"
+          fi
+          
+          echo "✅ 报告生成完毕"
+
+  - name: deploy-pages
+    displayName: 部署到 Gitee Pages
+    steps:
+      - step: shell@latest
+        image: python:3.12
+        name: pages_deploy
+        displayName: Deploy Pages
+        script: |
+          export TZ=Asia/Shanghai
+          DATE=$(TZ=Asia/Shanghai date +%Y-%m-%d)
+          echo "部署日期: $DATE"
+          
+          # Gitee Pages 自动从 docs/ 目录发布
+          # 无需额外操作，只需确保 docs/ 下有 index.html
+          ls docs/index.html && echo "✅ Pages 就绪" || echo "⚠ 缺少 index.html"
+          
+          # 列出产出文件
+          echo "--- 产出文件 ---"
+          ls -lh docs/*.html 2>/dev/null
+          echo "--- 归档文件 ---"
+          ls rotation/archive/raw/*.json rotation/archive/signal/*.json rotation/archive/trade/*.json 2>/dev/null | tail -6
