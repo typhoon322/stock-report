@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+<title>报告生成日志</title>
+<style>
+:root{--bg:#0f1117;--cd:#1a1d28;--bd:#2a2d3a;--tx:#e4e6ed;--t2:#8b8fa3;--a:#6366f1;--r:#f5222d;--g:#16c784;--y:#f59e0b}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;padding:24px 16px 60px;max-width:540px;margin:0 auto}
+h1{font-size:22px;color:var(--a);margin-bottom:4px}
+.sub{color:var(--t2);font-size:11px;margin-bottom:20px}
+.back{display:inline-block;color:var(--t2);font-size:11px;text-decoration:none;margin-bottom:16px;padding:4px 0}
+.back:hover{color:var(--tx)}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.stat{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:12px;text-align:center}
+.stat .val{font-size:22px;font-weight:700}
+.stat .lbl{font-size:10px;color:var(--t2);margin-top:2px}
+.log-list{display:flex;flex-direction:column;gap:6px}
+.log-entry{display:flex;align-items:center;gap:10px;background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;font-size:12px}
+.log-entry .icon{font-size:18px;flex-shrink:0;width:28px;text-align:center}
+.log-entry .body{flex:1;min-width:0}
+.log-entry .body .title{font-weight:600;font-size:13px}
+.log-entry .body .meta{font-size:10px;color:var(--t2);margin-top:1px}
+.log-entry .badge{padding:2px 8px;border-radius:6px;font-size:10px;font-weight:600;flex-shrink:0}
+.badge-ok{background:rgba(22,199,132,0.12);color:var(--g)}
+.badge-err{background:rgba(245,34,45,0.12);color:var(--r)}
+.badge-warn{background:rgba(245,158,11,0.12);color:var(--y)}
+.errors-list{font-size:10px;color:var(--r);margin-top:2px;padding-left:38px}
+.error-item{padding:1px 0}
+.empty{text-align:center;padding:40px 20px;color:var(--t2);font-size:13px}
+.footer{margin-top:24px;text-align:center;font-size:10px;color:var(--t2);line-height:1.6}
+.loading{text-align:center;padding:40px;color:var(--t2)}
+</style>
+</head>
+<body>
+
+<h1>📝 报告生成日志</h1>
+<p class="sub">每次报告脚本执行完成后自动记录</p>
+<a class="back" href="index.html">← 返回首页</a>
+
+<div class="summary" id="summary">
+  <div class="stat"><div class="val" style="color:var(--g)" id="statOk">-</div><div class="lbl">成功</div></div>
+  <div class="stat"><div class="val" style="color:var(--y)" id="statWarn">-</div><div class="lbl">部分异常</div></div>
+  <div class="stat"><div class="val" style="color:var(--r)" id="statErr">-</div><div class="lbl">失败</div></div>
+</div>
+
+<div class="log-list" id="logList"><div class="loading">加载中...</div></div>
+
+<div class="footer">
+  <a href="report_log.json" style="color:var(--a);text-decoration:none" target="_blank">查看原始 JSON</a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/typhoon322/stock-report/actions" style="color:var(--t2);text-decoration:none" target="_blank">GitHub Actions</a>
+</div>
+
+<script>
+const ICONS = {
+  morning: '🌅', midday: '🌤️', closing: '🌙', weekly: '📊',
+  dashboard: '🧠', weight: '⚖️', quant: '📈'
+};
+const LABELS = {
+  morning: '早盘报告', midday: '午盘分析', closing: '收盘总结',
+  weekly: '周报分析', dashboard: '量化仪表盘', weight: '权重报告', quant: '量化日报'
+};
+
+async function load() {
+  try {
+    const r = await fetch('report_log.json?t=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const logs = await r.json();
+    if (!Array.isArray(logs) || logs.length === 0) {
+      document.getElementById('logList').innerHTML = '<div class="empty">暂无日志记录<br><span style="font-size:10px;color:var(--t2)">等待下一次报告生成</span></div>';
+      return;
+    }
+    render(logs);
+  } catch(e) {
+    document.getElementById('logList').innerHTML = '<div class="empty">无法加载日志<br><span style="font-size:10px;color:var(--t2)">' + e.message + '</span></div>';
+  }
+}
+
+function render(logs) {
+  const reversed = logs.slice().reverse();
+  let ok = 0, warn = 0, err = 0;
+  let html = '';
+
+  reversed.forEach(l => {
+    const hasErr = l.errors && l.errors.length > 0;
+    const isErr = l.status === 'error' || l.status === 'failure';
+    const isWarn = l.status === 'partial' || hasErr;
+
+    if (isErr) err++;
+    else if (isWarn) warn++;
+    else ok++;
+
+    const icon = ICONS[l.report] || '📄';
+    const label = LABELS[l.report] || l.report || '未知';
+    const badgeCls = isErr ? 'badge-err' : (isWarn ? 'badge-warn' : 'badge-ok');
+    const badgeText = isErr ? '失败' : (isWarn ? '部分异常' : '成功');
+
+    html += `<div class="log-entry">
+      <span class="icon">${icon}</span>
+      <span class="body">
+        <span class="title">${label}</span>
+        <span class="meta">${l.time} ${l.timezone||''}</span>
+      </span>
+      <span class="badge ${badgeCls}">${badgeText}</span>
+    </div>`;
+
+    if (hasErr) {
+      html += `<div class="errors-list">${l.errors.map(e => `<div class="error-item">⚠ ${e}</div>`).join('')}</div>`;
+    }
+  });
+
+  document.getElementById('logList').innerHTML = html || '<div class="empty">暂无记录</div>';
+  document.getElementById('statOk').textContent = ok;
+  document.getElementById('statWarn').textContent = warn;
+  document.getElementById('statErr').textContent = err;
+}
+
+load();
+</script>
+</body>
+</html>
