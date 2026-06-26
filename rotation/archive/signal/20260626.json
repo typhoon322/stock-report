@@ -1,10 +1,10 @@
 {
   "date": "2026-06-26",
-  "timestamp": "2026-06-26 14:57:33",
+  "timestamp": "2026-06-26 18:28:00",
   "version": "v2.19",
   "signals": {
     "bsi": {
-      "error": "cannot import name 'get_top_sectors' from 'rotation.bsi' (/U"
+      "error": "cannot import name 'get_top_sectors' from 'rotation.bsi' (/h"
     },
     "phase": {
       "phase": "💨 退潮期",
