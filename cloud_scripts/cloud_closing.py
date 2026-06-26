@@ -35,7 +35,7 @@ def sina_idx(code):
 
 print(f"☁️ 云端收盘报告 {TODAY_STR} {WEEKDAY}")
 
-data = {"indices":{}, "sectors":[], "concepts":[], "futures":{}, "fx":None, "news":[]}
+data = {"indices":{}, "sectors":{"up":[],"down":[]}, "concepts":{"in":[],"out":[]}, "futures":{}, "fx":None, "news":[]}
 
 # A-share indices
 for name, code in [("上证指数","s_sh000001"),("深证成指","s_sz399001"),

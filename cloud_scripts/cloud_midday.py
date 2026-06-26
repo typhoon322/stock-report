@@ -61,7 +61,7 @@ except:
 
 print(f"☁️ 云端午盘分析 {TODAY_STR}")
 
-data = {"breadth":{},"sectors":{},"concepts":{},"portfolio":{},"futures":{}}
+data = {"breadth":{},"sectors":{"up":[],"down":[]},"concepts":{"in":[],"out":[]},"portfolio":{},"futures":{}}
 
 # 1. 市场广度 (Sina全量)
 print("\n[1] 市场广度...")
@@ -167,11 +167,11 @@ def _color(v):
     if v is None: return ""
     return "up" if v > 0 else ("down" if v < 0 else "")
 
-s_up = "".join(f"<tr><td>{s['n']}</td><td class=\"{_color(s['c'])}\">{s['c']:+.2f}%</td><td class=\"{_color(s['net'])}\">{s['net']:+.1f}亿</td></tr>" for s in data["sectors"]["up"])
-s_dn = "".join(f"<tr><td>{s['n']}</td><td class=\"{_color(s['c'])}\">{s['c']:+.2f}%</td><td class=\"{_color(s['net'])}\">{s['net']:+.1f}亿</td></tr>" for s in data["sectors"]["down"])
+s_up = "".join(f"<tr><td>{s['n']}</td><td class=\"{_color(s['c'])}\">{s['c']:+.2f}%</td><td class=\"{_color(s['net'])}\">{s['net']:+.1f}亿</td></tr>" for s in data.get("sectors",{}).get("up",[]))
+s_dn = "".join(f"<tr><td>{s['n']}</td><td class=\"{_color(s['c'])}\">{s['c']:+.2f}%</td><td class=\"{_color(s['net'])}\">{s['net']:+.1f}亿</td></tr>" for s in data.get("sectors",{}).get("down",[]))
 
 # 概念资金
-c_in = "".join(f"<tr><td>{s['n']}</td><td class=\"{_color(s['c'])}\">{s['c']:+.2f}%</td><td class=\"{_color(s['net'])}\">{s['net']:+.1f}亿</td></tr>" for s in data["concepts"]["in"])
+c_in = "".join(f"<tr><td>{s['n']}</td><td class=\"{_color(s['c'])}\">{s['c']:+.2f}%</td><td class=\"{_color(s['net'])}\">{s['net']:+.1f}亿</td></tr>" for s in data.get("concepts",{}).get("in",[]))
 
 # 期货
 fut_rows = "".join(f"<tr><td>{l}</td><td class=\"{cl(d['c'])}\">{d['p']}</td><td class=\"{cl(d['c'])}\">{d['c']:+.2f}%</td></tr>" for l,d in data["futures"].items() if d)
@@ -182,7 +182,7 @@ for name, d in data["portfolio"].items():
     pf_rows += f"""<tr><td><code>{d['code']}</code></td><td>{name}</td><td class="{cl(d['chg'])}">{d['price']}</td><td class="{cl(d['chg'])}">{d['chg']:+.2f}%</td></tr>"""
 
 # Dynamic labels
-sec_up_has_gainers = any(s['c'] is not None and s['c'] > 0 for s in data["sectors"]["up"])
+sec_up_has_gainers = any(s['c'] is not None and s['c'] > 0 for s in data.get("sectors",{}).get("up",[]))
 sec_up_label = "🔥 领涨 Top 5" if sec_up_has_gainers else "🔻 抗跌 Top 5"
 
 html = f"""<!DOCTYPE html>
