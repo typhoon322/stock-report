@@ -163,11 +163,15 @@ for r in data.get("near_limit",[]):
     nl_cards += f"""<tr><td><code>{r['代码']}</code></td><td>{r['名称']}</td><td class="up">{r['涨跌幅']:.1f}%</td></tr>"""
 
 # 行业板块
-s_up = "".join(f"<tr><td>{s['n']}</td><td class=\"up\">{s['c']:+.2f}%</td><td class=\"up\">{s['net']:+.1f}亿</td></tr>" for s in data["sectors"]["up"])
-s_dn = "".join(f"<tr><td>{s['n']}</td><td class=\"down\">{s['c']:+.2f}%</td><td class=\"down\">{s['net']:+.1f}亿</td></tr>" for s in data["sectors"]["down"])
+def _color(v):
+    if v is None: return ""
+    return "up" if v > 0 else ("down" if v < 0 else "")
+
+s_up = "".join(f"<tr><td>{s['n']}</td><td class=\"{_color(s['c'])}\">{s['c']:+.2f}%</td><td class=\"{_color(s['net'])}\">{s['net']:+.1f}亿</td></tr>" for s in data["sectors"]["up"])
+s_dn = "".join(f"<tr><td>{s['n']}</td><td class=\"{_color(s['c'])}\">{s['c']:+.2f}%</td><td class=\"{_color(s['net'])}\">{s['net']:+.1f}亿</td></tr>" for s in data["sectors"]["down"])
 
 # 概念资金
-c_in = "".join(f"<tr><td>{s['n']}</td><td class=\"up\">{s['c']:+.2f}%</td><td class=\"up\">{s['net']:+.1f}亿</td></tr>" for s in data["concepts"]["in"])
+c_in = "".join(f"<tr><td>{s['n']}</td><td class=\"{_color(s['c'])}\">{s['c']:+.2f}%</td><td class=\"{_color(s['net'])}\">{s['net']:+.1f}亿</td></tr>" for s in data["concepts"]["in"])
 
 # 期货
 fut_rows = "".join(f"<tr><td>{l}</td><td class=\"{cl(d['c'])}\">{d['p']}</td><td class=\"{cl(d['c'])}\">{d['c']:+.2f}%</td></tr>" for l,d in data["futures"].items() if d)
@@ -176,6 +180,10 @@ fut_rows = "".join(f"<tr><td>{l}</td><td class=\"{cl(d['c'])}\">{d['p']}</td><td
 pf_rows = ""
 for name, d in data["portfolio"].items():
     pf_rows += f"""<tr><td><code>{d['code']}</code></td><td>{name}</td><td class="{cl(d['chg'])}">{d['price']}</td><td class="{cl(d['chg'])}">{d['chg']:+.2f}%</td></tr>"""
+
+# Dynamic labels
+sec_up_has_gainers = any(s['c'] is not None and s['c'] > 0 for s in data["sectors"]["up"])
+sec_up_label = "🔥 领涨 Top 5" if sec_up_has_gainers else "🔻 抗跌 Top 5"
 
 html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -217,7 +225,7 @@ td{{padding:6px 10px;border-bottom:1px solid var(--bd)}}tr:hover{{background:#22
 <div class="sec"><div class="st">🎯 逼近涨停股 Top 10</div>
 <div class="card"><table><tr><th>代码</th><th>名称</th><th>涨跌幅</th></tr>{nl_cards or '<tr><td colspan="3" style="color:var(--t2)">暂缺</td></tr>'}</table></div></div>
 
-<div class="sec"><div class="st">🔥 领涨行业 Top 5</div>
+<div class="sec"><div class="st">{sec_up_label}</div>
 <div class="card"><table><tr><th>行业</th><th>涨跌</th><th>净流入</th></tr>{s_up}</table></div>
 <div class="card"><h4 style="color:var(--g);margin-bottom:8px">❄️ 领跌行业 Top 5</h4><table><tr><th>行业</th><th>涨跌</th><th>净流出</th></tr>{s_dn}</table></div></div>
 

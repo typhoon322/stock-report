@@ -118,11 +118,15 @@ idx_html = "".join(
     f"""<div class="card ic"><div class="nm">{n}</div><div class="pr">{v(d['p'])}</div><div class="cg {cl(d['c'])}">{d['c']:+.2f}%</div></div>"""
     for n,d in data["indices"].items() if d
 )
-sec_up = "".join(f"<tr><td>{s['name']}</td><td class=\"up\">+{s['chg']:.2f}%</td><td class=\"up\">+{s['net']:.1f}亿</td></tr>" for s in data["sectors"].get("up",[]))
-sec_dn = "".join(f"<tr><td>{s['name']}</td><td class=\"down\">{s['chg']:.2f}%</td><td class=\"down\">{s['net']:.1f}亿</td></tr>" for s in data["sectors"].get("down",[]))
-conc_in = "".join(f"<tr><td>{s['name']}</td><td class=\"up\">{s['chg']:.2f}%</td><td class=\"up\">+{s['net']:.1f}亿</td></tr>" for s in data["concepts"].get("in",[]))
+sec_up = "".join(f"<tr><td>{s['name']}</td><td class=\"{cl(s['chg'])}\">{s['chg']:+.2f}%</td><td class=\"{cl(s['net'])}\">{s['net']:+.1f}亿</td></tr>" for s in data["sectors"].get("up",[]))
+sec_dn = "".join(f"<tr><td>{s['name']}</td><td class=\"{cl(s['chg'])}\">{s['chg']:+.2f}%</td><td class=\"{cl(s['net'])}\">{s['net']:+.1f}亿</td></tr>" for s in data["sectors"].get("down",[]))
+conc_in = "".join(f"<tr><td>{s['name']}</td><td class=\"{cl(s['chg'])}\">{s['chg']:+.2f}%</td><td class=\"{cl(s['net'])}\">{s['net']:+.1f}亿</td></tr>" for s in data["concepts"].get("in",[]))
 fut_html = "".join(f"<tr><td>{l}</td><td class=\"{cl(d['c'])}\">{d['p']}</td><td class=\"{cl(d['c'])}\">{d['c']:+.2f}%</td></tr>" for l,d in data["futures"].items() if d)
 news_html = "".join(f"<div class=\"ni\">{n}</div>" for n in data["news"])
+
+# Dynamic labels: on down days, top sectors may still decline
+sec_up_has_gainers = any(s['chg'] is not None and s['chg']>0 for s in data["sectors"].get("up",[]))
+sec_up_label = "🔥 领涨 Top 5" if sec_up_has_gainers else "🔻 抗跌 Top 5"
 
 html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -157,7 +161,7 @@ td{{padding:6px 10px;border-bottom:1px solid var(--bd)}}tr:hover{{background:#22
 <div class="sec"><div class="st">🇨🇳 A股收盘指数</div><div class="g6">{idx_html}</div></div>
 
 <div class="sec"><div class="st">📈 行业板块</div><div class="g2">
-<div class="card"><h4 style="color:var(--r);margin-bottom:8px">🔥 领涨 Top 5</h4><table><tr><th>行业</th><th>涨跌</th><th>净流入</th></tr>{sec_up or '<tr><td colspan="3" style="color:var(--t2)">暂缺</td></tr>'}</table></div>
+<div class="card"><h4 style="color:var(--r);margin-bottom:8px">{sec_up_label}</h4><table><tr><th>行业</th><th>涨跌</th><th>净流入</th></tr>{sec_up or '<tr><td colspan="3" style="color:var(--t2)">暂缺</td></tr>'}</table></div>
 <div class="card"><h4 style="color:var(--g);margin-bottom:8px">❄️ 领跌 Top 5</h4><table><tr><th>行业</th><th>涨跌</th><th>净流入</th></tr>{sec_dn or '<tr><td colspan="3" style="color:var(--t2)">暂缺</td></tr>'}</table></div>
 </div></div>
 
