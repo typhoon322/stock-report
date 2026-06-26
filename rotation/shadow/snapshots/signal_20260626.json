@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-06-26 14:41:06",
+  "version": "v2.19",
+  "signals": {
+    "rti": {
+      "source": "rti3",
+      "status": "ok"
+    },
+    "bsi": {
+      "source": "bsi",
+      "status": "error:cannot import name 'get_top_sectors' from 'rotation.bsi' (/Users/yanx/Workbuddy/automation-2026-06-24-19-35-08/rotation/bsi.py)"
+    },
+    "ls": {
+      "source": "ls",
+      "status": "error:cannot import name 'get_leader_summary' from 'rotation.ls' (/Users/yanx/Workbuddy/automation-2026-06-24-19-35-08/rotation/ls.py)"
+    }
+  },
+  "meta": {},
+  "weights": {}
+}

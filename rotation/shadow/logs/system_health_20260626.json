@@ -1,0 +1,49 @@
+{
+  "timestamp": "2026-06-26 14:41:06",
+  "api": {
+    "stock_zh_a_spot": {
+      "calls": 1,
+      "source": "sina"
+    },
+    "stock_board_industry_name_em": {
+      "calls": 1,
+      "notes": "cached after first call"
+    },
+    "stock_board_concept_name_em": {
+      "calls": 1,
+      "notes": "cached after first call"
+    },
+    "stock_board_industry_cons_em": {
+      "calls": "N (per sector)",
+      "notes": "retry=2"
+    },
+    "stock_board_concept_cons_em": {
+      "calls": "N (per sector)",
+      "notes": "retry=2"
+    },
+    "futures_global_spot_em": {
+      "calls": 1
+    },
+    "sinajs_index": {
+      "calls": 1,
+      "source": "sina"
+    },
+    "sinajs_global_index": {
+      "calls": 1,
+      "source": "sina"
+    }
+  },
+  "data_quality": {
+    "missing_rate": 0,
+    "fallback_count": 0
+  },
+  "modules": {
+    "rti": "loaded",
+    "bsi": "loaded",
+    "ls": "loaded",
+    "phase": "loaded",
+    "mtf": "loaded",
+    "meta": "loaded",
+    "position": "loaded"
+  }
+}

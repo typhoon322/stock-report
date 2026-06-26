@@ -103,70 +103,131 @@ def fetch_all_stocks() -> List[Stock]:
     return stocks
 
 
-def fetch_sector_constituents(sector_name: str) -> List[str]:
-    """获取板块成分股代码列表"""
-    codes = []
-    try:
-        # 先搜索板块代码
-        import akshare as ak
-        # 行业板块
-        df_industries = ak.stock_board_industry_name_em()
-        match = df_industries[df_industries['板块名称'] == sector_name]
-        if len(match) > 0:
-            board_code = match.iloc[0]['板块代码']
+# ── 板块代码缓存（全局，避免重复调用 _name_em()）──
+_sector_code_map: Dict[str, str] = {}
+_code_map_loaded = False
+
+
+def _ensure_code_map():
+    """预加载行业+概念板块名称→代码映射（只调一次API）"""
+    global _code_map_loaded, _sector_code_map
+    if _code_map_loaded:
+        return
+    import akshare as ak
+    for _ in range(3):
+        try:
+            df = ak.stock_board_industry_name_em()
+            for __, row in df.iterrows():
+                _sector_code_map[str(row['板块名称'])] = str(row['板块代码'])
+            break
+        except Exception:
+            time.sleep(3)
+    for _ in range(3):
+        try:
+            df = ak.stock_board_concept_name_em()
+            for __, row in df.iterrows():
+                _sector_code_map[str(row['板块名称'])] = str(row['板块代码'])
+            break
+        except Exception:
+            time.sleep(3)
+    _code_map_loaded = True
+
+
+def fetch_sector_constituents(sector_name: str, max_retries: int = 3) -> List[str]:
+    """获取板块成分股代码列表（带重试+限频+预缓存code map）"""
+    import akshare as ak
+    _ensure_code_map()
+    
+    board_code = _sector_code_map.get(sector_name)
+    if not board_code:
+        return []
+    
+    time.sleep(0.5)  # 限频
+    
+    for attempt in range(max_retries):
+        try:
             df_cons = ak.stock_board_industry_cons_em(symbol=board_code)
-            codes = df_cons['代码'].tolist()
-            return codes
-        # 概念板块
-        df_concepts = ak.stock_board_concept_name_em()
-        match = df_concepts[df_concepts['板块名称'] == sector_name]
-        if len(match) > 0:
-            board_code = match.iloc[0]['板块代码']
+            if df_cons is not None and len(df_cons) > 0:
+                return df_cons['代码'].tolist()
+        except Exception:
+            pass
+        
+        try:
             df_cons = ak.stock_board_concept_cons_em(symbol=board_code)
-            codes = df_cons['代码'].tolist()
-    except:
-        pass
-    return codes
+            if df_cons is not None and len(df_cons) > 0:
+                return df_cons['代码'].tolist()
+        except Exception:
+            pass
+        
+        if attempt < max_retries - 1:
+            delay = 3 + attempt * 2
+            time.sleep(delay)
+    
+    return []
+
+
+def _normalize_code(code: str) -> str:
+    """统一不同数据源的代码格式为纯数字"""
+    c = str(code).strip().upper()
+    # 去掉 SH/SZ/BJ 前缀，去掉 .SH/.SZ 后缀
+    for prefix in ('SH', 'SZ', 'BJ', 'S_'):
+        if c.startswith(prefix) and len(c) > 2:
+            c = c[len(prefix):]
+    for suffix in ('.SH', '.SZ', '.BJ', '.OF', '.IB'):
+        if c.endswith(suffix):
+            c = c[:-len(suffix)]
+    return c
 
 
 def match_stocks_to_sectors(all_stocks: List[Stock], sector_names: List[str]) -> Dict[str, List[Stock]]:
-    """将个股匹配到所属板块（优先用成分股API，fallback名称匹配）"""
+    """将个股匹配到所属板块（成分股API优先，限频重试，全部板块）"""
     result: Dict[str, List[Stock]] = {name: [] for name in sector_names}
     
-    # 先尝试用成分股API批量获取（只对前10个板块，避免太慢）
-    for sector_name in sector_names[:10]:
-        codes = fetch_sector_constituents(sector_name)
-        if codes:
-            code_set = set(codes)
-            result[sector_name] = [s for s in all_stocks if s.code in code_set]
+    # 预建代码查找表
+    stock_by_code = {_normalize_code(s.code): s for s in all_stocks}
     
-    # 对没有成分股的板块，用名称模糊匹配
+    total = len(sector_names)
+    matched_via_api = 0
+    for i, sector_name in enumerate(sector_names):
+        if i > 0 and i % 3 == 0:
+            time.sleep(1.5)
+        
+        codes = fetch_sector_constituents(sector_name, max_retries=2)
+        if codes:
+            matched_stocks = [stock_by_code[_normalize_code(c)] for c in codes if _normalize_code(c) in stock_by_code]
+            if matched_stocks:
+                result[sector_name] = matched_stocks
+                matched_via_api += 1
+    
+    # Fallback: 用板块名模糊匹配（Sina数据没有 industry 字段，只做代码匹配兜底）
+    name_match_count = 0
     for sector_name in sector_names:
         if not result.get(sector_name):
             result[sector_name] = [
                 s for s in all_stocks 
-                if sector_name in s.industry or s.industry in sector_name
+                if sector_name in (s.industry or '') or (s.industry or '') in sector_name
             ]
+            if len(result[sector_name]) > 0:
+                name_match_count += 1
     
+    print(f"    API成分股匹配: {matched_via_api}/{total} 个板块")
+    print(f"    名称模糊匹配: {name_match_count}/{total} 个板块")
     return result
 
 
 def compute_sector_stats(sectors: List[Sector], all_stocks: List[Stock]) -> List[Sector]:
-    """用全市场数据补充板块统计（涨停数、成交量变化、成分股等）"""
+    """用全市场数据补充板块统计（成分股API优先，次用stock.industry字段）"""
+    sector_names = [s.name for s in sectors]
+    name_stock_map = match_stocks_to_sectors(all_stocks, sector_names)
+    
     for sec in sectors:
-        # 找属于该板块的个股
-        sector_stocks = [s for s in all_stocks if sec.name in s.industry or s.industry in sec.name]
-        sec.stocks = sector_stocks
-        
-        # 统计涨停
-        sec.num_limit_up = sum(1 for s in sector_stocks if s.is_limit_up)
-        
-        # 统计上涨家数
-        sec.num_stocks_up = sum(1 for s in sector_stocks if s.change_pct > 0)
+        sec.stocks = name_stock_map.get(sec.name, [])
+        sec.num_limit_up = sum(1 for s in sec.stocks if s.is_limit_up)
+        sec.num_stocks_up = sum(1 for s in sec.stocks if s.change_pct > 0)
         
         # 量比均值
-        if sector_stocks:
-            ratios = [s.volume_ratio for s in sector_stocks if s.volume_ratio > 0]
+        if sec.stocks:
+            ratios = [s.volume_ratio for s in sec.stocks if s.volume_ratio > 0]
             sec.volume_change = sum(ratios) / len(ratios) if ratios else 1.0
     
     return sectors
