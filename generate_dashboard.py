@@ -5,13 +5,13 @@ generate_dashboard.py — 生成全量数据仪表盘
 运行所有引擎 → 汇总为 docs/dashboard.html
 """
 import json, os, sys
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
 OUT = os.path.join(ROOT, "docs", "dashboard.html")
-NOW = datetime.now().strftime("%Y-%m-%d %H:%M")
+NOW = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M")
 
 data = {
     "timestamp": NOW,
@@ -318,7 +318,7 @@ a{{color:var(--a);font-size:12px}}
 .leg-item .k{{font-weight:700;color:var(--a);font-family:monospace;font-size:12px}}
 .leg-item .d{{color:var(--t2)}}
 </style></head><body>
-<div class="header"><h1>🧠 A股量化仪表盘</h1><div class="ts">{NOW} · 20层系统实时数据 · <a href="index.html">←返回首页</a></div></div>
+<div class="header"><h1>🧠 A股量化仪表盘</h1><div class="ts">{NOW} (UTC+8) · 20层系统实时数据 · <a href="index.html">←返回首页</a></div></div>
 
 <div class="grid">
 
