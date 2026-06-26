@@ -8,25 +8,31 @@ import pandas as pd
 import requests
 import json, os, sys, time
 from datetime import datetime, timedelta
+from cloud_utils import bjt_now, bjt_format, retry_with_backoff, write_report_log
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT_HTML = os.path.join(ROOT, "reports", "midday_report.html")
-TODAY = datetime.now()
+OUT_HTML = os.path.join(ROOT, "docs", "midday_report.html")
+TODAY = bjt_now()
 TODAY_STR = TODAY.strftime("%Y-%m-%d")
+errors_log = []
+
+# Data freshness check: midday report should run 11:30-13:00 BJT
+DATA_WARNING = ""
+bjth = TODAY.hour
+if bjth >= 15:
+    DATA_WARNING = " ⚠️ 数据采集时间异常（≥15:00），数据为收盘后数据，非午盘数据！"
+    errors_log.append("stale_data: run after close")
+elif bjth >= 13:
+    DATA_WARNING = " ⚠️ 数据采集时间偏晚，可能包含下午盘数据"
 
 def to_f(v, d=None):
     try: return float(v)
     except: return d
 
 def try_fetch(func, name):
-    for a in range(2):
-        try:
-            s = time.time(); r = func()
-            print(f"  ✅ [{name}] {len(r) if hasattr(r,'__len__') else 'N/A'}行 ({time.time()-s:.1f}s)")
-            return r
-        except Exception as e:
-            if a < 1: print(f"  ⚠ [{name}] {str(e)[:60]}")
-    return None
+    result, ok = retry_with_backoff(func, name, max_retries=2)
+    if not ok: errors_log.append(name)
+    return result
 
 def sina_idx(code):
     try:
@@ -202,7 +208,7 @@ td{{padding:6px 10px;border-bottom:1px solid var(--bd)}}tr:hover{{background:#22
 </style>
 </head>
 <body><div class="c">
-<div class="h"><h1>📊 A股午盘分析</h1><div class="s">{TODAY_STR} · AI自动生成 · 云端运行 ☁️</div></div>
+<div class="h"><h1>📊 A股午盘分析</h1><div class="s">{TODAY_STR} · AI自动生成 · 云端运行 ☁️{DATA_WARNING}</div></div>
 <div class="tldr">📈 {tl}</div>
 
 <div class="sec"><div class="st">📊 上午盘面概况</div>
@@ -233,7 +239,7 @@ td{{padding:6px 10px;border-bottom:1px solid var(--bd)}}tr:hover{{background:#22
 <p><strong>⚠️ 免责声明</strong></p>
 <p>本报告由AI自动生成，数据来源Sina/东方财富/中行API，仅供客观市场数据参考，不构成任何投资建议。</p>
 <p>股市有风险，投资需谨慎。过往业绩不代表未来表现。</p>
-<p>☁️ 云端运行于 GitHub Actions · 生成于 {TODAY.strftime('%Y-%m-%d %H:%M UTC')}</p>
+<p>☁️ 云端运行于 GitHub Actions · {bjt_format(TODAY)}</p>
 </div>
 </div></body></html>"""
 
@@ -241,3 +247,5 @@ os.makedirs(os.path.dirname(OUT_HTML), exist_ok=True)
 with open(OUT_HTML, 'w', encoding='utf-8') as f:
     f.write(html)
 print(f"✅ 报告已生成: {OUT_HTML}")
+write_report_log("midday", status="success" if not errors_log else "partial",
+                 errors=errors_log if errors_log else None)

@@ -1,0 +1,23 @@
+[
+  {
+    "time": "2026-06-26 18:37",
+    "timezone": "UTC+8",
+    "report": "morning",
+    "status": "success"
+  },
+  {
+    "time": "2026-06-26 18:39",
+    "timezone": "UTC+8",
+    "report": "midday",
+    "status": "partial",
+    "errors": [
+      "stale_data: run after close"
+    ]
+  },
+  {
+    "time": "2026-06-26 18:41",
+    "timezone": "UTC+8",
+    "report": "closing",
+    "status": "success"
+  }
+]

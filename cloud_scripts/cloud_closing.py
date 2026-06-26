@@ -8,26 +8,30 @@ import pandas as pd
 import requests
 import json, os, sys, time
 from datetime import datetime, timedelta
+from cloud_utils import bjt_now, bjt_format, retry_with_backoff, write_report_log
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT_HTML = os.path.join(ROOT, "reports", "closing_report.html")
-TODAY = datetime.now()
+OUT_HTML = os.path.join(ROOT, "docs", "closing_report.html")
+TODAY = bjt_now()
 TODAY_STR = TODAY.strftime("%Y-%m-%d")
 WEEKDAY = ["周一","周二","周三","周四","周五","周六","周日"][TODAY.weekday()]
+errors_log = []
 
 def to_f(v, d=None):
     try: return float(v)
     except: return d
 
 def sina_idx(code):
-    try:
+    def _fetch():
         r = requests.get(f"https://hq.sinajs.cn/list={code}",
                          headers={"Referer":"https://finance.sina.com.cn"}, timeout=10)
         r.encoding='gbk'
         if code in r.text and '=""' not in r.text:
             return r.text.split('="')[1].strip('";').split(',')
-    except: pass
-    return None
+        return None
+    result, ok = retry_with_backoff(_fetch, f"sina_idx:{code}", max_retries=2)
+    if not ok: errors_log.append(f"sina_idx:{code}")
+    return result
 
 print(f"☁️ 云端收盘报告 {TODAY_STR} {WEEKDAY}")
 
@@ -42,47 +46,65 @@ for name, code in [("上证指数","s_sh000001"),("深证成指","s_sz399001"),
 
 # Concept flow
 try:
-    df = ak.stock_fund_flow_concept(symbol='即时')
-    top = df.nlargest(5,'净额')
-    bot = df.nsmallest(5,'净额')
-    data["concepts"] = {
-        "in": [{"name":r['行业'],"chg":to_f(r['行业-涨跌幅']),"net":to_f(r['净额'])} for _,r in top.iterrows()],
-        "out": [{"name":r['行业'],"chg":to_f(r['行业-涨跌幅']),"net":to_f(r['净额'])} for _,r in bot.iterrows()]
-    }
-except: pass
+    result, ok = retry_with_backoff(lambda: ak.stock_fund_flow_concept(symbol='即时'), "concept_flow", max_retries=2)
+    if ok:
+        df = result
+        top = df.nlargest(5,'净额')
+        bot = df.nsmallest(5,'净额')
+        data["concepts"] = {
+            "in": [{"name":r['行业'],"chg":to_f(r['行业-涨跌幅']),"net":to_f(r['净额'])} for _,r in top.iterrows()],
+            "out": [{"name":r['行业'],"chg":to_f(r['行业-涨跌幅']),"net":to_f(r['净额'])} for _,r in bot.iterrows()]
+        }
+    else:
+        errors_log.append("concept_flow")
+except: errors_log.append("concept_flow")
 
 # Industry sectors
 try:
-    df = ak.stock_fund_flow_industry(symbol='即时')
-    top = df.nlargest(5,'行业-涨跌幅')
-    bot = df.nsmallest(5,'行业-涨跌幅')
-    data["sectors"] = {
-        "up": [{"name":r['行业'],"chg":to_f(r['行业-涨跌幅']),"net":to_f(r['净额'])} for _,r in top.iterrows()],
-        "down": [{"name":r['行业'],"chg":to_f(r['行业-涨跌幅']),"net":to_f(r['净额'])} for _,r in bot.iterrows()]
-    }
-except: pass
+    result, ok = retry_with_backoff(lambda: ak.stock_fund_flow_industry(symbol='即时'), "industry_flow", max_retries=2)
+    if ok:
+        df = result
+        top = df.nlargest(5,'行业-涨跌幅')
+        bot = df.nsmallest(5,'行业-涨跌幅')
+        data["sectors"] = {
+            "up": [{"name":r['行业'],"chg":to_f(r['行业-涨跌幅']),"net":to_f(r['净额'])} for _,r in top.iterrows()],
+            "down": [{"name":r['行业'],"chg":to_f(r['行业-涨跌幅']),"net":to_f(r['净额'])} for _,r in bot.iterrows()]
+        }
+    else:
+        errors_log.append("industry_flow")
+except: errors_log.append("industry_flow")
 
 # Futures
 try:
-    df = ak.futures_global_spot_em()
-    for pre, label in [(["GC"],"黄金"),(["CL"],"原油"),(["HG"],"铜"),(["SI"],"白银"),(["CN00Y","CN26N"],"A50")]:
-        m = pd.Series(False,index=df.index)
-        for p in pre: m |= df["代码"].str.startswith(p,na=False)
-        c = df[m & df["最新价"].notna()]
-        if len(c)>0: data["futures"][label] = {"p":to_f(c.iloc[0]["最新价"]),"c":to_f(c.iloc[0]["涨跌幅"])}
-except: pass
+    result, ok = retry_with_backoff(lambda: ak.futures_global_spot_em(), "futures", max_retries=2)
+    if ok:
+        df = result
+        for pre, label in [(["GC"],"黄金"),(["CL"],"原油"),(["HG"],"铜"),(["SI"],"白银"),(["CN00Y","CN26N"],"A50")]:
+            m = pd.Series(False,index=df.index)
+            for p in pre: m |= df["代码"].str.startswith(p,na=False)
+            c = df[m & df["最新价"].notna()]
+            if len(c)>0: data["futures"][label] = {"p":to_f(c.iloc[0]["最新价"]),"c":to_f(c.iloc[0]["涨跌幅"])}
+    else:
+        errors_log.append("futures")
+except: errors_log.append("futures")
 
 # FX
 try:
-    df = ak.currency_boc_sina()
-    data["fx"] = to_f(df.iloc[-1]["央行中间价"])
-except: pass
+    result, ok = retry_with_backoff(lambda: ak.currency_boc_sina(), "fx", max_retries=2)
+    if ok:
+        data["fx"] = to_f(result.iloc[-1]["央行中间价"])
+    else:
+        errors_log.append("fx")
+except: errors_log.append("fx")
 
 # News
 try:
-    df = ak.stock_info_global_sina()
-    data["news"] = [str(r.get("内容",""))[:120] for _,r in df.head(6).iterrows()]
-except: pass
+    result, ok = retry_with_backoff(lambda: ak.stock_info_global_sina(), "news", max_retries=2)
+    if ok:
+        data["news"] = [str(r.get("内容",""))[:120] for _,r in result.head(6).iterrows()]
+    else:
+        errors_log.append("news")
+except: errors_log.append("news")
 
 # ======== HTML ========
 def v(x,f=",.0f"):
@@ -149,7 +171,7 @@ td{{padding:6px 10px;border-bottom:1px solid var(--bd)}}tr:hover{{background:#22
 
 <div class="footer">
 <p><strong>⚠️ 免责声明</strong> 本报告由AI自动生成，数据来源Sina/东方财富/中行，仅供参考不构成投资建议。股市有风险，投资需谨慎。</p>
-<p>☁️ 云端运行于 GitHub Actions · {TODAY.strftime('%Y-%m-%d %H:%M UTC')}</p>
+<p>☁️ 云端运行于 GitHub Actions · {bjt_format(TODAY)}</p>
 </div>
 </div></body></html>"""
 
@@ -157,3 +179,5 @@ os.makedirs(os.path.dirname(OUT_HTML), exist_ok=True)
 with open(OUT_HTML, 'w', encoding='utf-8') as f:
     f.write(html)
 print(f"✅ 报告已生成: {OUT_HTML}")
+write_report_log("closing", status="success" if not errors_log else "partial",
+                 errors=errors_log if errors_log else None)

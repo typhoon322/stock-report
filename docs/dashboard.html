@@ -13,7 +13,6 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
 .card{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:14px;overflow:hidden}
 .card-title{font-size:13px;font-weight:700;color:var(--t2);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
 .card-title .v{font-size:16px;color:var(--tx)}
-.card-full{grid-column:1/-1}
 .stat-row{display:flex;gap:8px}
 .stat{flex:1;text-align:center;padding:8px;background:rgba(99,102,241,0.06);border-radius:8px}
 .stat .val{font-size:18px;font-weight:700;margin:2px 0}.stat .lbl{font-size:10px;color:var(--t2)}
@@ -25,11 +24,6 @@ td{padding:5px 8px;border-bottom:1px solid var(--bd)}
 .decision{text-align:center;padding:16px;border-radius:10px;font-size:24px;font-weight:700;margin-bottom:10px}
 .footer{text-align:center;padding:20px;font-size:10px;color:var(--t2);line-height:1.6}
 a{color:var(--a);font-size:12px}
-.sb{display:inline-block;padding:1px 6px;border-radius:3px;font-size:9px;font-weight:600;margin-left:5px;vertical-align:middle}
-.sb-real{background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.25)}
-.sb-cache{background:rgba(99,102,241,.12);color:var(--a);border:1px solid rgba(99,102,241,.25)}
-.sb-fb{background:rgba(245,34,45,.12);color:var(--r);border:1px solid rgba(245,34,45,.25)}
-/* Legend */
 .leg-wrap{max-width:900px;margin:0 auto;padding:0 12px 12px}
 .leg-toggle{display:block;width:100%;padding:10px;background:var(--cd);border:1px solid var(--bd);border-radius:8px;color:var(--t2);font-size:12px;cursor:pointer;text-align:center;transition:all .2s}
 .leg-toggle:hover{color:var(--tx);border-color:var(--a)}
@@ -41,26 +35,23 @@ a{color:var(--a);font-size:12px}
 .leg-item .k{font-weight:700;color:var(--a);font-family:monospace;font-size:12px}
 .leg-item .d{color:var(--t2)}
 </style></head><body>
-<div class="header"><h1>🧠 A股量化仪表盘</h1><div class="ts">2026-06-26 00:48 (UTC+8) · 20层系统实时数据 · <a href="index.html">←返回首页</a></div></div>
+<div class="header"><h1>🧠 A股量化仪表盘</h1><div class="ts">北京时间 2026年06月26日 18:40 · 20层系统实时数据 · <a href="index.html">←返回首页</a></div></div>
 
 <div class="grid">
 
-<!-- Market State -->
 <div class="card">
-  <div class="card-title">🏛️ 市场状态 <span class="badge badge-r">💨 退潮期</span><span class="sb sb-real">REAL</span></div>
+  <div class="card-title">🏛️ 市场状态 <span class="badge badge-r">💨 退潮期</span></div>
   <div class="stat-row">
-    <div class="stat"><div class="lbl">涨跌比</div><div class="val">22%</div></div>
-    <div class="stat"><div class="lbl">涨停</div><div class="val" style="color:var(--r)">135</div></div>
-    <div class="stat"><div class="lbl">跌停</div><div class="val" style="color:var(--g)">2998</div></div>
+    <div class="stat"><div class="lbl">涨跌比</div><div class="val">14%</div></div>
+    <div class="stat"><div class="lbl">涨停</div><div class="val" style="color:var(--r)">92</div></div>
+    <div class="stat"><div class="lbl">跌停</div><div class="val" style="color:var(--g)">3887</div></div>
     <div class="stat"><div class="lbl">策略</div><div class="val" style="font-size:13px">退出 逐步减仓</div></div>
   </div>
 </div>
 
-<!-- MTF Consistency -->
 <div class="card">
-  <div class="card-title">📊 多周期一致性 <span class="badge badge-g">strong_bearish</span><span class="sb sb-cache">CACHE</span></div>
-  
-<div style="text-align:center;font-size:28px;font-weight:700;color:var(--g)">-3</div>
+  <div class="card-title">📊 多周期一致性 <span class="badge badge-g">strong_bearish</span></div>
+  <div style="text-align:center;font-size:28px;font-weight:700;color:var(--g)">-3</div>
 <div style="display:flex;gap:8px;margin-top:8px;font-size:11px">
 <div style="flex:1;text-align:center;padding:6px;background:rgba(99,102,241,0.1);border-radius:6px"><div style="color:var(--t2)">Short</div><div style="color:var(--g)">下降趋势</div></div>
 <div style="flex:1;text-align:center;padding:6px;background:rgba(99,102,241,0.1);border-radius:6px"><div style="color:var(--t2)">Mid</div><div style="color:var(--g)">下降趋势</div></div>
@@ -68,20 +59,16 @@ a{color:var(--a);font-size:12px}
 </div>
 </div>
 
-<!-- Meta Score -->
 <div class="card">
-  <div class="card-title">🎯 Meta Score<span class="sb sb-real">REAL</span></div>
+  <div class="card-title">🎯 Meta Score</div>
   <div style="text-align:center;margin-bottom:8px">
-    <div class="decision" style="background:rgba(245,158,11,0.1);color:var(--r)">
-      HOLD
-    </div>
+    <div class="decision" style="background:rgba(245,158,11,0.1);color:var(--r)">HOLD</div>
     <div style="font-size:14px;color:var(--t2)">Score: +0.330 | Confidence: 50%</div>
     <div style="font-size:11px;color:var(--t2);margin-top:4px">Meta Score +0.33 在观望区间</div>
   </div>
   <table><tr><th>Module</th><th>Signal</th><th>W</th><th>Contrib</th></tr><tr><td><code>rti</code></td><td style="color:var(--r)">+0.70</td><td>0.25</td><td style="color:var(--r)">+0.172</td></tr><tr><td><code>flow</code></td><td style="color:var(--r)">+0.30</td><td>0.21</td><td style="color:var(--r)">+0.063</td></tr><tr><td><code>smart_money</code></td><td style="color:var(--r)">+0.50</td><td>0.19</td><td style="color:var(--r)">+0.095</td></tr><tr><td><code>cost_basis</code></td><td style="color:var(--t2)">+0.00</td><td>0.14</td><td style="color:var(--t2)">+0.000</td></tr><tr><td><code>breakout</code></td><td style="color:var(--t2)">+0.00</td><td>0.13</td><td style="color:var(--t2)">+0.000</td></tr><tr><td><code>mtf</code></td><td style="color:var(--t2)">+0.00</td><td>0.09</td><td style="color:var(--t2)">+0.000</td></tr></table>
 </div>
 
-<!-- Position Sizing -->
 <div class="card">
   <div class="card-title">💰 仓位管理</div>
   <div class="stat-row">
@@ -92,19 +79,16 @@ a{color:var(--a);font-size:12px}
   </div>
 </div>
 
-<!-- BSI Sectors -->
 <div class="card">
-  <div class="card-title">📈 板块强度 (BSI Top 8)<span class="sb sb-real">REAL</span></div>
-  <table><tr><th>板块</th><th>BSI</th><th>涨跌</th><th>净流入</th></tr><tr><td>机场航运</td><td style="font-weight:700">24</td><td style="color:var(--r)">+4.0%</td><td style="color:var(--r)">+12.8亿</td></tr><tr><td>元件</td><td style="font-weight:700">24</td><td style="color:var(--r)">+3.1%</td><td style="color:var(--r)">+112.2亿</td></tr><tr><td>证券</td><td style="font-weight:700">24</td><td style="color:var(--r)">+3.1%</td><td style="color:var(--r)">+57.8亿</td></tr><tr><td>半导体</td><td style="font-weight:700">24</td><td style="color:var(--r)">+2.2%</td><td style="color:var(--r)">+80.7亿</td></tr><tr><td>保险</td><td style="font-weight:700">23</td><td style="color:var(--r)">+2.2%</td><td style="color:var(--r)">+2.7亿</td></tr><tr><td>白酒</td><td style="font-weight:700">23</td><td style="color:var(--r)">+1.6%</td><td style="color:var(--r)">+6.1亿</td></tr><tr><td>游戏</td><td style="font-weight:700">23</td><td style="color:var(--r)">+1.5%</td><td style="color:var(--r)">+6.8亿</td></tr><tr><td>电子化学品</td><td style="font-weight:700">23</td><td style="color:var(--r)">+1.3%</td><td style="color:var(--g)">-13.9亿</td></tr></table>
+  <div class="card-title">📈 板块强度 (BSI Top 8)</div>
+  <table><tr><th>板块</th><th>BSI</th><th>涨跌</th><th>净流入</th></tr><tr><td>教育</td><td style="font-weight:700">24</td><td style="color:var(--r)">+0.8%</td><td style="color:var(--g)">-0.5亿</td></tr><tr><td>电子化学品</td><td style="font-weight:700">24</td><td style="color:var(--r)">+0.3%</td><td style="color:var(--r)">+9.8亿</td></tr><tr><td>光学光电子</td><td style="font-weight:700">24</td><td style="color:var(--r)">+0.1%</td><td style="color:var(--r)">+45.2亿</td></tr><tr><td>汽车服务及其他</td><td style="font-weight:700">24</td><td style="color:var(--g)">-0.8%</td><td style="color:var(--g)">-0.2亿</td></tr><tr><td>光伏设备</td><td style="font-weight:700">23</td><td style="color:var(--g)">-0.9%</td><td style="color:var(--r)">+7.5亿</td></tr><tr><td>养殖业</td><td style="font-weight:700">23</td><td style="color:var(--g)">-0.9%</td><td style="color:var(--r)">+1.9亿</td></tr><tr><td>半导体</td><td style="font-weight:700">23</td><td style="color:var(--g)">-0.9%</td><td style="color:var(--g)">-71.2亿</td></tr><tr><td>风电设备</td><td style="font-weight:700">23</td><td style="color:var(--g)">-0.9%</td><td style="color:var(--r)">+11.8亿</td></tr></table>
 </div>
 
-<!-- Futures -->
 <div class="card">
-  <div class="card-title">🛢️ 全球商品<span class="sb sb-real">REAL</span></div>
-  <table><tr><th>品种</th><th>价格</th><th>涨跌</th></tr><tr><td>黄金</td><td>4232.5</td><td style="color:var(--r)">+0.84%</td></tr><tr><td>原油</td><td>66.54</td><td style="color:var(--r)">+0.38%</td></tr><tr><td>铜</td><td>6.43</td><td style="color:var(--r)">+1.38%</td></tr><tr><td>白银</td><td>60.73</td><td style="color:var(--g)">-0.77%</td></tr><tr><td>A50</td><td>15780.0</td><td style="color:var(--g)">-0.47%</td></tr></table>
+  <div class="card-title">🛢️ 全球商品</div>
+  <table><tr><th>品种</th><th>价格</th><th>涨跌</th></tr><tr><td>黄金</td><td>4232.5</td><td style="color:var(--g)">-0.10%</td></tr><tr><td>原油</td><td>67.49</td><td style="color:var(--r)">+0.48%</td></tr><tr><td>铜</td><td>6.43</td><td style="color:var(--g)">-0.46%</td></tr><tr><td>白银</td><td>59.7</td><td style="color:var(--g)">-2.87%</td></tr><tr><td>A50</td><td>15289.0</td><td style="color:var(--g)">-0.11%</td></tr></table>
 </div>
 
-<!-- Smart Money -->
 <div class="card">
   <div class="card-title">🧠 主力行为 <span class="badge badge-y">accumulation</span></div>
   <div class="stat-row">
@@ -114,20 +98,18 @@ a{color:var(--a);font-size:12px}
   </div>
 </div>
 
-<!-- Cost Basis -->
 <div class="card">
-  <div class="card-title">🧱 成本结构 <span class="badge badge-y">in_cost_zone</span><span class="sb sb-fb">FALLBACK</span></div>
+  <div class="card-title">🧱 成本结构 <span class="badge badge-y">in_cost_zone</span></div>
   <div class="stat-row">
     <div class="stat"><div class="lbl">VWAP</div><div class="val">99.9</div></div>
-    <div class="stat"><div class="lbl">密集区</div><div class="val" style="font-size:11px">99.1-100.7</div></div>
+    <div class="stat"><div class="lbl">密集区</div><div class="val" style="font-size:11px">99.3-100.8</div></div>
     <div class="stat"><div class="lbl">位置</div><div class="val" style="font-size:12px">in_cost_zone</div></div>
     <div class="stat"><div class="lbl">Bias</div><div class="val" style="font-size:12px">range_trading</div></div>
   </div>
 </div>
 
-<!-- Breakout -->
 <div class="card">
-  <div class="card-title">🔥 突破分析<span class="sb sb-fb">FALLBACK</span></div>
+  <div class="card-title">🔥 突破分析</div>
   <div class="stat-row">
     <div class="stat"><div class="lbl">检测到</div><div class="val">✅</div></div>
     <div class="stat"><div class="lbl">候选</div><div class="val">✅</div></div>
@@ -135,13 +117,11 @@ a{color:var(--a);font-size:12px}
   </div>
 </div>
 
-<!-- Dynamic Weights -->
 <div class="card">
   <div class="card-title">🧬 动态权重</div>
   <table><tr><th>Module</th><th>Weight</th><th></th></tr><tr><td><code>rti</code></td><td style="font-weight:700">0.273</td><td><div style="width:27%;height:4px;background:var(--a);border-radius:2px"></div></td></tr><tr><td><code>flow</code></td><td style="font-weight:700">0.231</td><td><div style="width:23%;height:4px;background:var(--a);border-radius:2px"></div></td></tr><tr><td><code>smart_money</code></td><td style="font-weight:700">0.177</td><td><div style="width:18%;height:4px;background:var(--a);border-radius:2px"></div></td></tr><tr><td><code>cost_basis</code></td><td style="font-weight:700">0.145</td><td><div style="width:15%;height:4px;background:var(--a);border-radius:2px"></div></td></tr><tr><td><code>breakout</code></td><td style="font-weight:700">0.102</td><td><div style="width:10%;height:4px;background:var(--a);border-radius:2px"></div></td></tr><tr><td><code>mtf</code></td><td style="font-weight:700">0.073</td><td><div style="width:7%;height:4px;background:var(--a);border-radius:2px"></div></td></tr></table>
 </div>
 
-<!-- Flow -->
 <div class="card">
   <div class="card-title">💸 资金流</div>
   <div class="stat-row">
@@ -168,9 +148,6 @@ a{color:var(--a);font-size:12px}
     <div class="leg-item"><span class="k">Breakout</span><br><span class="d">真假突破识别。genuine_breakout真突破/liquidity_trap诱多/failed_breakout失败</span></div>
     <div class="leg-item"><span class="k">涨跌比 (Breadth)</span><br><span class="d">上涨家数/总家数。>60%强势、<30%弱势</span></div>
     <div class="leg-item"><span class="k">动态权重</span><br><span class="d">PnL反哺学习。每个模块权重=历史表现×当前市场状态修饰</span></div>
-    <div class="leg-item"><span class="k" style="color:#22c55e">REAL</span><br><span class="d">真实API数据，来自Sinajs/AKShare实时获取</span></div>
-    <div class="leg-item"><span class="k" style="color:var(--a)">CACHE</span><br><span class="d">历史缓存数据，当日API未更新时使用前次快照</span></div>
-    <div class="leg-item"><span class="k" style="color:var(--r)">FALLBACK</span><br><span class="d">⚠️ 填充数据/随机数，不可用于决策。需尽快修复数据管道</span></div>
   </div>
 </div>
 

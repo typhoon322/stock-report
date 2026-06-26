@@ -9,26 +9,30 @@ import pandas as pd
 import requests
 import json, os, sys, time
 from datetime import datetime, timedelta
+from cloud_utils import bjt_now, bjt_format, retry_with_backoff, write_report_log
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT_HTML = os.path.join(ROOT, "reports", "morning_report.html")
-TODAY = datetime.now()
+OUT_HTML = os.path.join(ROOT, "docs", "morning_report.html")
+TODAY = bjt_now()
 TODAY_STR = TODAY.strftime("%Y-%m-%d")
 WEEKDAY = ["周一","周二","周三","周四","周五","周六","周日"][TODAY.weekday()]
+errors_log = []
 
 def to_f(v, d=None):
     try: return float(v)
     except: return d
 
 def sina_idx(code):
-    try:
+    def _fetch():
         r = requests.get(f"https://hq.sinajs.cn/list={code}",
                          headers={"Referer":"https://finance.sina.com.cn"}, timeout=10)
         r.encoding='gbk'
         if code in r.text and '=""' not in r.text:
             return r.text.split('="')[1].strip('";').split(',')
-    except: pass
-    return None
+        return None
+    result, ok = retry_with_backoff(_fetch, f"sina_idx:{code}", max_retries=2)
+    if not ok: errors_log.append(f"sina_idx:{code}")
+    return result
 
 # ======== DATA FETCH ========
 print(f"☁️ 云端早盘报告 {TODAY_STR} {WEEKDAY}")
@@ -37,12 +41,17 @@ data = {"us": {}, "a": {}, "asia": {}, "futures": {}, "fx": {}, "news": []}
 # US indices
 for name, sym in [("标普500",".INX"),("道琼斯",".DJI"),("纳斯达克",".IXIC")]:
     try:
-        df = ak.index_us_stock_sina(symbol=sym)
-        a,b = df.iloc[-1], df.iloc[-2]
-        c,p = to_f(a['close']), to_f(b['close'])
-        data["us"][name] = {"close":c,"chg":round((c-p)/p*100,2) if p else None,
-                            "hi":to_f(a['high']),"lo":to_f(a['low']),
-                            "date":str(a['date'])}
+        result, ok = retry_with_backoff(lambda s=sym: ak.index_us_stock_sina(symbol=s), f"US:{name}", max_retries=2)
+        if ok:
+            df = result
+            a,b = df.iloc[-1], df.iloc[-2]
+            c,p = to_f(a['close']), to_f(b['close'])
+            data["us"][name] = {"close":c,"chg":round((c-p)/p*100,2) if p else None,
+                                "hi":to_f(a['high']),"lo":to_f(a['low']),
+                                "date":str(a['date'])}
+        else:
+            data["us"][name] = None
+            errors_log.append(f"US:{name}")
     except: data["us"][name] = None
 
 # A indices (Sinajs)
@@ -58,17 +67,21 @@ for name, code in [("恒生指数","int_hangseng"),("日经225","int_nikkei")]:
 
 # Futures
 try:
-    df = ak.futures_global_spot_em()
-    for pre, label in [(["GC"],"COMEX黄金"),(["CL"],"NYMEX原油"),(["B"],"布伦特原油"),
-                        (["HG"],"COMEX铜"),(["SI"],"COMEX白银"),(["NG"],"天然气"),
-                        (["CN00Y","CN26N"],"富时A50")]:
-        m = pd.Series(False,index=df.index)
-        for p in pre: m |= df["代码"].str.startswith(p,na=False)
-        c = df[m & df["最新价"].notna()]
-        if len(c)>0: 
-            r = c.iloc[0]
-            data["futures"][label] = {"price":to_f(r["最新价"]),"chg":to_f(r["涨跌幅"])}
-except: pass
+    result, ok = retry_with_backoff(lambda: ak.futures_global_spot_em(), "futures", max_retries=2)
+    if ok:
+        df = result
+        for pre, label in [(["GC"],"COMEX黄金"),(["CL"],"NYMEX原油"),(["B"],"布伦特原油"),
+                            (["HG"],"COMEX铜"),(["SI"],"COMEX白银"),(["NG"],"天然气"),
+                            (["CN00Y","CN26N"],"富时A50")]:
+            m = pd.Series(False,index=df.index)
+            for p in pre: m |= df["代码"].str.startswith(p,na=False)
+            c = df[m & df["最新价"].notna()]
+            if len(c)>0: 
+                r = c.iloc[0]
+                data["futures"][label] = {"price":to_f(r["最新价"]),"chg":to_f(r["涨跌幅"])}
+    else:
+        errors_log.append("futures")
+except: errors_log.append("futures")
 
 # FX
 try:
@@ -217,7 +230,7 @@ tr:hover{{background:#222531}}
 </div>
 <div class="footer">
 <p><strong>⚠️ 免责声明</strong> 本报告由AI自动生成，数据来源Sina/东方财富/中行，仅供参考不构成投资建议。股市有风险，投资需谨慎。</p>
-<p>☁️ 云端运行于 GitHub Actions · 更新于 {TODAY.strftime('%Y-%m-%d %H:%M UTC')}</p>
+<p>☁️ 云端运行于 GitHub Actions · {bjt_format(TODAY)}</p>
 </div>
 </div></body></html>"""
 
@@ -225,3 +238,5 @@ os.makedirs(os.path.dirname(OUT_HTML), exist_ok=True)
 with open(OUT_HTML, 'w', encoding='utf-8') as f:
     f.write(html)
 print(f"✅ 报告已生成: {OUT_HTML}")
+write_report_log("morning", status="success" if not errors_log else "partial",
+                 errors=errors_log if errors_log else None)

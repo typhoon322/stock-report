@@ -8,24 +8,22 @@ import pandas as pd
 import requests
 import json, os, sys, time
 from datetime import datetime, timedelta
+from cloud_utils import bjt_now, bjt_format, retry_with_backoff, write_report_log
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TO = datetime.now()
+TO = bjt_now()
 DAYS = [(TO - timedelta(days=i)).strftime("%Y-%m-%d") for i in range(7, 0, -1)]
-DAYS = [d for d in DAYS if d <= TO.strftime("%Y-%m-%d")][-5:]  # 最近5个交易日
+DAYS = [d for d in DAYS if d <= TO.strftime("%Y-%m-%d")][-5:]
+errors_log = []
 
 def to_f(v): 
     try: return float(v)
     except: return None
 
 def try_fetch(func, name):
-    try:
-        s = time.time(); r = func()
-        print(f"  ✅ [{name}] {len(r) if hasattr(r,'__len__') else 'N/A'}行 ({time.time()-s:.1f}s)")
-        return r
-    except Exception as e:
-        print(f"  ⚠ [{name}] {str(e)[:80]}")
-        return None
+    result, ok = retry_with_backoff(func, name, max_retries=2)
+    if not ok: errors_log.append(name)
+    return result
 
 data = {
     "title": f"A股周报 — 截至{TO.strftime('%Y-%m-%d')}",
@@ -255,7 +253,7 @@ td{{padding:5px 8px;border-bottom:1px solid var(--bd)}}tr:hover{{background:#222
 <div class="footer">
   <p>☁️ 云端运行 · 数据来源: Sina/东方财富/中行</p>
   <p>⚠️ 免责声明: 本报告仅供参考，不构成投资建议</p>
-  <p>生成于 {TO.strftime('%Y-%m-%d %H:%M UTC')}</p>
+  <p>生成于 {bjt_format(TO)}</p>
 </div>
 </body></html>"""
     
@@ -267,3 +265,5 @@ except Exception as e:
     print(f"⚠ HTML生成失败: {e}")
 
 print(f"\n全部完成: weekly_data.json + weekly_report.html")
+write_report_log("weekly", status="success" if not errors_log else "partial",
+                 errors=errors_log if errors_log else None)

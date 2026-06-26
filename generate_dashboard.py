@@ -9,9 +9,12 @@ from datetime import datetime, timezone, timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 ROOT = os.path.dirname(os.path.abspath(__file__))
+BJT = timezone(timedelta(hours=8))
 
 OUT = os.path.join(ROOT, "docs", "dashboard.html")
-NOW = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M")
+NOW_DT = datetime.now(BJT)
+NOW = NOW_DT.strftime("%Y-%m-%d %H:%M")
+NOW_BJT = f"北京时间 {NOW_DT.strftime('%Y年%m月%d日 %H:%M')}"
 
 data = {
     "timestamp": NOW,
@@ -229,7 +232,6 @@ print(f"\n✅ 数据已保存: docs/dashboard_data.json")
 
 # ── Generate HTML Dashboard ──
 print("[12] 生成HTML仪表盘...")
-from rotation.meta.signal_hub import _clr as clr
 
 def _c(v):
     """Safe color helper"""
@@ -318,7 +320,7 @@ a{{color:var(--a);font-size:12px}}
 .leg-item .k{{font-weight:700;color:var(--a);font-family:monospace;font-size:12px}}
 .leg-item .d{{color:var(--t2)}}
 </style></head><body>
-<div class="header"><h1>🧠 A股量化仪表盘</h1><div class="ts">{NOW} (UTC+8) · 20层系统实时数据 · <a href="index.html">←返回首页</a></div></div>
+<div class="header"><h1>🧠 A股量化仪表盘</h1><div class="ts">{NOW_BJT} · 20层系统实时数据 · <a href="index.html">←返回首页</a></div></div>
 
 <div class="grid">
 

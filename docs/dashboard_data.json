@@ -1,100 +1,100 @@
 {
-  "timestamp": "2026-06-26 00:48",
+  "timestamp": "2026-06-26 18:40",
   "market": {
     "phase": "💨 退潮期",
-    "breadth": 0.225,
-    "limit_up": 135,
-    "fall_limit": 2998,
+    "breadth": 0.144,
+    "limit_up": 92,
+    "fall_limit": 3887,
     "risk": "medium",
     "strategy": "退出",
     "position_advice": "逐步减仓"
   },
   "sectors": [
     {
-      "name": "机场航运",
+      "name": "教育",
       "bsi": 24,
-      "chg": 4.05,
-      "flow": 12.8
-    },
-    {
-      "name": "元件",
-      "bsi": 24,
-      "chg": 3.14,
-      "flow": 112.2
-    },
-    {
-      "name": "证券",
-      "bsi": 24,
-      "chg": 3.06,
-      "flow": 57.8
-    },
-    {
-      "name": "半导体",
-      "bsi": 24,
-      "chg": 2.21,
-      "flow": 80.7
-    },
-    {
-      "name": "保险",
-      "bsi": 23,
-      "chg": 2.19,
-      "flow": 2.7
-    },
-    {
-      "name": "白酒",
-      "bsi": 23,
-      "chg": 1.64,
-      "flow": 6.1
-    },
-    {
-      "name": "游戏",
-      "bsi": 23,
-      "chg": 1.51,
-      "flow": 6.8
+      "chg": 0.81,
+      "flow": -0.5
     },
     {
       "name": "电子化学品",
-      "bsi": 23,
-      "chg": 1.27,
-      "flow": -13.9
+      "bsi": 24,
+      "chg": 0.26,
+      "flow": 9.8
     },
     {
-      "name": "其他电子",
-      "bsi": 23,
-      "chg": 0.93,
-      "flow": -1.7
+      "name": "光学光电子",
+      "bsi": 24,
+      "chg": 0.1,
+      "flow": 45.2
     },
     {
-      "name": "黑色家电",
+      "name": "汽车服务及其他",
+      "bsi": 24,
+      "chg": -0.83,
+      "flow": -0.2
+    },
+    {
+      "name": "光伏设备",
+      "bsi": 23,
+      "chg": -0.86,
+      "flow": 7.5
+    },
+    {
+      "name": "养殖业",
+      "bsi": 23,
+      "chg": -0.87,
+      "flow": 1.9
+    },
+    {
+      "name": "半导体",
+      "bsi": 23,
+      "chg": -0.88,
+      "flow": -71.2
+    },
+    {
+      "name": "风电设备",
+      "bsi": 23,
+      "chg": -0.93,
+      "flow": 11.8
+    },
+    {
+      "name": "军工装备",
+      "bsi": 23,
+      "chg": -1.01,
+      "flow": 21.4
+    },
+    {
+      "name": "农产品加工",
       "bsi": 22,
-      "chg": 0.29,
-      "flow": 0.5
+      "chg": -1.11,
+      "flow": 0.4
     }
   ],
   "futures": {
     "黄金": {
       "price": 4232.5,
-      "chg": 0.84,
+      "chg": -0.1,
       "code": "GC27Q"
     },
     "原油": {
-      "price": 66.54,
-      "chg": 0.38,
+      "price": 67.49,
+      "chg": 0.48,
       "code": "CL27V"
     },
     "铜": {
       "price": 6.43,
-      "chg": 1.38,
+      "chg": -0.46,
       "code": "HG27U"
     },
     "白银": {
-      "price": 60.73,
-      "chg": -0.77,
+      "price": 59.7,
+      "chg": -2.87,
       "code": "SI27U"
     },
     "A50": {
-      "price": 15780.0,
-      "chg": -0.47,
+      "price": 15289.0,
+      "chg": -0.11,
       "code": "CN00Y"
     }
   },
@@ -112,11 +112,11 @@
   },
   "cost_basis": {
     "dense_zone": {
-      "low": 99.12,
-      "high": 100.74,
-      "total_density": 0.608
+      "low": 99.33,
+      "high": 100.77,
+      "total_density": 0.63
     },
-    "vwap": 99.94,
+    "vwap": 99.93,
     "position": "in_cost_zone",
     "bias": "range_trading"
   },
