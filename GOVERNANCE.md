@@ -1,9 +1,8 @@
-# 📌 Work Buddy 标准执行指引 v1.1
+# 📌 Work Buddy 标准执行指引 v1.2
 
 > 适用于：Stock-Report 量化系统所有开发任务  
-> 最后更新：2025-06-25 · CI v2.5 PR 审计报告系统已上线
-> 目标：保证所有模块可训练 / 可回测 / 可演进  
-> 最后更新：2025-06-25
+> 最后更新：2026-06-26 · Phase I 数据采集期 · Shadow Mode 已上线  
+> 目标：保证所有模块可训练 / 可回测 / 可演进
 
 ---
 
@@ -106,43 +105,31 @@ RTI v2   (ML dominant)             ✅
 RTI v3   (regime adaptive)         ⬜
 
 系统治理层:
-v2.5 CI Gate + PR Audit            ✅
-v2.6 Model Evolution Log           ✅
-v2.7 Auto Rollback Immune System   ✅
-v2.8 Model Brain (自适应择优)        ✅
-v2.9 Ensemble Voting (模型委员会)    ✅
-v2.10 Flow-Weighted Ensemble       ✅
-v2.11 Smart Money Behavior (认知层) ✅
-v2.12 Cost Basis Reconstruction     ✅
-v2.13 Breakout Authenticity System   ✅
-v2.14 MTF Consistency (轻量版)        ✅
-v2.15 Meta Score Engine (最终决策)     ✅
-v2.16 Position Sizing (资金管理层)     ✅
-v2.17 Execution Engine (执行模拟器)    ✅
-v2.18 Ablation Engine (系统验证)      ✅
-v2.19 Dynamic Weight Learning (自适应) ✅
+v2.5  CI Gate + PR Audit            ✅
+v2.6  Model Evolution Log           ✅
+v2.7  Auto Rollback Immune System   ✅
+v2.8  Model Brain (自适应择优)        ✅
+v2.9  Ensemble Voting (模型委员会)    ✅
+v2.10 Flow-Weighted Ensemble        ✅
+v2.11 Smart Money Behavior          ✅
+v2.12 Cost Basis Reconstruction      ✅
+v2.13 Breakout Authenticity          ✅
+v2.14 MTF Consistency                ✅
+v2.15 Meta Score Engine              ✅
+v2.16 Position Sizing                ✅
+v2.17 Execution Engine               ✅
+v2.18 Ablation Engine                ✅
+v2.19 Dynamic Weight Learning        ✅
+v2.20 Phase I: LS修复+Shadow Mode+Archive ✅
 
-20层最终管线:
-commit → CI → backtest → metrics → evolution → rollback
+当前阶段: 🧪 Shadow Trading + Data Truth Phase
+目标: 30天稳定运行 → 积累可训练数据集
+
+22层最终管线:
+commit → CI Gate → backtest → metrics → evolution log → rollback
   → model selector → flow ensemble → smart money → cost basis
   → breakout → MTF → meta score → position sizing → execution
-  → ablation → DYNAMIC WEIGHT LEARNING → TRADE → (feedback loop)
-
-19层最终管线:
-commit → CI → backtest → metrics → evolution → rollback
-  → model selector → flow ensemble → smart money → cost basis
-  → breakout → MTF → meta score → position sizing → execution
-  → ABLATION VALIDATION → KNOWLEDGE UPDATE
-
-18层最终管线:
-commit → CI → backtest → metrics → evolution → rollback
-  → model selector → flow ensemble → smart money → cost basis
-  → breakout → MTF → META SCORE → POSITION SIZING → EXECUTION → REALIZED TRADE
-
-17层最终管线:
-commit → CI → backtest → metrics → evolution → rollback
-  → model selector → flow ensemble → smart money → cost basis
-  → breakout → MTF → META SCORE → POSITION SIZING → EXECUTION
+  → ablation → weight learning → ARCHIVE (raw/signal/trade) → Phase II
 ```
 
 ---
@@ -174,19 +161,51 @@ commit → CI → backtest → metrics → evolution → rollback
 
 ---
 
+---
+
 ## 9. 升级路线
 
 | 优先级 | 模块 | 状态 |
 |--------|------|------|
 | 🥇 | RTI backtest + IC 系统 | ✅ |
-| 🥈 | drift detection（市场结构变化检测） | ✅ |
-| 🥉 | 龙头链路模型（板块→交易点） | ⬜ |
-| 🚀 | Work Buddy 自动验收 CI 系统 | ✅ |
-| 🚀 | CI → PR 自动审计报告 | ✅ v2.5 |
+| 🥈 | drift detection | ✅ |
+| 🥉 | 龙头链路模型（板块→交易点） | ✅ LS已修复 |
+| 🚀 | CI Gate + PR Audit + Evolution Rollback | ✅ |
+| 🧪 | Phase I: LS修复 + Archive + Shadow | ✅ v2.20 |
+| 📦 | Phase II: 真实回测 + 消融 | 🔜 30天后 |
 
 ---
 
-## 10. CI PR 审计报告 (v2.5)
+## 10. Phase I 数据存储五条强制规则
+
+> ⚠️ Phase I 期间必须遵守，违反即不可用于后续训练
+
+1. **所有决策必须可回放（replayable）** — 每份快照包含当日全部可观测变量
+2. **不允许只存HTML** — HTML仅展示，JSON是唯一事实源
+3. **不允许丢失signal snapshot** — 每日必须产出 `archive/signal/YYYY-MM-DD.json`
+4. **不允许修改历史数据** — 已归档文件为不可变记录
+5. **不允许使用未结构化日志作为训练数据** — 所有训练数据来自结构化JSON
+
+### 三层存储 (v2.20新增)
+
+| 目录 | 入口 | 用途 |
+|------|------|------|
+| `archive/raw/` | raw_snapshot.py | 原始市场快照 → 回测核心源 |
+| `archive/signal/` | signal_snapshot.py | 策略输出快照 → weight learning 核心源 |
+| `archive/trade/` | trade_log.py | 影子交易日志 → PnL 验证核心源 |
+
+**执行入口:** `python -m rotation.archive.runner` (midday + closing 两个 workflow 均触发)
+**时区:** UTC+8 统一
+
+### Phase I 期间禁止
+- 新增功能模块
+- Dashboard 数据用于交易决策
+- 手动调权重
+- 频繁切换模型版本
+
+---
+
+## 11. CI Gate 自动验收 (v2.5)
 
 每次 PR 涉及 `rotation/` 或 `cloud_scripts/` 变更时:
 
@@ -207,7 +226,7 @@ code commit → CI Gate → backtest → metrics → PR report → EVOLUTION LOG
 
 ---
 
-## 11. Model Evolution Log (v2.5)
+## 12. Model Evolution Log (v2.6)
 
 每次 CI 运行自动记录模型进化轨迹到 `rotation/evolution/logs/evolution_log.jsonl`。
 
@@ -226,80 +245,28 @@ code commit → CI Gate → backtest → metrics → PR report → EVOLUTION LOG
 
 ---
 
-## 12. Flow-Weighted Ensemble (v2.10)
+## 13. 核心模块速览 (v2.10-v2.19)
 
-资金流驱动投票权重，flow_alignment × regime_multiplier 动态调整每个模型的投票权。
-
-**四种资金状态:** inflow_strong / rotation / distribution / neutral
-
-**权重公式:** model_weight = base × regime_multiplier × (1 + alignment × 0.25)
-
-**关键逻辑:** distribution 期 RTI 降权 25%, LS 防守权重 ↑40%
-
-**模块:** `rotation/flow/`
-
----
-
-## 13. Smart Money Behavior (v2.11)
-
-从 OHLCV 微观结构识别四种主力行为: accumulation / markup / distribution / manipulation
-
-**10 维特征:** price_momentum, volume_spike, volume_dry_up, breakout_strength, pullback_depth, rebound_speed, range_contraction, shadow_ratio, position_zone, intraday_bias
-
-**Ensemble 覆盖:** distribution → 强制 HOLD; markup → 提升置信度
-
-**模块:** `rotation/smart_money/`
+| v | 模块 | 一句话 | 路径 |
+|----|------|--------|------|
+| v2.10 | Flow-Weighted Ensemble | 资金流驱动投票权重, distribution期RTI降权25% | `rotation/flow/` |
+| v2.11 | Smart Money Behavior | OHLCV微观结构识别4种主力行为 | `rotation/smart_money/` |
+| v2.12 | Cost Basis Reconstruction | Volume Profile筹码成本区重建 | `rotation/cost_basis/` |
+| v2.13 | Breakout Authenticity | 5因子真假突破评分(真/诱多/失败) | `rotation/breakout/` |
+| v2.14 | MTF Consistency | 三周期趋势一致性过滤 | `rotation/mtf/` |
+| v2.15 | Meta Score Engine | 6信号加权 → LONG/HOLD/SHORT | `rotation/meta/` |
+| v2.16 | Position Sizing | 动态仓位: strength×confidence×risk | `rotation/position/` |
+| v2.17 | Execution Engine | 滑点+拆单+流动性建模 | `rotation/execution/` |
+| v2.18 | Ablation Engine | 逐个关闭模块 → 边际贡献 | `rotation/validation/` |
+| v2.19 | Dynamic Weight Learning | PnL反哺权重, 闭合学习环 | `rotation/weight_learning/` |
+| v2.20 | Phase I Archive | 三层存储 + LS修复 + Dashboard标注 | `rotation/archive/` |
 
 ---
 
-## 15. Cost Basis Reconstruction (v2.12)
+## 14. 会话规范 (完整闭环)
 
-通过 Volume Profile 重建筹码成本结构: 分桶统计成交量 → 识别密集区/支撑/阻力 → 判断当前价格位置 → 吸筹/派发增强识别。
-
-**核心输出:** 成本密集区间 / VWAP / 支撑阻力 / 浮盈状态 / 吸筹vs派发信号
-
-**模块:** `rotation/cost_basis/`
-
----
-
-## 18. Meta Score Engine (v2.15)
-
-将所有子系统信号压缩成一个可交易决策分数。6信号 → 动态权重 → Meta Score → LONG/HOLD/SHORT。
-
-**三大风险降级:** liquidity_trap→SHORT, distribution→禁LONG, failed_breakout→HOLD
-
-**模块:** `rotation/meta/`
-
----
-
-## 19. Position Sizing (v2.16)
-
-position = signal_strength × confidence × risk_factor。4大风控: regime_cap / breakout_risk / flow_reversal / max_cap。
-
-**仓位分级:** 轻仓(<20%) / 中仓(20-50%) / 重仓(50-80%) / 满仓(>80%)
-
-**模块:** `rotation/position/`
-
----
-
-## 16. 升级路线
-
-| 优先级 | 模块 | 状态 |
-|--------|------|------|
-| 🥇 | RTI backtest + IC 系统 | ✅ |
-| 🥈 | drift detection | ✅ |
-| 🥉 | 龙头链路模型 | ⬜ |
-| 🚀 | CI Gate + PR Audit | ✅ |
-| 🚀 | Model Evolution Log | ✅ |
-| 🚀 | Auto Rollback | ✅ |
-| 🚀 | Model Brain Selector | ✅ |
-| 🚀 | Ensemble Voting | ✅ |
-| 🚀 | Flow-Weighted Ensemble | ✅ |
-| 🚀 | Smart Money Behavior | ✅ |
-| 🧱 | Cost Basis Reconstruction | ✅ |
-| 🔮 | Breakout Authenticity | ✅ |
-| 🔮 | MTF Consistency | ✅ |
-| 🔮 | Meta Score Engine | ✅ |
-| 🔮 | Position Sizing | ✅ |
-| 🔮 | Execution Engine | ✅ |
-| 🔮 | 龙头链路模型（板块→交易点） | ⬜ |
+1. 所有新功能开发 → 遵循 §1 五步流程
+2. 所有 ML 模块 → 遵循 §3 训练规范
+3. 所有策略上线前 → CI Gate §11
+4. 所有变更 → 自动记录 Evolution Log §12
+5. 所有新模块 → 更新本文档 + README_DEV.md
