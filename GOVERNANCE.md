@@ -1,7 +1,7 @@
-# 📌 Work Buddy 标准执行指引 v1.2
+# 📌 Work Buddy 标准执行指引 v1.3
 
 > 适用于：Stock-Report 量化系统所有开发任务  
-> 最后更新：2026-06-26 · Phase I 数据采集期 · Shadow Mode 已上线  
+> 最后更新：2026-06-26 · Phase I 数据采集期 · Shadow Mode 已上线 · v2.21  
 > 目标：保证所有模块可训练 / 可回测 / 可演进
 
 ---
@@ -172,6 +172,7 @@ commit → CI Gate → backtest → metrics → evolution log → rollback
 | 🥉 | 龙头链路模型（板块→交易点） | ✅ LS已修复 |
 | 🚀 | CI Gate + PR Audit + Evolution Rollback | ✅ |
 | 🧪 | Phase I: LS修复 + Archive + Shadow | ✅ v2.20 |
+| ☁️  | Cloud Report System: retry/log/BJT/新鲜度/log页面 | ✅ v2.21 |
 | 📦 | Phase II: 真实回测 + 消融 | 🔜 30天后 |
 
 ---
@@ -202,6 +203,32 @@ commit → CI Gate → backtest → metrics → evolution log → rollback
 - Dashboard 数据用于交易决策
 - 手动调权重
 - 频繁切换模型版本
+
+### 云雾报告系统 (v2.21 — 2026-06-26)
+
+| 组件 | 文件 | 说明 |
+|------|------|------|
+| 共享工具 | `cloud_scripts/cloud_utils.py` | retry_with_backoff / write_report_log / bjt_format |
+| 执行日志 | `docs/report_log.json` | 每次报告生成后追加 {time, report, status, errors} |
+| 日志查看 | `docs/log.html` | 独立页面，读取 report_log.json 按时间线展示 |
+| 早盘报告 | `cloud_scripts/cloud_morning.py` | 08:15 → docs/morning_report.html |
+| 午盘报告 | `cloud_scripts/cloud_midday.py` | 11:35 → docs/midday_report.html |
+| 收盘报告 | `cloud_scripts/cloud_closing.py` | 15:05 → docs/closing_report.html |
+| 周报 | `cloud_scripts/cloud_weekly.py` | 周五 15:45 → docs/weekly_report.html |
+
+**关键设计规则 (v2.21 新增):**
+1. **RETRY**: 所有 API 调用经 `retry_with_backoff(func, name, max_retries=2)` 包装，指数退避
+2. **LOG**: 每次运行必须调用 `write_report_log(name, status, errors)` 记录到 `docs/report_log.json`
+3. **TIME**: 所有时间戳统一 `北京时间 2026年06月26日 18:37` 格式
+4. **SIGN**: 数字格式统一 `{val:+.2f}`（Python 格式化符号，禁止硬编码 `+{val}` → 产生 `+-` 错误）
+5. **COLOR**: HTML 每列独立着色（`_color(val)` / `cl(val)`），不按表格区块统色
+6. **HEADER**: 行业标题动态切换：有正涨幅 → "🔥 领涨 Top 5"，全跌 → "🔻 抗跌 Top 5"
+7. **SAFETY**: 数据初始化必须为完整结构 `{"up":[],"down":[]}`，禁止空 `{}`，HTML 用 `.get()` 兜底
+8. **FRESHNESS**: 午盘脚本三级新鲜度检查 🆕
+   - FRESH (9:30-13:00): 正常采集全部数据
+   - DELAYED (13:00-15:00): 采集全部 + 标注 "资金流可能含下午数据"
+   - STALE (≥15:00): 跳过行业/概念资金流（不可信），保留广度/期货/持仓
+   - TOO_EARLY (<9:30): 标注 "市场未开盘"
 
 ---
 
@@ -245,7 +272,7 @@ code commit → CI Gate → backtest → metrics → PR report → EVOLUTION LOG
 
 ---
 
-## 13. 核心模块速览 (v2.10-v2.19)
+## 13. 核心模块速览 (v2.10-v2.21)
 
 | v | 模块 | 一句话 | 路径 |
 |----|------|--------|------|
@@ -260,6 +287,7 @@ code commit → CI Gate → backtest → metrics → PR report → EVOLUTION LOG
 | v2.18 | Ablation Engine | 逐个关闭模块 → 边际贡献 | `rotation/validation/` |
 | v2.19 | Dynamic Weight Learning | PnL反哺权重, 闭合学习环 | `rotation/weight_learning/` |
 | v2.20 | Phase I Archive | 三层存储 + LS修复 + Dashboard标注 | `rotation/archive/` |
+| v2.21 | Cloud Report System | retry/log/BJT时间/新鲜度分级/log页面 | `cloud_scripts/` |
 
 ---
 
