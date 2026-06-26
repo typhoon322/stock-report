@@ -34,5 +34,14 @@
     "errors": [
       "stale_data: run after close"
     ]
+  },
+  {
+    "time": "2026-06-26 20:44",
+    "timezone": "UTC+8",
+    "report": "midday",
+    "status": "partial",
+    "errors": [
+      "stale_data: run after close, flow data skipped"
+    ]
   }
 ]

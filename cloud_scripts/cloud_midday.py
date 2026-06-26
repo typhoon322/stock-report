@@ -16,14 +16,23 @@ TODAY = bjt_now()
 TODAY_STR = TODAY.strftime("%Y-%m-%d")
 errors_log = []
 
-# Data freshness check: midday report should run 11:30-13:00 BJT
+# Data freshness check — midday report should run 11:30-13:00 BJT
+# Tiered handling: FRESH (normal) / DELAYED (warn) / STALE (skip unreliable data)
 DATA_WARNING = ""
+FRESHNESS = "fresh"  # fresh | delayed | stale
 bjth = TODAY.hour
+bjtm = TODAY.minute
+
 if bjth >= 15:
-    DATA_WARNING = " ⚠️ 数据采集时间异常（≥15:00），数据为收盘后数据，非午盘数据！"
-    errors_log.append("stale_data: run after close")
+    DATA_WARNING = " ⚠️ 执行时间≥15:00，行业/概念资金流已跳过。股票广度/期货/持仓为实时数据"
+    FRESHNESS = "stale"
+    errors_log.append("stale_data: run after close, flow data skipped")
 elif bjth >= 13:
-    DATA_WARNING = " ⚠️ 数据采集时间偏晚，可能包含下午盘数据"
+    DATA_WARNING = " ⚠️ 执行时间偏晚(≥13:00)，资金流可能含下午数据，仅供参考"
+    FRESHNESS = "delayed"
+elif bjth < 9 or (bjth == 9 and bjtm < 30):
+    DATA_WARNING = " ⚠️ 执行时间过早，市场尚未开盘或数据不完整"
+    FRESHNESS = "delayed"
 
 def to_f(v, d=None):
     try: return float(v)
@@ -83,34 +92,40 @@ try:
 except Exception as e:
     print(f"  市场广度数据暂缺: {e}")
 
-# 2. 行业板块
+# 2. 行业板块 (STALE mode: skip, data would be closing not midday)
 print("\n[2] 行业板块...")
-try:
-    df_s = ak.stock_fund_flow_industry(symbol='即时')
-    top5 = df_s.nlargest(5,"行业-涨跌幅")
-    bot5 = df_s.nsmallest(5,"行业-涨跌幅")
-    data["sectors"] = {
-        "up": [{"n":r["行业"],"c":to_f(r["行业-涨跌幅"]),"net":to_f(r["净额"])} 
-               for _,r in top5.iterrows()],
-        "down": [{"n":r["行业"],"c":to_f(r["行业-涨跌幅"]),"net":to_f(r["净额"])} 
-                 for _,r in bot5.iterrows()]
-    }
-    print(f"  领涨: {top5.iloc[0]['行业']} +{to_f(top5.iloc[0]['行业-涨跌幅']):.2f}%")
-except: pass
+if FRESHNESS != "stale":
+    try:
+        df_s = ak.stock_fund_flow_industry(symbol='即时')
+        top5 = df_s.nlargest(5,"行业-涨跌幅")
+        bot5 = df_s.nsmallest(5,"行业-涨跌幅")
+        data["sectors"] = {
+            "up": [{"n":r["行业"],"c":to_f(r["行业-涨跌幅"]),"net":to_f(r["净额"])} 
+                   for _,r in top5.iterrows()],
+            "down": [{"n":r["行业"],"c":to_f(r["行业-涨跌幅"]),"net":to_f(r["净额"])} 
+                     for _,r in bot5.iterrows()]
+        }
+        print(f"  领涨: {top5.iloc[0]['行业']} +{to_f(top5.iloc[0]['行业-涨跌幅']):.2f}%")
+    except: pass
+else:
+    print("  已跳过（延迟执行，磁盘数据不可信）")
 
-# 3. 概念资金
+# 3. 概念资金 (STALE mode: skip)
 print("\n[3] 概念资金...")
-try:
-    df_c = ak.stock_fund_flow_concept(symbol='即时')
-    top5_c = df_c.nlargest(5,"净额")
-    bot5_c = df_c.nsmallest(5,"净额")
-    data["concepts"] = {
-        "in": [{"n":r["行业"],"c":to_f(r["行业-涨跌幅"]),"net":to_f(r["净额"])} 
-               for _,r in top5_c.iterrows()],
-        "out": [{"n":r["行业"],"c":to_f(r["行业-涨跌幅"]),"net":to_f(r["净额"])} 
-                for _,r in bot5_c.iterrows()]
-    }
-except: pass
+if FRESHNESS != "stale":
+    try:
+        df_c = ak.stock_fund_flow_concept(symbol='即时')
+        top5_c = df_c.nlargest(5,"净额")
+        bot5_c = df_c.nsmallest(5,"净额")
+        data["concepts"] = {
+            "in": [{"n":r["行业"],"c":to_f(r["行业-涨跌幅"]),"net":to_f(r["净额"])} 
+                   for _,r in top5_c.iterrows()],
+            "out": [{"n":r["行业"],"c":to_f(r["行业-涨跌幅"]),"net":to_f(r["净额"])} 
+                    for _,r in bot5_c.iterrows()]
+        }
+    except: pass
+else:
+    print("  已跳过（延迟执行，磁盘数据不可信）")
 
 # 4. 期货
 print("\n[4] 全球期货...")
@@ -226,11 +241,11 @@ td{{padding:6px 10px;border-bottom:1px solid var(--bd)}}tr:hover{{background:#22
 <div class="card"><table><tr><th>代码</th><th>名称</th><th>涨跌幅</th></tr>{nl_cards or '<tr><td colspan="3" style="color:var(--t2)">暂缺</td></tr>'}</table></div></div>
 
 <div class="sec"><div class="st">{sec_up_label}</div>
-<div class="card"><table><tr><th>行业</th><th>涨跌</th><th>净流入</th></tr>{s_up}</table></div>
-<div class="card"><h4 style="color:var(--g);margin-bottom:8px">❄️ 领跌行业 Top 5</h4><table><tr><th>行业</th><th>涨跌</th><th>净流出</th></tr>{s_dn}</table></div></div>
+<div class="card"><table><tr><th>行业</th><th>涨跌</th><th>净流入</th></tr>{s_up or '<tr><td colspan="3" style="color:var(--y)">⚠️ 数据已跳过（延迟执行，资金流不可信）</td></tr>'}</table></div>
+<div class="card"><h4 style="color:var(--g);margin-bottom:8px">❄️ 领跌行业 Top 5</h4><table><tr><th>行业</th><th>涨跌</th><th>净流出</th></tr>{s_dn or '<tr><td colspan="3" style="color:var(--t2)">暂缺</td></tr>'}</table></div></div>
 
 <div class="sec"><div class="st">💰 概念资金流入 Top 5</div>
-<div class="card"><table><tr><th>概念</th><th>涨跌</th><th>净流入</th></tr>{c_in}</table></div></div>
+<div class="card"><table><tr><th>概念</th><th>涨跌</th><th>净流入</th></tr>{c_in or '<tr><td colspan="3" style="color:var(--y)">⚠️ 数据已跳过（延迟执行，资金流不可信）</td></tr>'}</table></div></div>
 
 <div class="sec"><div class="st">🛢️ 商品期货</div>
 <div class="card"><table><tr><th>品种</th><th>价格</th><th>涨跌</th></tr>{fut_rows}</table></div></div>
