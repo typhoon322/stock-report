@@ -53,6 +53,22 @@ h1{font-size:24px;color:var(--a);text-align:center;margin-bottom:2px}
 .up{color:var(--r)}.down{color:var(--g)}
 
 .footer{margin-top:32px;text-align:center;font-size:10px;color:var(--t2);line-height:1.8}
+.manual{margin-top:20px;background:var(--cd);border:1px solid var(--bd);border-radius:12px;overflow:hidden}
+.manual-toggle{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.manual-toggle .t{font-size:14px;font-weight:700}
+.manual-toggle .arrow{font-size:12px;color:var(--t2);transition:transform .2s}
+.manual-toggle.open .arrow{transform:rotate(180deg)}
+.manual-body{display:none;padding:0 16px 20px;font-size:12px;line-height:1.8;color:var(--t2);border-top:1px solid var(--bd)}
+.manual-body.show{display:block}
+.manual-body h3{font-size:13px;color:var(--tx);margin:16px 0 6px;font-weight:600}
+.manual-body h3:first-child{margin-top:14px}
+.manual-body p{margin:4px 0}
+.manual-body .tbl{width:100%;border-collapse:collapse;margin:6px 0 12px}
+.manual-body .tbl th{font-size:10px;color:var(--t2);text-align:left;padding:4px 8px;border-bottom:1px solid var(--bd)}
+.manual-body .tbl td{font-size:11px;padding:4px 8px;border-bottom:1px solid var(--bd);color:var(--tx)}
+.manual-body .tbl td.tm{font-family:'SF Mono',monospace;font-size:10px;color:var(--a)}
+.manual-body code{font-family:'SF Mono',monospace;font-size:10px;background:rgba(99,102,241,0.12);color:var(--a);padding:1px 5px;border-radius:4px}
+.manual-body .note{padding:8px 12px;background:rgba(245,158,11,0.06);border-left:3px solid var(--y);border-radius:0 6px 6px 0;margin:8px 0;font-size:11px}
 </style>
 </head>
 <body>
@@ -158,6 +174,63 @@ h1{font-size:24px;color:var(--a);text-align:center;margin-bottom:2px}
 </div>
 
 <div class="toast" id="toast"></div>
+
+<p style="text-align:center;font-size:11px;color:var(--t2);margin-top:24px;cursor:pointer" onclick="toggleManual()">📖 系统使用说明书</p>
+<div class="manual" id="manual">
+  <div class="manual-toggle" onclick="toggleManual()">
+    <span class="t">📖 系统使用说明书</span>
+    <span class="arrow">▼</span>
+  </div>
+  <div class="manual-body" id="manualBody">
+
+<h3>一、系统概览</h3>
+<p>本系统是一个<strong>云端自动化市场数据报告工具</strong>，运行在 GitHub Actions 上。每个交易日自动生成多份 HTML 报告，推送到 GitHub Pages 供手机/电脑随时查看。所有数据来自公开 API（东方财富、新浪、中行），<strong>不涉及交易执行，仅供数据参考</strong>。</p>
+
+<h3>二、报告清单与时间表</h3>
+<table class="tbl">
+<tr><th>报告</th><th>时间（北京时间）</th><th>内容</th></tr>
+<tr><td>🏙️ 早盘报告</td><td class="tm">08:15</td><td>美股隔夜收盘、亚太早盘、商品期货、全球要闻、今日预判</td></tr>
+<tr><td>🌤️ 午盘分析</td><td class="tm">11:35</td><td>市场广度（涨跌比）、行业板块排行、概念资金流、持仓快照</td></tr>
+<tr><td>🌙 收盘总结</td><td class="tm">15:05</td><td>六大指数收盘、行业板块、概念资金、期货、外汇、要闻</td></tr>
+<tr><td>🧠 量化仪表盘</td><td class="tm">按需触发</td><td>20层量化指标：市场状态、BSI板块强度、资金流、主力行为、成本区、突破、Meta评分</td></tr>
+<tr><td>📊 周报分析</td><td class="tm">周五 15:45</td><td>本周指数走势图、行业资金汇总、期货周变化、深度文字复盘</td></tr>
+<tr><td>📝 生成日志</td><td class="tm">自动追加</td><td>每次报告生成的时间、状态（成功/部分异常/失败）和错误详情</td></tr>
+</table>
+
+<h3>三、持仓管理</h3>
+<p>首页「📌 我的持仓」区域支持：</p>
+<p>• <strong>添加股票</strong>：点击 <code>+ 添加</code>，输入6位代码和名称，可选填成本和备注</p>
+<p>• <strong>编辑/删除</strong>：点击已有股票即可编辑，点击 <code>✕</code> 删除</p>
+<p>• <strong>重点关注</strong>：点击 ⭐ 标记，标的会置顶并高亮显示</p>
+<p>• <strong>数据持久</strong>：所有修改自动保存到浏览器本地存储，不会丢失</p>
+
+<h3>四、管理面板</h3>
+<p>首页下方齿轮 ⚙️ 连点 <strong>3次</strong> 打开管理面板，可以手动触发云端重新生成各类报告。点击按钮会跳转到 GitHub Actions 页面，需要手动点击 <code>Run workflow</code>。</p>
+<div class="note">⚠️ 手动触发需要 GitHub 仓库写权限。报告生成约需 40-90 秒，完成后刷新对应页面查看。</div>
+
+<h3>五、数据新鲜度说明</h3>
+<p>• 每份报告页脚显示 <code>北京时间 YYYY年MM月DD日 HH:MM</code>，为实际生成时刻</p>
+<p>• 午盘报告含新鲜度检测：正常时段采集完整数据；延迟到13:00后标注"数据可能含下午盘"；延迟到15:00后跳过行业/概念资金流（避免收盘数据误导）</p>
+<p>• <a href="log.html" style="color:var(--a)">生成日志页</a> 可查看所有报告的状态和历史错误信息</p>
+<p>• 量化仪表盘标注数据源：<span style="color:var(--g)">REAL</span>（实时）/<span style="color:var(--y)">CACHE</span>（缓存）/<span style="color:var(--r)">FALLBACK</span>（降级）</p>
+
+<h3>六、手机端使用</h3>
+<p>• 在手机浏览器打开 GitHub Pages 地址，添加到主屏幕（iOS Safari 分享 → 添加到主屏幕）</p>
+<p>• 已适配移动端布局，报告卡片、表格均可正常浏览</p>
+<p>• <a href="https://github.com/typhoon322/stock-report/actions" target="_blank" style="color:var(--a)">GitHub Actions</a> 查看执行历史和运行日志</p>
+
+<h3>七、常见问题</h3>
+<table class="tbl">
+<tr><td><strong>报告显示昨天日期？</strong></td><td>GitHub Actions cron 可能延迟或跳过。去日志页确认 → 手动触发 → 等待约1分钟刷新</td></tr>
+<tr><td><strong>页面打开慢？</strong></td><td>GitHub Pages 服务器在海外，首次加载 2-5 秒属正常。可在管理面板触发后耐心等待</td></tr>
+<tr><td><strong>API 超时/数据缺？</strong></td><td>系统有自动重试机制（最多3次），失败后会记录到日志。缺数据时报告显示"暂缺"而非报错</td></tr>
+<tr><td><strong>持仓数据丢失？</strong></td><td>持仓保存在浏览器 localStorage。清除浏览器数据会丢失，建议偶尔手动备份</td></tr>
+</table>
+
+<div class="note" style="margin-top:16px">🔄 最后更新：2026-06-27 · 版本 v2.21 · <a href="https://github.com/typhoon322/stock-report" target="_blank" style="color:var(--y)">GitHub 仓库</a></div>
+
+  </div>
+</div>
 
 <div class="footer">
   ☁️ GitHub Actions 云端运行 · 每个交易日更新<br>
@@ -340,6 +413,17 @@ async function triggerAction(type) {
   if (url) {
     window.open(url, '_blank');
     status.innerHTML = `📡 已打开 Actions 页面<br><b>点右侧 "Run workflow" → 绿色按钮</b> 即可在云端执行「${labels[type]}」<br><small>约90秒后刷新报告页面查看结果</small>`;
+  }
+}
+
+function toggleManual() {
+  const body = document.getElementById('manualBody');
+  const toggle = document.querySelector('.manual-toggle');
+  const show = !body.classList.contains('show');
+  body.classList.toggle('show');
+  toggle.classList.toggle('open');
+  if (show) {
+    document.getElementById('manual').scrollIntoView({behavior:'smooth'});
   }
 }
 </script>
