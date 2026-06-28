@@ -1,0 +1,138 @@
+{
+  "date": "2026-05-12",
+  "timestamp": "2026-05-12 00:00:00",
+  "version": "v2.22-backfill",
+  "source": "backfill",
+  "market": {
+    "total_stocks": 5527,
+    "up": 614,
+    "down": 4913,
+    "limit_up": 0,
+    "fall_limit": 0,
+    "breadth": 0.1111,
+    "note": "backfill: breadth estimated from sector change ratio"
+  },
+  "sectors": [
+    {
+      "name": "机场航运",
+      "bsi": 0,
+      "chg": 4.05,
+      "flow": 12.85
+    },
+    {
+      "name": "元件",
+      "bsi": 0,
+      "chg": 3.14,
+      "flow": 112.24
+    },
+    {
+      "name": "证券",
+      "bsi": 0,
+      "chg": 3.06,
+      "flow": 57.78
+    },
+    {
+      "name": "半导体",
+      "bsi": 0,
+      "chg": 2.21,
+      "flow": 80.68
+    },
+    {
+      "name": "保险",
+      "bsi": 0,
+      "chg": 2.19,
+      "flow": 2.72
+    },
+    {
+      "name": "白酒",
+      "bsi": 0,
+      "chg": 1.64,
+      "flow": 6.09
+    },
+    {
+      "name": "游戏",
+      "bsi": 0,
+      "chg": 1.51,
+      "flow": 6.8
+    },
+    {
+      "name": "电子化学品",
+      "bsi": 0,
+      "chg": 1.27,
+      "flow": -13.88
+    },
+    {
+      "name": "其他电子",
+      "bsi": 0,
+      "chg": 0.93,
+      "flow": -1.71
+    },
+    {
+      "name": "黑色家电",
+      "bsi": 0,
+      "chg": 0.29,
+      "flow": 0.49
+    }
+  ],
+  "futures": {},
+  "flows": {},
+  "index_close": {
+    "上证指数": 4214.489,
+    "深证成指": 15824.921,
+    "创业板指": 3934.882,
+    "科创50": 1723.784
+  },
+  "portfolio": {
+    "stocks": [
+      {
+        "code": "600487",
+        "name": "亨通光电",
+        "focus": true,
+        "cost": 78,
+        "note": "光纤龙头"
+      },
+      {
+        "code": "600522",
+        "name": "中天科技",
+        "focus": true,
+        "cost": 44,
+        "note": "光纤通信"
+      },
+      {
+        "code": "002745",
+        "name": "木林森",
+        "focus": false,
+        "cost": 12.5,
+        "note": "LED"
+      },
+      {
+        "code": "600733",
+        "name": "北汽蓝谷",
+        "focus": true,
+        "cost": 16.5,
+        "note": "新能源车"
+      },
+      {
+        "code": "513060",
+        "name": "恒生医疗ETF",
+        "focus": false,
+        "cost": 1.14,
+        "note": "港股医疗"
+      },
+      {
+        "code": "512170",
+        "name": "医疗ETF",
+        "focus": false,
+        "cost": 0.58,
+        "note": "境内医疗"
+      },
+      {
+        "code": "515790",
+        "name": "光伏ETF",
+        "focus": false,
+        "cost": 1.0,
+        "note": "光伏"
+      }
+    ]
+  }
+}
