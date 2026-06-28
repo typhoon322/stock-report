@@ -156,10 +156,19 @@ stock-report/
 │   ├── cloud_closing.py         #   收盘报告: 六大指数+板块+期货
 │   └── cloud_weekly.py          #   周报: 本周数据仪表盘+持仓
 │
+├── rotation/phase2/             # 🧬 Phase II 自动训练+剪枝 (30天后触发)
+│   ├── runner.py                #   主流水线: PnL→训练→剪枝→报告
+│   ├── pnl_calculator.py        #   从archive计算真实PnL
+│   ├── auto_trainer.py          #   真实PnL驱动的权重学习
+│   ├── module_pruner.py         #   模块剪枝决策引擎
+│   └── config.py                #   阈值和常量配置
+│
 ├── docs/                        # 📄 GitHub Pages 输出 (自动部署)
-│   ├── index.html               #   首页: 报告入口 + 持仓编辑 + 管理面板
+│   ├── index.html               #   首页: 报告入口 + 持仓编辑 + 管理面板 + 使用说明
 │   ├── log.html                 #   日志页: 读取 report_log.json 时间线展示
 │   ├── report_log.json          #   执行日志: 每次生成追加 {time,status,errors}
+│   ├── phase2_report.html       #   Phase II 训练报告 (30天触发)
+│   ├── phase2_data.json         #   Phase II 底层数据
 │   ├── dashboard.html           #   仪表盘: 20层量化指标实时展示
 │   ├── dashboard_data.json      #   仪表盘底层数据
 │   ├── morning_report.html      #   早盘报告

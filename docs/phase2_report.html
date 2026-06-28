@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Phase II 训练报告 | 1天</title>
+<style>
+:root{--bg:#0f1117;--cd:#1a1d28;--bd:#2a2d3a;--tx:#e4e6ed;--t2:#8b8fa3;--r:#f5222d;--g:#16c784;--a:#6366f1;--y:#f59e0b}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;max-width:860px;margin:0 auto;padding:24px 16px 60px}
+h1{font-size:20px;color:var(--a);margin-bottom:4px}
+h2{font-size:16px;margin:24px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--a)}
+h3{font-size:14px;margin:16px 0 8px;color:var(--y)}
+.sub{color:var(--t2);font-size:11px;margin-bottom:20px}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{text-align:center;padding:12px}
+.stat .v{font-size:24px;font-weight:700}
+.stat .l{font-size:10px;color:var(--t2);margin-top:2px}
+table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0}
+th{background:#222531;padding:7px 10px;text-align:left;color:var(--t2);border-bottom:2px solid var(--bd)}
+td{padding:6px 10px;border-bottom:1px solid var(--bd)}
+td code{font-family:'SF Mono',monospace;font-size:10px;color:var(--a)}
+.note{padding:10px 14px;border-radius:8px;margin:8px 0;font-size:12px}
+.note.warn{background:rgba(245,158,11,0.08);border-left:3px solid var(--y)}
+.note.ok{background:rgba(22,199,132,0.08);border-left:3px solid var(--g)}
+.footer{margin-top:32px;text-align:center;font-size:10px;color:var(--t2)}
+.up{color:var(--r)}.down{color:var(--g)}
+</style>
+</head>
+<body>
+
+<h1>🧬 Phase II 自动训练报告</h1>
+<p class="sub">1个交易日数据 · 体制: rotation · 生成于 2026-06-28T23:20:39</p>
+
+<div class="card">
+  <h3>📊 绩效概览</h3>
+  <div class="g3">
+    <div class="stat"><div class="v" style="color:var(--r)">+0</div><div class="l">总PnL (bps)</div></div>
+    <div class="stat"><div class="v" style="color:var(--a)">0.00</div><div class="l">Sharpe Ratio</div></div>
+    <div class="stat"><div class="v">0/0</div><div class="l">盈利天数</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>⚖️ 模块权重变更</h3>
+  <table>
+    <tr><th>模块</th><th>旧权重</th><th>新权重</th><th>Δ</th><th>胜率</th><th>总PnL</th><th>Sharpe</th><th>状态</th></tr>
+    <tr>
+          <td>✅ breakout</td>
+          <td style="color:var(--a)">0.1400</td>
+          <td style="font-weight:700">0.1400</td>
+          <td style="color:var(--t2)">0.0000</td>
+          <td>0%</td>
+          <td>0.0bps</td>
+          <td>0.00</td>
+          <td>keep</td>
+        </tr><tr>
+          <td>✅ cost_basis</td>
+          <td style="color:var(--a)">0.1400</td>
+          <td style="font-weight:700">0.1400</td>
+          <td style="color:var(--t2)">0.0000</td>
+          <td>0%</td>
+          <td>0.0bps</td>
+          <td>0.00</td>
+          <td>keep</td>
+        </tr><tr>
+          <td>✅ flow</td>
+          <td style="color:var(--a)">0.2200</td>
+          <td style="font-weight:700">0.2200</td>
+          <td style="color:var(--t2)">0.0000</td>
+          <td>0%</td>
+          <td>0.0bps</td>
+          <td>0.00</td>
+          <td>keep</td>
+        </tr><tr>
+          <td>✅ mtf</td>
+          <td style="color:var(--a)">0.1000</td>
+          <td style="font-weight:700">0.1000</td>
+          <td style="color:var(--t2)">0.0000</td>
+          <td>0%</td>
+          <td>0.0bps</td>
+          <td>0.00</td>
+          <td>keep</td>
+        </tr><tr>
+          <td>✅ rti</td>
+          <td style="color:var(--a)">0.2200</td>
+          <td style="font-weight:700">0.2200</td>
+          <td style="color:var(--t2)">0.0000</td>
+          <td>0%</td>
+          <td>0.0bps</td>
+          <td>0.00</td>
+          <td>keep</td>
+        </tr><tr>
+          <td>✅ smart_money</td>
+          <td style="color:var(--a)">0.1800</td>
+          <td style="font-weight:700">0.1800</td>
+          <td style="color:var(--t2)">0.0000</td>
+          <td>0%</td>
+          <td>0.0bps</td>
+          <td>0.00</td>
+          <td>keep</td>
+        </tr>
+  </table>
+</div>
+
+<div class='note ok'>✅ 所有模块表现达标，无需剪除</div>
+
+<div class="card">
+  <h3>🗑️ 剪除分析</h3>
+  <table>
+    <tr><th>模块</th><th>总PnL</th><th>胜率</th><th>Sharpe</th><th>原因</th></tr>
+    <tr><td colspan="5" style="color:var(--t2);text-align:center">无需剪除</td></tr>
+  </table>
+  <p style="font-size:10px;color:var(--t2);margin-top:8px">
+    剪除规则: PnL &lt; -5.0bps × 15天 或 胜率 &lt; 30%
+  </p>
+</div>
+
+<div class="card">
+  <h3>⚙️ 最终生产权重</h3>
+  <code style="font-size:11px">{"rti": 0.22, "flow": 0.22, "smart_money": 0.18, "cost_basis": 0.14, "breakout": 0.14, "mtf": 0.1}</code>
+</div>
+
+<div class="footer">
+  <p>🧬 Phase II Auto Trainer v1.0 · 云端运行 · <a href="index.html" style="color:var(--a)">返回首页</a></p>
+  <p>⚠️ 本报告由系统自动生成，权重变更需人工审核后上线。剪除模块代码保留，可随时恢复。</p>
+</div>
+</body></html>

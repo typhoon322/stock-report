@@ -19,6 +19,8 @@ jobs:
         run: pip install -r requirements.txt
       - name: Collect weekly data
         run: python cloud_scripts/cloud_weekly.py
+      - name: Phase II Auto Training (30-day trigger)
+        run: python -m rotation.phase2.runner || echo "⚠ Insufficient data — skipping"
       - name: Commit & push
         run: |
           git config user.name "github-actions[bot]"

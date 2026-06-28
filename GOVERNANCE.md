@@ -1,7 +1,7 @@
 # 📌 Work Buddy 标准执行指引 v1.3
 
 > 适用于：Stock-Report 量化系统所有开发任务  
-> 最后更新：2026-06-26 · Phase I 数据采集期 · Shadow Mode 已上线 · v2.21  
+> 最后更新：2026-06-28 · Phase I 数据采集进行中 · v2.22  
 > 目标：保证所有模块可训练 / 可回测 / 可演进
 
 ---
@@ -173,7 +173,7 @@ commit → CI Gate → backtest → metrics → evolution log → rollback
 | 🚀 | CI Gate + PR Audit + Evolution Rollback | ✅ |
 | 🧪 | Phase I: LS修复 + Archive + Shadow | ✅ v2.20 |
 | ☁️  | Cloud Report System: retry/log/BJT/新鲜度/log页面 | ✅ v2.21 |
-| 📦 | Phase II: 真实回测 + 消融 | 🔜 30天后 |
+| 📦 | Phase II: Auto Training + Module Pruner | ✅ v2.22 (设计完成,30天后触发) |
 
 ---
 
@@ -229,6 +229,31 @@ commit → CI Gate → backtest → metrics → evolution log → rollback
    - DELAYED (13:00-15:00): 采集全部 + 标注 "资金流可能含下午数据"
    - STALE (≥15:00): 跳过行业/概念资金流（不可信），保留广度/期货/持仓
    - TOO_EARLY (<9:30): 标注 "市场未开盘"
+
+### Phase II 自动训练+剪枝系统 (v2.22 — 30天后触发)
+
+**触发条件**: 归档交易日 ≥ `min_trading_days` (默认20天，理想30天)
+
+**四步流水线** (`rotation/phase2/runner.py`):
+
+| 步骤 | 模块 | 输入 | 输出 |
+|------|------|------|------|
+| 1 | PnL Calculator | archive/signal/*.json + archive/raw/*.json | 每日真实PnL、模块归因 |
+| 2 | Auto Trainer | 真实PnL数据 + 当前权重 | 学习后的权重、模块绩效 |
+| 3 | Module Pruner | 模块PnL + 权重 | 剪除决策、剪枝报告 |
+| 4 | Report + Save | 完整分析结果 | HTML报告 + 权重落地 |
+
+**权重学习**: effectiveness = win_rate × max(avg_pnl × 50, 0.01), 体制修正, 平滑更新 new = old + LR×(learned−old)
+
+**剪枝规则**（保守，默认最多剪2个）:
+- PnL < -5bps × 连续15天 → 标记
+- 胜率 < 30% 且交易≥10天 → 标记
+- Sharpe < -0.5 且样本≥15天 → 标记
+- 剪除=权重归零，代码保留，可随时恢复
+
+**执行入口**: `python -m rotation.phase2.runner`
+**HTML报告**: `docs/phase2_report.html`
+**JSON数据**: `docs/phase2_data.json`
 
 ---
 
@@ -288,6 +313,7 @@ code commit → CI Gate → backtest → metrics → PR report → EVOLUTION LOG
 | v2.19 | Dynamic Weight Learning | PnL反哺权重, 闭合学习环 | `rotation/weight_learning/` |
 | v2.20 | Phase I Archive | 三层存储 + LS修复 + Dashboard标注 | `rotation/archive/` |
 | v2.21 | Cloud Report System | retry/log/BJT时间/新鲜度分级/log页面 | `cloud_scripts/` |
+| v2.22 | Phase II Auto Trainer | 30天PnL→权重学习→剪枝→报告 | `rotation/phase2/` |
 
 ---
 
