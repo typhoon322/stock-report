@@ -1,0 +1,87 @@
+{
+  "date": "2026-06-29",
+  "timestamp": "2026-06-29 16:40:08",
+  "status": "shadow",
+  "pipeline": {
+    "meta": {
+      "decision": "HOLD",
+      "score": 0,
+      "confidence": 0
+    },
+    "position": {
+      "direction": null,
+      "size": null,
+      "level": null
+    },
+    "execution": {
+      "slippage_pct": null,
+      "realized_position": null
+    }
+  },
+  "portfolio": {
+    "stocks": {
+      "name": [
+        {
+          "code": "600487",
+          "name": "亨通光电",
+          "focus": true,
+          "cost": 78,
+          "note": "光纤龙头"
+        },
+        {
+          "code": "600522",
+          "name": "中天科技",
+          "focus": true,
+          "cost": 44,
+          "note": "光纤通信"
+        },
+        {
+          "code": "002745",
+          "name": "木林森",
+          "focus": false,
+          "cost": 12.5,
+          "note": "LED封装"
+        },
+        {
+          "code": "600733",
+          "name": "北汽蓝谷",
+          "focus": true,
+          "cost": 16.5,
+          "note": "新能源汽车"
+        },
+        {
+          "code": "513060",
+          "name": "恒生医疗ETF",
+          "focus": false,
+          "cost": 1.14,
+          "note": "港股医疗"
+        },
+        {
+          "code": "512170",
+          "name": "医疗ETF",
+          "focus": false,
+          "cost": 0.58,
+          "note": "境内医疗"
+        },
+        {
+          "code": "515790",
+          "name": "光伏ETF",
+          "focus": false,
+          "cost": 1.0,
+          "note": "光伏产业"
+        }
+      ],
+      "focus": false
+    },
+    "updated": {
+      "name": "2025-06-25",
+      "focus": false
+    }
+  },
+  "simulated_pnl": {
+    "entry_price": null,
+    "exit_price": null,
+    "pnl_pct": null,
+    "note": "Phase I shadow — Phase II backfill with real prices"
+  }
+}
