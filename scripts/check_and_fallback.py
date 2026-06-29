@@ -130,6 +130,14 @@ def main():
     if still_stale:
         print(f"  ⚠️ 生成的文件仍不含今日日期，可能数据源异常 — 仍将推送")
 
+    # ── Update data status counter ──
+    print(f"\n📊 更新数据收集天数...")
+    status_script = os.path.join(ROOT, "scripts", "update_data_status.py")
+    if os.path.exists(status_script):
+        r = subprocess.run([python, status_script], cwd=ROOT, capture_output=True, text=True, timeout=30)
+        print(f"  {r.stdout.strip()}")
+        tracking_files.append("docs/data_status.json")
+
     # Git push
     print(f"\n🚀 推送到GitHub (origin/master)...")
     tracking_files = [cfg["file"], "docs/report_log.json"]

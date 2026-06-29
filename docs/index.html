@@ -67,6 +67,13 @@ h1{font-size:24px;color:var(--a);text-align:center;margin-bottom:2px}
 .manual-body .tbl th{font-size:10px;color:var(--t2);text-align:left;padding:4px 8px;border-bottom:1px solid var(--bd)}
 .manual-body .tbl td{font-size:11px;padding:4px 8px;border-bottom:1px solid var(--bd);color:var(--tx)}
 .manual-body .tbl td.tm{font-family:'SF Mono',monospace;font-size:10px;color:var(--a)}
+.progress-section{margin-bottom:24px;background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:14px 16px}
+.progress-section .row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.progress-section .label{font-size:12px;color:var(--tx)}
+.progress-section .count{font-size:12px;font-weight:700;color:var(--a)}
+.progress-bar{width:100%;height:6px;background:var(--bd);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:var(--a);border-radius:3px;transition:width .5s}
+.progress-meta{display:flex;justify-content:space-between;font-size:10px;color:var(--t2);margin-top:4px}
 .manual-body code{font-family:'SF Mono',monospace;font-size:10px;background:rgba(99,102,241,0.12);color:var(--a);padding:1px 5px;border-radius:4px}
 .manual-body .note{padding:8px 12px;background:rgba(245,158,11,0.06);border-left:3px solid var(--y);border-radius:0 6px 6px 0;margin:8px 0;font-size:11px}
 </style>
@@ -75,6 +82,12 @@ h1{font-size:24px;color:var(--a);text-align:center;margin-bottom:2px}
 
 <h1>📊 每日市场报告</h1>
 <p class="sub">云端自动生成 · 手机随时查看</p>
+
+<div class="progress-section" id="dataProgress">
+  <div class="row"><span class="label">🧬 Phase I 数据收集进度</span><span class="count" id="progressCount">—</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="progress-meta"><span>目标 30 天后自动训练权重</span><span id="progressDate">—</span></div>
+</div>
 
 <!-- === 报告入口 === -->
 <div class="section">
@@ -370,6 +383,20 @@ document.getElementById('modal').addEventListener('click', function(e) {
 });
 
 renderList();
+
+// ── Data collection progress ──
+(async function loadProgress() {
+  try {
+    const r = await fetch('data_status.json?' + Date.now());
+    if (!r.ok) return;
+    const s = await r.json();
+    document.getElementById('progressCount').textContent =
+      `${s.signal_days} / ${s.target_days} 交易日`;
+    document.getElementById('progressFill').style.width = s.progress_pct + '%';
+    document.getElementById('progressDate').textContent =
+      `${s.start_date} ~ ${s.last_date} · ${s.updated_at}`;
+  } catch(e) {}
+})();
 
 // ⚙️ 隐藏管理面板 (点3次触发)
 let gearTaps = 0;
