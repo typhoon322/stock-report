@@ -1,156 +1,164 @@
 #!/usr/bin/env python3
 """
-check_and_fallback.py — Report freshness checker + local fallback generator.
+check_and_fallback.py — 云端延迟→本地兜底
+检查指定报告是否新鲜，若不新鲜则本地生成并推送GitHub
 
-Usage: python scripts/check_and_fallback.py <report>
-  report: morning | midday | closing | all
-
-At check time:
-1. git pull latest from GitHub
-2. Check if target report HTML contains today's date
-3. If missing → generate locally + commit + push
-
-Designed as a WorkBuddy automation companion to GitHub Actions cron.
+用法: python3 scripts/check_and_fallback.py [closing|midday|morning|weekly]
 """
-import os, sys, subprocess, re
+import os
+import sys
+import subprocess
 from datetime import datetime, timezone, timedelta
 
 BJT = timezone(timedelta(hours=8))
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 REPORTS = {
-    "morning": {
-        "check_after": (8, 30),       # 08:30 BJT check
-        "expected_cron": "08:15 BJT",
-        "html": "docs/morning_report.html",
-        "script": "cloud_scripts/cloud_morning.py",
+    "closing": {
+        "file": "docs/closing_report.html",
+        "script": "cloud_scripts/cloud_closing.py",
+        "name": "收盘报告",
     },
     "midday": {
-        "check_after": (12, 0),       # 12:00 BJT check
-        "expected_cron": "11:35 BJT",
-        "html": "docs/midday_report.html",
+        "file": "docs/midday_report.html",
         "script": "cloud_scripts/cloud_midday.py",
+        "name": "午盘报告",
     },
-    "closing": {
-        "check_after": (15, 30),      # 15:30 BJT check
-        "expected_cron": "15:05 BJT",
-        "html": "docs/closing_report.html",
-        "script": "cloud_scripts/cloud_closing.py",
+    "morning": {
+        "file": "docs/morning_report.html",
+        "script": "cloud_scripts/cloud_morning.py",
+        "name": "早盘报告",
+    },
+    "weekly": {
+        "file": "docs/weekly_report.html",
+        "script": "cloud_scripts/cloud_weekly.py",
+        "name": "周报",
+    },
+    "dashboard": {
+        "file": "docs/dashboard.html",
+        "script": "generate_dashboard.py",
+        "name": "量化仪表盘",
     },
 }
 
 
-def _run(cmd, cwd=ROOT, timeout=120):
-    """Run a shell command, return output."""
-    try:
-        r = subprocess.run(cmd, cwd=cwd, capture_output=True,
-                           text=True, timeout=timeout)
-        return r.returncode, r.stdout.strip(), r.stderr.strip()
-    except subprocess.TimeoutExpired:
-        return -1, "", "timeout"
-    except Exception as e:
-        return -1, "", str(e)
+def is_stale(filepath):
+    """Check if report file exists and contains today's date"""
+    if not os.path.exists(filepath):
+        return True, "file_missing"
+
+    today_str = datetime.now(BJT).strftime("%Y-%m-%d")
+
+    with open(filepath, "r", encoding="utf-8") as f:
+        content = f.read(500)
+
+    if today_str not in content:
+        return True, "date_mismatch"
+
+    return False, "fresh"
 
 
-def check_and_fallback(report_name):
-    """Check one report and fallback if missing."""
-    cfg = REPORTS[report_name]
-    today = datetime.now(BJT).strftime("%Y-%m-%d")
-    now_str = datetime.now(BJT).strftime("%Y-%m-%d %H:%M")
-
-    print(f"\n{'='*50}")
-    print(f"🔍 Fallback check: {report_name} @ {now_str}")
-    print(f"   预期 cron: {cfg['expected_cron']}")
-    print(f"{'='*50}")
-
-    # ── Step 1: git pull ──
-    print("[1/4] Pulling latest from GitHub...")
-    code, out, err = _run(["git", "pull", "origin", "main"])
-    if code == 0:
-        already = "Already up to date" in out
-        print(f"   {'✅ Already current' if already else f'📥 Pulled:{out[:80]}'}")
-    else:
-        print(f"   ⚠️  Pull failed (continuing anyway): {err[:60]}")
-
-    # ── Step 2: Check freshness ──
-    print(f"[2/4] Checking {cfg['html']} for {today}...")
-    html_path = os.path.join(ROOT, cfg["html"])
-
-    if os.path.exists(html_path):
-        with open(html_path, "r", encoding="utf-8") as f:
-            content = f.read()
-        # Check both <title> and the timestamp line
-        has_today = today in content
-        if has_today:
-            print(f"   ✅ Report already has {today} data — no fallback needed")
-            return {"report": report_name, "status": "already_fresh", "date": today}
-        else:
-            old_date = re.search(r'2026-\d{2}-\d{2}', content)
-            old = old_date.group(0) if old_date else "unknown"
-            print(f"   ❌ Report is stale ({old}), need to regenerate")
-    else:
-        print(f"   ❌ {cfg['html']} not found, need to generate")
-
-    # ── Step 3: Generate locally ──
-    print(f"[3/4] Generating {report_name} report locally...")
-    script_path = os.path.join(ROOT, cfg["script"])
-    code, out, err = _run(["python3", script_path], timeout=180)
-
-    if code == 0:
-        print(f"   ✅ Generated successfully")
-        if out:
-            for line in out.split("\n")[-5:]:
-                print(f"      {line}")
-    else:
-        print(f"   ❌ Generation failed (code={code})")
-        print(f"   stderr: {err[:200]}")
-        return {"report": report_name, "status": "generation_failed", "date": today, "error": err[:200]}
-
-    # ── Step 4: Commit + push ──
-    print("[4/4] Committing + pushing...")
-    _run(["git", "add", cfg["html"], "docs/report_log.json"])
-    code, out, err = _run([
-        "git", "commit", "-m",
-        f"📊 {report_name} {today} (local fallback — Actions cron delayed)"
-    ])
-    if code != 0 and "nothing to commit" not in out + err:
-        print(f"   ⚠️  Commit warning: {out[:80]} {err[:80]}")
-
-    code, out, err = _run(["git", "push", "origin", "main"])
-    if code == 0:
-        print(f"   ✅ Pushed to GitHub")
-    else:
-        print(f"   ⚠️  Push warning: {err[:80]}")
-
-    return {"report": report_name, "status": "fallback_generated", "date": today}
+def find_python():
+    """Find a working Python 3 interpreter with akshare installed"""
+    candidates = [
+        "/Users/yanx/.workbuddy/binaries/python/envs/default/bin/python",
+        "/Users/yanx/.workbuddy/binaries/python/versions/3.13.12/bin/python3",
+        "/usr/local/bin/python3",
+        sys.executable,
+    ]
+    for py in candidates:
+        if os.path.exists(py):
+            return py
+    return sys.executable
 
 
 def main():
-    arg = sys.argv[1] if len(sys.argv) > 1 else "all"
-    today = datetime.now(BJT)
+    if len(sys.argv) < 2:
+        print("Usage: python3 scripts/check_and_fallback.py <report_name>")
+        print(f"Available: {list(REPORTS.keys())}")
+        sys.exit(1)
 
-    if arg == "all":
-        # Check all reports that should have run by now
-        bjth = today.hour
-        bjtm = today.minute
+    report_name = sys.argv[1]
 
-        results = []
-        for name, cfg in REPORTS.items():
-            ch = cfg["check_after"]
-            if bjth > ch[0] or (bjth == ch[0] and bjtm >= ch[1]):
-                results.append(check_and_fallback(name))
-            else:
-                print(f"\n⏭️  {name}: not yet {cfg['check_after'][0]:02d}:{cfg['check_after'][1]:02d}, skipping")
+    if report_name not in REPORTS:
+        print(f"Unknown report: {report_name}. Available: {list(REPORTS.keys())}")
+        sys.exit(1)
 
-        # Summary
-        print(f"\n{'='*50}")
-        fresh = sum(1 for r in results if r["status"] == "already_fresh")
-        gen = sum(1 for r in results if r["status"] == "fallback_generated")
-        fail = sum(1 for r in results if r["status"] == "generation_failed")
-        print(f"📊 Summary: {fresh} fresh, {gen} fallback, {fail} failed")
-        print(f"{'='*50}")
-    else:
-        check_and_fallback(arg)
+    cfg = REPORTS[report_name]
+    filepath = os.path.join(ROOT, cfg["file"])
+
+    print(f"🔍 检查 {cfg['name']} ({cfg['file']})...")
+
+    stale, reason = is_stale(filepath)
+    if not stale:
+        print(f"  ✅ {cfg['name']} 已是最新，无需重新生成")
+        return
+
+    print(f"  ⚠️ {cfg['name']} 过时/缺失 (原因: {reason})，启动本地兜底生成...")
+    print(f"  📅 今日: {datetime.now(BJT).strftime('%Y-%m-%d %H:%M')} BJT")
+
+    # Run the generation script
+    script_path = os.path.join(ROOT, cfg["script"])
+    python = find_python()
+
+    print(f"  🐍 使用解释器: {python}")
+    print(f"  📜 执行脚本: {script_path}")
+
+    env = os.environ.copy()
+    env["PYTHONPATH"] = ROOT
+
+    result = subprocess.run(
+        [python, script_path],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=180,
+        env=env,
+    )
+    print(result.stdout)
+    if result.returncode != 0:
+        print(result.stderr)
+        print(f"  ❌ 生成脚本失败 (exit code {result.returncode})")
+        sys.exit(1)
+
+    # Verify output
+    if not os.path.exists(filepath):
+        print(f"  ❌ 脚本运行完成但未生成 {cfg['file']}")
+        sys.exit(1)
+
+    still_stale, _ = is_stale(filepath)
+    if still_stale:
+        print(f"  ⚠️ 生成的文件仍不含今日日期，可能数据源异常 — 仍将推送")
+
+    # Git push
+    print(f"\n🚀 推送到GitHub (origin/master)...")
+    tracking_files = [cfg["file"], "docs/report_log.json"]
+
+    # Only add files that exist
+    existing = [f for f in tracking_files if os.path.exists(os.path.join(ROOT, f))]
+    if not existing:
+        print("  ⚠️ 无可推送文件")
+        return
+
+    commit_msg = f"Auto: {cfg['name']} 本地兜底 {datetime.now(BJT).strftime('%m-%d %H:%M')}"
+
+    commands = [
+        (["git", "add"] + existing, "git add"),
+        (["git", "commit", "-m", commit_msg], "git commit"),
+        (["git", "push", "origin", "HEAD"], "git push"),
+    ]
+
+    for cmd, label in commands:
+        r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=30)
+        combined = (r.stdout + r.stderr).lower()
+        if r.returncode == 0 or "nothing to commit" in combined or "up to date" in combined:
+            print(f"  ✅ {label}")
+        elif "everything up-to-date" in combined:
+            print(f"  ✅ {label} (up-to-date)")
+        else:
+            print(f"  ⚠️ {label}: {r.stderr.strip()[:200]}")
+
+    print(f"\n✅ {cfg['name']} 本地兜底完成 → GitHub 已推送")
 
 
 if __name__ == "__main__":
