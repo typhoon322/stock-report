@@ -88,5 +88,14 @@
     "timezone": "UTC+8",
     "report": "morning",
     "status": "success"
+  },
+  {
+    "time": "2026-06-30 15:14",
+    "timezone": "UTC+8",
+    "report": "midday",
+    "status": "partial",
+    "errors": [
+      "stale_data: run after close, flow data skipped"
+    ]
   }
 ]
