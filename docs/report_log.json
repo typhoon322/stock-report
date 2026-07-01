@@ -130,5 +130,14 @@
     "errors": [
       "concept_flow"
     ]
+  },
+  {
+    "time": "2026-07-01 15:59",
+    "timezone": "UTC+8",
+    "report": "midday",
+    "status": "partial",
+    "errors": [
+      "stale_data: run after close, flow data skipped"
+    ]
   }
 ]
