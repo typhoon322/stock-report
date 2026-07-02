@@ -3,649 +3,382 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A股涨停板日度分析 — 20260701</title>
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<title>涨停板日度分析 — 2026年7月2日</title>
+<script src="https://cdn.plot.ly/plotly-3.0.0.min.js"></script>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; background: #0a0e17; color: #e0e0e0; line-height: 1.6; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
 .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-.header { text-align: center; padding: 30px 0; background: linear-gradient(135deg, #1a1f2e 0%, #0d1117 100%); border-bottom: 2px solid #e74c3c; margin-bottom: 30px; }
-.header h1 { font-size: 2em; color: #e74c3c; margin-bottom: 10px; }
-.header .date { color: #888; font-size: 0.9em; }
-.header .zt-count { font-size: 3em; color: #e74c3c; font-weight: bold; margin: 10px 0; }
-.section { background: #141824; border-radius: 12px; padding: 25px; margin-bottom: 25px; border: 1px solid #2a2f3e; }
-.section h2 { color: #e74c3c; font-size: 1.4em; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #2a2f3e; }
-.charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
-.chart-box { background: #1a1f2e; border-radius: 8px; padding: 15px; border: 1px solid #2a2f3e; }
-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
-th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid #2a2f3e; }
-th { background: #1a1f2e; color: #999; font-weight: 600; font-size: 0.85em; }
-tr:hover { background: rgba(231,76,60,0.05); }
-.positive { color: #e74c3c; }
-.negative { color: #2ecc71; }
-.neutral { color: #95a5a6; }
-.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; }
-.badge-confirmed { background: rgba(231,76,60,0.2); color: #e74c3c; }
-.badge-warning { background: rgba(241,196,15,0.2); color: #f1c40f; }
-.badge-acc { background: rgba(46,204,113,0.2); color: #2ecc71; }
-.row-confirmed { border-left: 3px solid #e74c3c; }
-.row-warning { border-left: 3px solid #f1c40f; }
-.row-acc { border-left: 3px solid #2ecc71; }
-.stock-card { background: #1a1f2e; border-radius: 8px; padding: 20px; margin-bottom: 15px; border: 1px solid #2a2f3e; border-left: 3px solid #e74c3c; }
-.stock-header { display: flex; align-items: center; gap: 15px; margin-bottom: 12px; }
-.stock-code { color: #888; font-size: 0.85em; }
-.stock-name { font-size: 1.2em; font-weight: bold; }
-.stock-chg { font-size: 1.1em; font-weight: bold; }
-.stock-suggestion { margin-left: auto; padding: 3px 10px; border-radius: 4px; font-size: 0.85em; font-weight: bold; }
-.sug-hold { background: rgba(46,204,113,0.15); color: #2ecc71; }
-.sug-buy { background: rgba(231,76,60,0.15); color: #e74c3c; }
-.sug-warning { background: rgba(241,196,15,0.15); color: #f1c40f; }
-.sug-neutral { background: rgba(149,165,166,0.15); color: #95a5a6; }
-.stock-info-row { display: flex; gap: 20px; color: #aaa; font-size: 0.9em; margin-bottom: 12px; }
-.stock-section { margin-top: 10px; padding-top: 10px; border-top: 1px solid #2a2f3e; }
-.section-title { color: #e74c3c; font-size: 0.9em; font-weight: bold; margin-bottom: 8px; }
-.indicator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 6px; }
-.ind-item { font-size: 0.85em; color: #aaa; }
-.ind-item span { color: #ddd; }
-.judgment { display: flex; flex-direction: column; gap: 6px; }
-.judge-item { font-size: 0.9em; color: #bbb; }
-.theme-card { background: #1a1f2e; border-radius: 8px; padding: 15px; margin-bottom: 10px; border: 1px solid #2a2f3e; }
-.theme-name { color: #e74c3c; font-weight: bold; font-size: 1.1em; margin-bottom: 8px; }
-.theme-info { display: flex; gap: 20px; font-size: 0.9em; color: #aaa; flex-wrap: wrap; }
-.theme-info b { color: #ddd; }
-.stage-萌芽期 { color: #3498db; }
-.stage-发展期 { color: #2ecc71; }
-.stage-加速期 { color: #e74c3c; }
-.stage-成熟期 { color: #f39c12; }
-.score { color: #f39c12; font-weight: bold; }
-.score-avg { color: #e74c3c; font-size: 1.1em; font-weight: bold; }
-.advice-box { background: #1a1f2e; border-radius: 8px; padding: 20px; margin-top: 15px; border: 1px solid #f39c12; }
-.advice-box h3 { color: #f39c12; margin-bottom: 10px; }
-.advice-box ul { padding-left: 20px; color: #ccc; }
-.advice-box li { margin-bottom: 8px; }
-.disclaimer { text-align: center; color: #555; font-size: 0.75em; padding: 30px 0; border-top: 1px solid #2a2f3e; margin-top: 30px; }
-@media (max-width: 768px) {
-    .container { padding: 10px; }
-    .charts-grid { grid-template-columns: 1fr; }
-    .stock-header { flex-wrap: wrap; }
-    .indicator-grid { grid-template-columns: 1fr 1fr; }
-}
+.header { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; padding: 30px; border-radius: 12px; margin-bottom: 24px; text-align: center; }
+.header h1 { font-size: 28px; margin-bottom: 8px; }
+.header .subtitle { font-size: 14px; opacity: 0.8; }
+.section { background: white; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.section h2 { font-size: 20px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #f0f0f0; }
+.overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.stat-card { background: linear-gradient(135deg, #fafafa, #f0f0f0); padding: 16px; border-radius: 10px; text-align: center; }
+.stat-card .value { font-size: 28px; font-weight: bold; color: #e74c3c; }
+.stat-card .label { font-size: 13px; color: #888; margin-top: 4px; }
+.up { color: #e74c3c; font-weight: bold; }
+.down { color: #27ae60; font-weight: bold; }
+.chart-container { margin: 20px 0; }
+.stock-header { display: flex; justify-content: space-between; align-items: center; }
+.stock-name { font-size: 18px; font-weight: bold; color: #333; }
+.stock-change { font-size: 16px; font-weight: bold; }
+.data-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.data-table th { background: #f8f9fa; padding: 10px; text-align: left; font-size: 13px; color: #666; border-bottom: 2px solid #eee; }
+.data-table td { padding: 10px; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+.data-table tr:hover { background: #fafbfc; }
+.disclaimer { background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 16px; margin-top: 24px; font-size: 13px; color: #856404; }
 </style>
 </head>
 <body>
 <div class="container">
+
 <div class="header">
     <h1>📊 A股涨停板日度分析</h1>
-    <div class="date">2026年07月01日 | Wednesday</div>
-    <div class="zt-count">152<span style="font-size:18px;color:#888"> 只涨停</span></div>
+    <div class="subtitle">2026年7月2日 星期四 | 数据来源: Sina Finance + AKShare</div>
 </div>
 
 <div class="section">
-    <h2>🏭 板块集中度分析</h2>
-    <div class="charts-grid">
-        <div class="chart-box"></div>
-        <div class="chart-box"></div>
+    <h2>📈 全市场概览</h2>
+    <div class="overview-grid">
+        <div class="stat-card"><div class="value">94</div><div class="label">涨停总数</div></div>
+        <div class="stat-card"><div class="value">75</div><div class="label">首板</div></div>
+        <div class="stat-card"><div class="value">19</div><div class="label">连板</div></div>
+        <div class="stat-card"><div class="value">汽车零部件</div><div class="label">最热板块</div></div>
+        <div class="stat-card"><div class="value">4</div><div class="label">主线板块</div></div>
     </div>
+    <div class="chart-container" id="industryChart" style="height:400px;"></div>
 </div>
 
 <div class="section">
-    <h2>💰 资金流向交叉分析</h2>
-    <table>
-        <thead><tr><th>类型</th><th>板块</th><th>涨停数</th><th>资金</th><th>研判</th></tr></thead>
-        <tbody>
-            
-            
-            
-        </tbody>
-    </table>
+    <h2>🔍 板块集中度与资金流向交叉分析</h2>
+    <h3 style="color:#e74c3c">✅ 确认板块（高密度涨停+资金流入）</h3><div style="display:flex;flex-wrap:wrap;gap:8px;"><span style="background:#f0f0f0;padding:4px 10px;border-radius:12px;font-size:13px">汽车零部: 8涨停/8.0亿</span><span style="background:#f0f0f0;padding:4px 10px;border-radius:12px;font-size:13px">工程机械: 4涨停/4.7亿</span><span style="background:#f0f0f0;padding:4px 10px;border-radius:12px;font-size:13px">通用设备: 3涨停/7.5亿</span><span style="background:#f0f0f0;padding:4px 10px;border-radius:12px;font-size:13px">服装家纺: 3涨停/8800万</span></div><h3 style="color:#f39c12">⚠️ 预警板块（高密度涨停+资金流出）</h3><div style="display:flex;flex-wrap:wrap;gap:8px;"><span style="background:#f0f0f0;padding:4px 10px;border-radius:12px;font-size:13px">塑料: 6涨停/-8.0亿</span><span style="background:#f0f0f0;padding:4px 10px;border-radius:12px;font-size:13px">化学制药: 6涨停/-14.5亿</span><span style="background:#f0f0f0;padding:4px 10px;border-radius:12px;font-size:13px">化学制品: 5涨停/-4.5亿</span><span style="background:#f0f0f0;padding:4px 10px;border-radius:12px;font-size:13px">纺织制造: 5涨停/-8700万</span><span style="background:#f0f0f0;padding:4px 10px;border-radius:12px;font-size:13px">专用设备: 3涨停/-14.0亿</span></div><h3 style="color:#3498db">📈 蓄势板块（低密度+资金流入）</h3><div style="display:flex;flex-wrap:wrap;gap:8px;"><span style="background:#f0f0f0;padding:4px 10px;border-radius:12px;font-size:13px">光学光电: 2涨停/25.6亿</span><span style="background:#f0f0f0;padding:4px 10px;border-radius:12px;font-size:13px">贵金属: 2涨停/21.4亿</span><span style="background:#f0f0f0;padding:4px 10px;border-radius:12px;font-size:13px">小金属: 1涨停/5.4亿</span></div>
 </div>
 
 <div class="section">
-    <h2>📐 板块持续性5维评估</h2>
-    <div class="charts-grid"><div class="chart-box"></div></div>
-    <table style="margin-top:15px;">
-        <thead><tr><th>板块</th><th>封单</th><th>换手</th><th>资金</th><th>结构</th><th>广度</th><th>综合</th></tr></thead>
-        <tbody></tbody>
-    </table>
+    <h2><h3>🔄 主线板块生命周期</h3><table class="data-table"><tr><th>板块</th><th>涨停数</th><th>首板</th><th>连板</th><th>阶段</th><th>标杆股</th></tr><tr><td>汽车零部</td><td>8</td><td>7</td><td>1</td><td style="color:#3498db"><b>萌芽期</b></td><td>S佳通</td></tr><tr><td>工程机械</td><td>4</td><td>4</td><td>0</td><td style="color:#f39c12"><b>发展期</b></td><td>天元智能</td></tr><tr><td>通用设备</td><td>3</td><td>2</td><td>1</td><td style="color:#f39c12"><b>发展期</b></td><td>亚威股份</td></tr><tr><td>服装家纺</td><td>3</td><td>3</td><td>0</td><td style="color:#f39c12"><b>发展期</b></td><td>龙头股份</td></tr></table></h2>
 </div>
 
 <div class="section">
-    <h2>🔍 主题逻辑推演</h2>
-    <p style="color:#888;">暂无确认板块</p>
+    <h2><h3>⭐ 精选标的 Top 20</h3><table class="data-table"><tr><th>#</th><th>代码</th><th>名称</th><th>评分</th><th>行业</th><th>连板</th><th>封板时间</th><th>换手率</th></tr><tr><td>1</td><td>300163</td><td>先锋新材</td><td style="color:#e74c3c;font-weight:bold">13</td><td>化学制品</td><td>首板</td><td>095800</td><td>7.65%</td></tr><tr><td>2</td><td>600156</td><td>华升股份</td><td style="color:#e74c3c;font-weight:bold">13</td><td>纺织制造</td><td>首板</td><td>095926</td><td>3.91%</td></tr><tr><td>3</td><td>301019</td><td>宁波色母</td><td style="color:#e74c3c;font-weight:bold">13</td><td>塑料</td><td>首板</td><td>100139</td><td>4.32%</td></tr><tr><td>4</td><td>001378</td><td>德冠新材</td><td style="color:#e74c3c;font-weight:bold">13</td><td>塑料</td><td>首板</td><td>100633</td><td>6.63%</td></tr><tr><td>5</td><td>001319</td><td>铭科精技</td><td style="color:#e74c3c;font-weight:bold">13</td><td>汽车零部</td><td>首板</td><td>104533</td><td>6.51%</td></tr><tr><td>6</td><td>600480</td><td>凌云股份</td><td style="color:#e74c3c;font-weight:bold">13</td><td>汽车零部</td><td>首板</td><td>134453</td><td>3.06%</td></tr><tr><td>7</td><td>002693</td><td>双成药业</td><td style="color:#e74c3c;font-weight:bold">13</td><td>化学制药</td><td>首板</td><td>135203</td><td>8.82%</td></tr><tr><td>8</td><td>300695</td><td>兆丰股份</td><td style="color:#e74c3c;font-weight:bold">13</td><td>汽车零部</td><td>首板</td><td>142315</td><td>3.66%</td></tr><tr><td>9</td><td>002020</td><td>京新药业</td><td style="color:#f39c12;font-weight:bold">11</td><td>化学制药</td><td>首板</td><td>092500</td><td>1.37%</td></tr><tr><td>10</td><td>002354</td><td>天娱数科</td><td style="color:#f39c12;font-weight:bold">11</td><td>广告营销</td><td>首板</td><td>093003</td><td>6.32%</td></tr><tr><td>11</td><td>603538</td><td>美诺华</td><td style="color:#f39c12;font-weight:bold">11</td><td>化学制药</td><td>2连板</td><td>093111</td><td>4.13%</td></tr><tr><td>12</td><td>002995</td><td>天地在线</td><td style="color:#f39c12;font-weight:bold">11</td><td>广告营销</td><td>首板</td><td>093233</td><td>5.79%</td></tr><tr><td>13</td><td>000908</td><td>石药景峰</td><td style="color:#f39c12;font-weight:bold">11</td><td>化学制药</td><td>首板</td><td>093236</td><td>1.46%</td></tr><tr><td>14</td><td>000890</td><td>法尔胜</td><td style="color:#f39c12;font-weight:bold">11</td><td>环保设备</td><td>首板</td><td>093554</td><td>3.52%</td></tr><tr><td>15</td><td>000592</td><td>平潭发展</td><td style="color:#f39c12;font-weight:bold">11</td><td>林业Ⅱ</td><td>首板</td><td>093924</td><td>4.45%</td></tr><tr><td>16</td><td>002427</td><td>尤夫股份</td><td style="color:#f39c12;font-weight:bold">11</td><td>化学纤维</td><td>首板</td><td>093927</td><td>3.80%</td></tr><tr><td>17</td><td>000955</td><td>欣龙控股</td><td style="color:#f39c12;font-weight:bold">11</td><td>纺织制造</td><td>首板</td><td>094103</td><td>2.20%</td></tr><tr><td>18</td><td>603273</td><td>天元智能</td><td style="color:#f39c12;font-weight:bold">11</td><td>工程机械</td><td>首板</td><td>094309</td><td>6.04%</td></tr><tr><td>19</td><td>603717</td><td>天域生物</td><td style="color:#f39c12;font-weight:bold">11</td><td>基础建设</td><td>首板</td><td>094430</td><td>5.17%</td></tr><tr><td>20</td><td>603926</td><td>铁流股份</td><td style="color:#f39c12;font-weight:bold">11</td><td>汽车零部</td><td>首板</td><td>094642</td><td>1.64%</td></tr></table></h2>
 </div>
 
 <div class="section">
-    <h2>⭐ 重点标的 (Top 20)</h2>
-    <table>
-        <thead><tr><th>#</th><th>代码</th><th>名称</th><th>行业</th><th>涨幅</th><th>类型</th><th>封板</th><th>炸板</th></tr></thead>
-        <tbody>
-    <tr>
-        <td>1</td><td>000601</td><td>韶能股份</td>
-        <td>N/A</td><td class="positive">+10.09%</td>
-        <td>首板</td><td>092500</td><td>0</td>
-    </tr>
-    <tr>
-        <td>2</td><td>002273</td><td>水晶光电</td>
-        <td>N/A</td><td class="positive">+10.01%</td>
-        <td>2板</td><td>092500</td><td>0</td>
-    </tr>
-    <tr>
-        <td>3</td><td>002559</td><td>亚威股份</td>
-        <td>N/A</td><td class="positive">+9.99%</td>
-        <td>首板</td><td>092500</td><td>0</td>
-    </tr>
-    <tr>
-        <td>4</td><td>002635</td><td>安洁科技</td>
-        <td>N/A</td><td class="positive">+10.02%</td>
-        <td>首板</td><td>092500</td><td>0</td>
-    </tr>
-    <tr>
-        <td>5</td><td>603137</td><td>恒尚节能</td>
-        <td>N/A</td><td class="positive">+9.97%</td>
-        <td>2板</td><td>092502</td><td>0</td>
-    </tr>
-    <tr>
-        <td>6</td><td>600233</td><td>圆通速递</td>
-        <td>N/A</td><td class="positive">+10.03%</td>
-        <td>首板</td><td>092503</td><td>0</td>
-    </tr>
-    <tr>
-        <td>7</td><td>600509</td><td>天富能源</td>
-        <td>N/A</td><td class="positive">+10.06%</td>
-        <td>首板</td><td>092503</td><td>0</td>
-    </tr>
-    <tr>
-        <td>8</td><td>603738</td><td>泰晶科技</td>
-        <td>N/A</td><td class="positive">+10.01%</td>
-        <td>首板</td><td>092503</td><td>0</td>
-    </tr>
-    <tr>
-        <td>9</td><td>000733</td><td>振华科技</td>
-        <td>N/A</td><td class="positive">+9.99%</td>
-        <td>首板</td><td>093000</td><td>0</td>
-    </tr>
-    <tr>
-        <td>10</td><td>002313</td><td>日海智能</td>
-        <td>N/A</td><td class="positive">+9.97%</td>
-        <td>首板</td><td>093018</td><td>0</td>
-    </tr>
-    <tr>
-        <td>11</td><td>002738</td><td>中矿资源</td>
-        <td>N/A</td><td class="positive">+10.00%</td>
-        <td>2板</td><td>093054</td><td>0</td>
-    </tr>
-    <tr>
-        <td>12</td><td>603859</td><td>能科科技</td>
-        <td>N/A</td><td class="positive">+10.00%</td>
-        <td>首板</td><td>093054</td><td>0</td>
-    </tr>
-    <tr>
-        <td>13</td><td>600076</td><td>康欣新材</td>
-        <td>N/A</td><td class="positive">+9.97%</td>
-        <td>2板</td><td>093147</td><td>0</td>
-    </tr>
-    <tr>
-        <td>14</td><td>002184</td><td>海得控制</td>
-        <td>N/A</td><td class="positive">+10.04%</td>
-        <td>首板</td><td>093203</td><td>0</td>
-    </tr>
-    <tr>
-        <td>15</td><td>300518</td><td>新迅达</td>
-        <td>N/A</td><td class="positive">+20.00%</td>
-        <td>2板</td><td>093221</td><td>0</td>
-    </tr>
-    <tr>
-        <td>16</td><td>002232</td><td>启明信息</td>
-        <td>N/A</td><td class="positive">+10.03%</td>
-        <td>首板</td><td>093406</td><td>0</td>
-    </tr>
-    <tr>
-        <td>17</td><td>001256</td><td>炜冈科技</td>
-        <td>N/A</td><td class="positive">+10.00%</td>
-        <td>首板</td><td>093533</td><td>0</td>
-    </tr>
-    <tr>
-        <td>18</td><td>600845</td><td>宝信软件</td>
-        <td>N/A</td><td class="positive">+9.98%</td>
-        <td>首板</td><td>093737</td><td>0</td>
-    </tr>
-    <tr>
-        <td>19</td><td>002808</td><td>恒久退</td>
-        <td>N/A</td><td class="positive">+9.52%</td>
-        <td>2板</td><td>093806</td><td>0</td>
-    </tr>
-    <tr>
-        <td>20</td><td>002326</td><td>永太科技</td>
-        <td>N/A</td><td class="positive">+10.02%</td>
-        <td>首板</td><td>093942</td><td>0</td>
-    </tr></tbody>
-    </table>
+    <h2>📊 持仓组合盈亏总览</h2>
+    <div class="chart-container" id="portfolioChart" style="height:400px;"></div>
 </div>
 
 <div class="section">
-    <h2>💼 持仓股深度分析（全7只）</h2>
+    <h2>🔬 持仓股逐一深度分析</h2>
     
-        <div class="stock-card">
-            <div class="stock-header">
-                <span class="stock-code">600487</span>
-                <span class="stock-name">亨通光电</span>
-                <span class="stock-chg positive">-6.777025791110295%</span>
-                <span class="stock-suggestion sug-hold">持有</span>
+    <div class="stock-card" style="border-left: 4px solid #e74c3c; margin-bottom: 24px; background: #fff5f5; border-radius: 0 8px 8px 0; padding: 20px;">
+        <div class="stock-header">
+            <span class="stock-name">600487 亨通光电</span>
+            <span class="stock-change" style="color: #27ae60">-7.94%</span>
+        </div>
+        <div class="stock-summary" style="margin: 8px 0; color: #666;">
+            持仓成本: 78 | 现价: 93.84 | 
+            盈亏: <b style="color:#e74c3c">20.31%</b>
+            
+            
+        </div>
+        
+        <div class="analysis-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+            <div class="tech-panel" style="background: #fff; padding: 12px; border-radius: 8px;">
+                <b>📊 技术面</b><br>
+                MA排列: <span style="color:#e74c3c; font-weight: bold;">多头</span> | 
+                MACD: <span style="color:#27ae60">空头</span><br>
+                RSI(14): 46.20 <span style="color:#999">(正常)</span><br>
+                近20日: 11.48% | 最大回撤: -17.13%<br>
+                支撑: 88.12 | 压力: 125.16
             </div>
-            <div class="stock-info-row">
-                <span>现价: <b>101.93</b></span>
-                <span>成本: <b>77.56</b></span>
-                <span>盈亏: <b class="positive">31.4%</b></span>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">技术面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">MA5/20/60: <span>114.042/105.588/79.472</span></div>
-                    <div class="ind-item">排列: <span>多头排列 ↑</span></div>
-                    <div class="ind-item">MACD: <span>空头 ↓</span></div>
-                    <div class="ind-item">DIF/DEA: <span>9.2743/10.1815</span></div>
-                    <div class="ind-item">RSI(14): <span>53.6 (正常区域)</span></div>
-                    <div class="ind-item">20日涨跌: <span>31.54%</span></div>
-                    <div class="ind-item">最大回撤: <span>-12.16%</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">资金面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">主力净流入: <span>None万</span></div>
-                    <div class="ind-item">净占比: <span>None%</span></div>
-                    <div class="ind-item">近5日主力: <span>None万</span></div>
-                    <div class="ind-item">北向5日: <span>None万</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">基本面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">PE: <span>None</span></div>
-                    <div class="ind-item">PB: <span>None</span></div>
-                    <div class="ind-item">ROE: <span>None%</span></div>
-                    <div class="ind-item">营收同比: <span>None%</span></div>
-                    <div class="ind-item">净利同比: <span>None%</span></div>
-                    <div class="ind-item">估值分位: <span>中等</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">综合研判</div>
-                <div class="judgment">
-                    <div class="judge-item"><b>逻辑:</b> 亨通光电处于震荡 ↔状态</div>
-                    <div class="judge-item"><b>趋势:</b> 震荡 ↔ | 支撑 74.61 | 压力 125.16</div>
-                    <div class="judge-item"><b>建议:</b> <span class="sug-hold">持有</span></div>
-                    <div class="judge-item"><b>盈亏策略:</b> 获利31.4%，趋势尚可，设回撤8%止盈线</div>
-                </div>
+            <div class="fund-panel" style="background: #fff; padding: 12px; border-radius: 8px;">
+                <b>💰 资金面/基本面</b><br>
+                
+                
+                ROE: N/A% | 营收同比: N/A%<br>
+                净利同比: N/A%
             </div>
         </div>
-        <div class="stock-card">
-            <div class="stock-header">
-                <span class="stock-code">600522</span>
-                <span class="stock-name">中天科技</span>
-                <span class="stock-chg positive">-8.668424522083056%</span>
-                <span class="stock-suggestion sug-hold">持有</span>
-            </div>
-            <div class="stock-info-row">
-                <span>现价: <b>55.42</b></span>
-                <span>成本: <b>40.52</b></span>
-                <span>盈亏: <b class="positive">36.8%</b></span>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">技术面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">MA5/20/60: <span>62.164/54.061/42.199</span></div>
-                    <div class="ind-item">排列: <span>多头排列 ↑</span></div>
-                    <div class="ind-item">MACD: <span>多头 ↑</span></div>
-                    <div class="ind-item">DIF/DEA: <span>5.3073/4.9941</span></div>
-                    <div class="ind-item">RSI(14): <span>58.5 (正常区域)</span></div>
-                    <div class="ind-item">20日涨跌: <span>41.48%</span></div>
-                    <div class="ind-item">最大回撤: <span>-13.6%</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">资金面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">主力净流入: <span>None万</span></div>
-                    <div class="ind-item">净占比: <span>None%</span></div>
-                    <div class="ind-item">近5日主力: <span>None万</span></div>
-                    <div class="ind-item">北向5日: <span>None万</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">基本面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">PE: <span>None</span></div>
-                    <div class="ind-item">PB: <span>None</span></div>
-                    <div class="ind-item">ROE: <span>None%</span></div>
-                    <div class="ind-item">营收同比: <span>None%</span></div>
-                    <div class="ind-item">净利同比: <span>None%</span></div>
-                    <div class="ind-item">估值分位: <span>偏低</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">综合研判</div>
-                <div class="judgment">
-                    <div class="judge-item"><b>逻辑:</b> 中天科技处于偏多 ↑状态，估值偏低</div>
-                    <div class="judge-item"><b>趋势:</b> 偏多 ↑ | 支撑 39.03 | 压力 68.1</div>
-                    <div class="judge-item"><b>建议:</b> <span class="sug-hold">持有</span></div>
-                    <div class="judge-item"><b>盈亏策略:</b> 获利36.8%，趋势尚可，设回撤8%止盈线</div>
-                </div>
-            </div>
+        
+        <div class="verdict" style="margin-top: 12px; padding: 12px; background: #fff; border-radius: 8px;">
+            <b>📋 综合研判</b><br>
+            <b style="color:#e74c3c">继续持有</b>: 趋势良好，持仓待涨<br>
+            趋势: 偏多 | 
+            支撑 88.12 / 压力 125.16
         </div>
-        <div class="stock-card">
-            <div class="stock-header">
-                <span class="stock-code">002745</span>
-                <span class="stock-name">木林森</span>
-                <span class="stock-chg positive">-0.7968127490039953%</span>
-                <span class="stock-suggestion sug-hold">持有</span>
-            </div>
-            <div class="stock-info-row">
-                <span>现价: <b>12.45</b></span>
-                <span>成本: <b>8.8</b></span>
-                <span>盈亏: <b class="positive">41.5%</b></span>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">技术面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">MA5/20/60: <span>12.374/10.848/9.847</span></div>
-                    <div class="ind-item">排列: <span>多头排列 ↑</span></div>
-                    <div class="ind-item">MACD: <span>多头 ↑</span></div>
-                    <div class="ind-item">DIF/DEA: <span>0.6832/0.5023</span></div>
-                    <div class="ind-item">RSI(14): <span>72.6 (超买区域 ⚠️)</span></div>
-                    <div class="ind-item">20日涨跌: <span>22.32%</span></div>
-                    <div class="ind-item">最大回撤: <span>-10.48%</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">资金面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">主力净流入: <span>None万</span></div>
-                    <div class="ind-item">净占比: <span>None%</span></div>
-                    <div class="ind-item">近5日主力: <span>None万</span></div>
-                    <div class="ind-item">北向5日: <span>None万</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">基本面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">PE: <span>None</span></div>
-                    <div class="ind-item">PB: <span>None</span></div>
-                    <div class="ind-item">ROE: <span>None%</span></div>
-                    <div class="ind-item">营收同比: <span>None%</span></div>
-                    <div class="ind-item">净利同比: <span>None%</span></div>
-                    <div class="ind-item">估值分位: <span>偏低</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">综合研判</div>
-                <div class="judgment">
-                    <div class="judge-item"><b>逻辑:</b> 木林森处于偏多 ↑状态，估值偏低</div>
-                    <div class="judge-item"><b>趋势:</b> 偏多 ↑ | 支撑 9.14 | 压力 13.15</div>
-                    <div class="judge-item"><b>建议:</b> <span class="sug-hold">持有</span></div>
-                    <div class="judge-item"><b>盈亏策略:</b> 获利41.5%，趋势尚可，设回撤8%止盈线</div>
-                </div>
-            </div>
-        </div>
-        <div class="stock-card">
-            <div class="stock-header">
-                <span class="stock-code">600733</span>
-                <span class="stock-name">北汽蓝谷</span>
-                <span class="stock-chg negative">0.0%</span>
-                <span class="stock-suggestion sug-warning">止损</span>
-            </div>
-            <div class="stock-info-row">
-                <span>现价: <b>4.87</b></span>
-                <span>成本: <b>15.7</b></span>
-                <span>盈亏: <b class="negative">-69.0%</b></span>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">技术面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">MA5/20/60: <span>5.024/5.633/6.526</span></div>
-                    <div class="ind-item">排列: <span>空头排列 ↓</span></div>
-                    <div class="ind-item">MACD: <span>空头 ↓</span></div>
-                    <div class="ind-item">DIF/DEA: <span>-0.4036/-0.3416</span></div>
-                    <div class="ind-item">RSI(14): <span>19.8 (超卖区域 💡)</span></div>
-                    <div class="ind-item">20日涨跌: <span>-20.16%</span></div>
-                    <div class="ind-item">最大回撤: <span>-20.16%</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">资金面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">主力净流入: <span>None万</span></div>
-                    <div class="ind-item">净占比: <span>None%</span></div>
-                    <div class="ind-item">近5日主力: <span>None万</span></div>
-                    <div class="ind-item">北向5日: <span>None万</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">基本面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">PE: <span>None</span></div>
-                    <div class="ind-item">PB: <span>None</span></div>
-                    <div class="ind-item">ROE: <span>0.0%</span></div>
-                    <div class="ind-item">营收同比: <span>None%</span></div>
-                    <div class="ind-item">净利同比: <span>0.0%</span></div>
-                    <div class="ind-item">估值分位: <span>偏低</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">综合研判</div>
-                <div class="judgment">
-                    <div class="judge-item"><b>逻辑:</b> 北汽蓝谷处于偏空 ↓状态，估值偏低</div>
-                    <div class="judge-item"><b>趋势:</b> 偏空 ↓ | 支撑 4.76 | 压力 6.15</div>
-                    <div class="judge-item"><b>建议:</b> <span class="sug-warning">止损</span></div>
-                    <div class="judge-item"><b>盈亏策略:</b> 深度亏损-69.0%且趋势未转好，建议严格止损</div>
-                </div>
-            </div>
-        </div>
-        <div class="stock-card">
-            <div class="stock-header">
-                <span class="stock-code">513060</span>
-                <span class="stock-name">恒生医疗ETF</span>
-                <span class="stock-chg negative">3.105590062111804%</span>
-                <span class="stock-suggestion sug-warning">减仓/观望</span>
-            </div>
-            <div class="stock-info-row">
-                <span>现价: <b>0.498</b></span>
-                <span>成本: <b>0.65</b></span>
-                <span>盈亏: <b class="negative">-23.4%</b></span>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">技术面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">MA5/20/60: <span>0.477/0.474/0.538</span></div>
-                    <div class="ind-item">排列: <span>震荡交叉</span></div>
-                    <div class="ind-item">MACD: <span>多头 ↑</span></div>
-                    <div class="ind-item">DIF/DEA: <span>-0.0126/-0.0179</span></div>
-                    <div class="ind-item">RSI(14): <span>57.9 (正常区域)</span></div>
-                    <div class="ind-item">20日涨跌: <span>-4.73%</span></div>
-                    <div class="ind-item">最大回撤: <span>-9.07%</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">资金面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">主力净流入: <span>None万</span></div>
-                    <div class="ind-item">净占比: <span>None%</span></div>
-                    <div class="ind-item">近5日主力: <span>None万</span></div>
-                    <div class="ind-item">北向5日: <span>None万</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">基本面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">PE: <span>None</span></div>
-                    <div class="ind-item">PB: <span>None</span></div>
-                    <div class="ind-item">ROE: <span>None%</span></div>
-                    <div class="ind-item">营收同比: <span>None%</span></div>
-                    <div class="ind-item">净利同比: <span>None%</span></div>
-                    <div class="ind-item">估值分位: <span>数据暂缺</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">综合研判</div>
-                <div class="judgment">
-                    <div class="judge-item"><b>逻辑:</b> 恒生医疗ETF处于震荡 ↔状态</div>
-                    <div class="judge-item"><b>趋势:</b> 震荡 ↔ | 支撑 0.45 | 压力 0.51</div>
-                    <div class="judge-item"><b>建议:</b> <span class="sug-warning">减仓/观望</span></div>
-                    <div class="judge-item"><b>盈亏策略:</b> 中期亏损-23.4%，建议减仓止损</div>
-                </div>
-            </div>
-        </div>
-        <div class="stock-card">
-            <div class="stock-header">
-                <span class="stock-code">512170</span>
-                <span class="stock-name">医疗ETF</span>
-                <span class="stock-chg negative">2.614379084967323%</span>
-                <span class="stock-suggestion sug-warning">止损</span>
-            </div>
-            <div class="stock-info-row">
-                <span>现价: <b>0.314</b></span>
-                <span>成本: <b>0.98</b></span>
-                <span>盈亏: <b class="negative">-68.0%</b></span>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">技术面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">MA5/20/60: <span>0.303/0.299/0.32</span></div>
-                    <div class="ind-item">排列: <span>震荡交叉</span></div>
-                    <div class="ind-item">MACD: <span>多头 ↑</span></div>
-                    <div class="ind-item">DIF/DEA: <span>-0.0035/-0.006</span></div>
-                    <div class="ind-item">RSI(14): <span>62.8 (正常区域)</span></div>
-                    <div class="ind-item">20日涨跌: <span>-0.97%</span></div>
-                    <div class="ind-item">最大回撤: <span>-5.83%</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">资金面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">主力净流入: <span>None万</span></div>
-                    <div class="ind-item">净占比: <span>None%</span></div>
-                    <div class="ind-item">近5日主力: <span>None万</span></div>
-                    <div class="ind-item">北向5日: <span>None万</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">基本面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">PE: <span>None</span></div>
-                    <div class="ind-item">PB: <span>None</span></div>
-                    <div class="ind-item">ROE: <span>None%</span></div>
-                    <div class="ind-item">营收同比: <span>None%</span></div>
-                    <div class="ind-item">净利同比: <span>None%</span></div>
-                    <div class="ind-item">估值分位: <span>数据暂缺</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">综合研判</div>
-                <div class="judgment">
-                    <div class="judge-item"><b>逻辑:</b> 医疗ETF处于震荡 ↔状态</div>
-                    <div class="judge-item"><b>趋势:</b> 震荡 ↔ | 支撑 0.29 | 压力 0.31</div>
-                    <div class="judge-item"><b>建议:</b> <span class="sug-warning">止损</span></div>
-                    <div class="judge-item"><b>盈亏策略:</b> 深度亏损-68.0%且趋势未转好，建议严格止损</div>
-                </div>
-            </div>
-        </div>
-        <div class="stock-card">
-            <div class="stock-header">
-                <span class="stock-code">515790</span>
-                <span class="stock-name">光伏ETF</span>
-                <span class="stock-chg negative">-1.7274472168905965%</span>
-                <span class="stock-suggestion sug-warning">减仓/观望</span>
-            </div>
-            <div class="stock-info-row">
-                <span>现价: <b>1.024</b></span>
-                <span>成本: <b>1.45</b></span>
-                <span>盈亏: <b class="negative">-29.4%</b></span>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">技术面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">MA5/20/60: <span>1.012/1.021/1.059</span></div>
-                    <div class="ind-item">排列: <span>空头排列 ↓</span></div>
-                    <div class="ind-item">MACD: <span>多头 ↑</span></div>
-                    <div class="ind-item">DIF/DEA: <span>-0.0152/-0.0183</span></div>
-                    <div class="ind-item">RSI(14): <span>56.7 (正常区域)</span></div>
-                    <div class="ind-item">20日涨跌: <span>-1.23%</span></div>
-                    <div class="ind-item">最大回撤: <span>-7.41%</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">资金面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">主力净流入: <span>None万</span></div>
-                    <div class="ind-item">净占比: <span>None%</span></div>
-                    <div class="ind-item">近5日主力: <span>None万</span></div>
-                    <div class="ind-item">北向5日: <span>None万</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">基本面</div>
-                <div class="indicator-grid">
-                    <div class="ind-item">PE: <span>None</span></div>
-                    <div class="ind-item">PB: <span>None</span></div>
-                    <div class="ind-item">ROE: <span>None%</span></div>
-                    <div class="ind-item">营收同比: <span>None%</span></div>
-                    <div class="ind-item">净利同比: <span>None%</span></div>
-                    <div class="ind-item">估值分位: <span>数据暂缺</span></div>
-                </div>
-            </div>
-            <div class="stock-section">
-                <div class="section-title">综合研判</div>
-                <div class="judgment">
-                    <div class="judge-item"><b>逻辑:</b> 光伏ETF处于震荡 ↔状态</div>
-                    <div class="judge-item"><b>趋势:</b> 震荡 ↔ | 支撑 0.97 | 压力 1.08</div>
-                    <div class="judge-item"><b>建议:</b> <span class="sug-warning">减仓/观望</span></div>
-                    <div class="judge-item"><b>盈亏策略:</b> 中期亏损-29.4%，建议减仓止损</div>
-                </div>
-            </div>
-        </div>
-</div>
-
-<div class="section">
-    <h2>📋 整体持仓配置建议</h2>
-    <div class="advice-box">
-        <h3>💰 仓位调整</h3>
-        <ul>
-            <li>当前7只持仓覆盖：通信(亨通+中天)、LED(木林森)、新能源汽车(北汽蓝谷)、医疗(恒生医疗ETF+医疗ETF)、光伏(光伏ETF)</li>
-            <li>高盈利股：建议设移动止盈线，回撤超8%执行止盈，锁定大部分利润</li>
-            <li>深度亏损股：不建议此时恐慌割肉，可考虑分批低位补仓或等待反弹减仓</li>
-        </ul>
     </div>
-    <div class="advice-box">
-        <h3>⚖️ 板块平衡</h3>
-        <ul>
-            <li>通信板块(亨通+中天)占比过重：合计仓位若超40%，建议逐步降低至30%以下</li>
-            <li>医疗板块(恒生医疗ETF+医疗ETF)：持续弱势板块，仓位控制在20%以内</li>
-            <li>新能源汽车(北汽蓝谷)：行业竞争加剧，建议寻找反弹机会降仓位</li>
-            <li>建议增加：红利低波ETF、国债ETF等防御型配置对冲波动</li>
-        </ul>
+    <div class="stock-card" style="border-left: 4px solid #e74c3c; margin-bottom: 24px; background: #fff5f5; border-radius: 0 8px 8px 0; padding: 20px;">
+        <div class="stock-header">
+            <span class="stock-name">600522 中天科技</span>
+            <span class="stock-change" style="color: #27ae60">-6.93%</span>
+        </div>
+        <div class="stock-summary" style="margin: 8px 0; color: #666;">
+            持仓成本: 44 | 现价: 51.58 | 
+            盈亏: <b style="color:#e74c3c">17.23%</b>
+            
+            
+        </div>
+        
+        <div class="analysis-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+            <div class="tech-panel" style="background: #fff; padding: 12px; border-radius: 8px;">
+                <b>📊 技术面</b><br>
+                MA排列: <span style="color:#e74c3c; font-weight: bold;">多头</span> | 
+                MACD: <span style="color:#27ae60">死叉</span><br>
+                RSI(14): 57.00 <span style="color:#999">(正常)</span><br>
+                近20日: 23.21% | 最大回撤: -18.62%<br>
+                支撑: 43.40 | 压力: 68.10
+            </div>
+            <div class="fund-panel" style="background: #fff; padding: 12px; border-radius: 8px;">
+                <b>💰 资金面/基本面</b><br>
+                
+                
+                ROE: N/A% | 营收同比: N/A%<br>
+                净利同比: N/A%
+            </div>
+        </div>
+        
+        <div class="verdict" style="margin-top: 12px; padding: 12px; background: #fff; border-radius: 8px;">
+            <b>📋 综合研判</b><br>
+            <b style="color:#e74c3c">继续持有</b>: 趋势良好，持仓待涨<br>
+            趋势: 偏多 | 
+            支撑 43.40 / 压力 68.10
+        </div>
     </div>
-    <div class="advice-box">
-        <h3>🎯 止盈止损策略</h3>
-        <ul>
-            <li><b>亨通光电</b>：设置移动止盈，当前价回撤10%即执行，或分批减仓锁定利润</li>
-            <li><b>中天科技</b>：同上，通信双雄联动性强，需关注板块整体回调风险</li>
-            <li><b>木林森</b>：若转弱考虑换仓至当前热点板块首板标的</li>
-            <li><b>北汽蓝谷</b>：反弹至20日线附近减仓，不再追加</li>
-            <li><b>医疗ETF</b>：转为定投模式，每次跌幅超5%加仓一次</li>
-            <li><b>恒生医疗ETF</b>：关注港股市场流动性和恒生指数走势</li>
-            <li><b>光伏ETF</b>：关注今日涨停板中光伏板块表现，有则持有，无则减仓</li>
-        </ul>
+    <div class="stock-card" style="border-left: 4px solid #27ae60; margin-bottom: 24px; background: #f5fff5; border-radius: 0 8px 8px 0; padding: 20px;">
+        <div class="stock-header">
+            <span class="stock-name">002745 木林森</span>
+            <span class="stock-change" style="color: #27ae60">-4.42%</span>
+        </div>
+        <div class="stock-summary" style="margin: 8px 0; color: #666;">
+            持仓成本: 12.5 | 现价: 11.90 | 
+            盈亏: <b style="color:#27ae60">-4.80%</b>
+            
+            
+        </div>
+        
+        <div class="analysis-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+            <div class="tech-panel" style="background: #fff; padding: 12px; border-radius: 8px;">
+                <b>📊 技术面</b><br>
+                MA排列: <span style="color:#e74c3c; font-weight: bold;">多头</span> | 
+                MACD: <span style="color:#e74c3c">多头</span><br>
+                RSI(14): 73.40 <span style="color:#e74c3c">(超买)</span><br>
+                近20日: 20.76% | 最大回撤: -16.09%<br>
+                支撑: 9.14 | 压力: 13.15
+            </div>
+            <div class="fund-panel" style="background: #fff; padding: 12px; border-radius: 8px;">
+                <b>💰 资金面/基本面</b><br>
+                
+                
+                ROE: N/A% | 营收同比: N/A%<br>
+                净利同比: N/A%
+            </div>
+        </div>
+        
+        <div class="verdict" style="margin-top: 12px; padding: 12px; background: #fff; border-radius: 8px;">
+            <b>📋 综合研判</b><br>
+            <b style="color:#e74c3c">继续持有</b>: 趋势良好，持仓待涨<br>
+            趋势: 偏多 | 
+            支撑 9.14 / 压力 13.15
+        </div>
+    </div>
+    <div class="stock-card" style="border-left: 4px solid #27ae60; margin-bottom: 24px; background: #f5fff5; border-radius: 0 8px 8px 0; padding: 20px;">
+        <div class="stock-header">
+            <span class="stock-name">600733 北汽蓝谷</span>
+            <span class="stock-change" style="color: #27ae60">-1.23%</span>
+        </div>
+        <div class="stock-summary" style="margin: 8px 0; color: #666;">
+            持仓成本: 16.5 | 现价: 4.81 | 
+            盈亏: <b style="color:#27ae60">-70.85%</b>
+            
+            
+        </div>
+        
+        <div class="analysis-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+            <div class="tech-panel" style="background: #fff; padding: 12px; border-radius: 8px;">
+                <b>📊 技术面</b><br>
+                MA排列: <span style="color:#27ae60; font-weight: bold;">空头</span> | 
+                MACD: <span style="color:#27ae60">空头</span><br>
+                RSI(14): 21.80 <span style="color:#27ae60">(超卖)</span><br>
+                近20日: -19.37% | 最大回撤: -34.28%<br>
+                支撑: 4.76 | 压力: 6.11
+            </div>
+            <div class="fund-panel" style="background: #fff; padding: 12px; border-radius: 8px;">
+                <b>💰 资金面/基本面</b><br>
+                
+                
+                ROE: N/A% | 营收同比: N/A%<br>
+                净利同比: N/A%
+            </div>
+        </div>
+        
+        <div class="verdict" style="margin-top: 12px; padding: 12px; background: #fff; border-radius: 8px;">
+            <b>📋 综合研判</b><br>
+            <b style="color:#f39c12">🔴 观望/减仓</b>: 亏损-70.85%严重，若跌破支撑4.76建议止损<br>
+            趋势: 偏空 | 
+            支撑 4.76 / 压力 6.11
+        </div>
+    </div>
+    <div class="stock-card" style="border-left: 4px solid #27ae60; margin-bottom: 24px; background: #f5fff5; border-radius: 0 8px 8px 0; padding: 20px;">
+        <div class="stock-header">
+            <span class="stock-name">513060 恒生医疗ETF</span>
+            <span class="stock-change" style="color: #e74c3c">+0.80%</span>
+        </div>
+        <div class="stock-summary" style="margin: 8px 0; color: #666;">
+            持仓成本: 1.14 | 现价: 0.50 | 
+            盈亏: <b style="color:#27ae60">-55.96%</b>
+            
+            
+        </div>
+        
+        <div class="analysis-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+            <div class="tech-panel" style="background: #fff; padding: 12px; border-radius: 8px;">
+                <b>📊 技术面</b><br>
+                MA排列: <span style="color:#f39c12; font-weight: bold;">震荡</span> | 
+                MACD: <span style="color:#e74c3c">多头</span><br>
+                RSI(14): 61.90 <span style="color:#999">(正常)</span><br>
+                近20日: 1.22% | 最大回撤: -25.65%<br>
+                支撑: 0.45 | 压力: 0.51
+            </div>
+            <div class="fund-panel" style="background: #fff; padding: 12px; border-radius: 8px;">
+                <b>💰 资金面</b><br>
+                
+                
+                
+                
+            </div>
+        </div>
+        
+        <div class="verdict" style="margin-top: 12px; padding: 12px; background: #fff; border-radius: 8px;">
+            <b>📋 综合研判</b><br>
+            <b style="color:#f39c12">🔴 观望/减仓</b>: 亏损-55.96%严重，若跌破支撑0.45建议止损<br>
+            趋势: 震荡 | 
+            支撑 0.45 / 压力 0.51
+        </div>
+    </div>
+    <div class="stock-card" style="border-left: 4px solid #27ae60; margin-bottom: 24px; background: #f5fff5; border-radius: 0 8px 8px 0; padding: 20px;">
+        <div class="stock-header">
+            <span class="stock-name">512170 医疗ETF</span>
+            <span class="stock-change" style="color: #27ae60">-0.96%</span>
+        </div>
+        <div class="stock-summary" style="margin: 8px 0; color: #666;">
+            持仓成本: 0.58 | 现价: 0.31 | 
+            盈亏: <b style="color:#27ae60">-46.38%</b>
+            
+            
+        </div>
+        
+        <div class="analysis-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+            <div class="tech-panel" style="background: #fff; padding: 12px; border-radius: 8px;">
+                <b>📊 技术面</b><br>
+                MA排列: <span style="color:#f39c12; font-weight: bold;">震荡</span> | 
+                MACD: <span style="color:#e74c3c">多头</span><br>
+                RSI(14): 70.90 <span style="color:#e74c3c">(超买)</span><br>
+                近20日: 2.95% | 最大回撤: -14.41%<br>
+                支撑: 0.29 | 压力: 0.32
+            </div>
+            <div class="fund-panel" style="background: #fff; padding: 12px; border-radius: 8px;">
+                <b>💰 资金面</b><br>
+                
+                
+                
+                
+            </div>
+        </div>
+        
+        <div class="verdict" style="margin-top: 12px; padding: 12px; background: #fff; border-radius: 8px;">
+            <b>📋 综合研判</b><br>
+            <b style="color:#f39c12">🔴 观望/减仓</b>: 亏损-46.38%严重，若跌破支撑0.29建议止损<br>
+            趋势: 震荡 | 
+            支撑 0.29 / 压力 0.32
+        </div>
+    </div>
+    <div class="stock-card" style="border-left: 4px solid #27ae60; margin-bottom: 24px; background: #f5fff5; border-radius: 0 8px 8px 0; padding: 20px;">
+        <div class="stock-header">
+            <span class="stock-name">515790 光伏ETF</span>
+            <span class="stock-change" style="color: #27ae60">-4.39%</span>
+        </div>
+        <div class="stock-summary" style="margin: 8px 0; color: #666;">
+            持仓成本: 1.0 | 现价: 0.98 | 
+            盈亏: <b style="color:#27ae60">-2.10%</b>
+            
+            
+        </div>
+        
+        <div class="analysis-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+            <div class="tech-panel" style="background: #fff; padding: 12px; border-radius: 8px;">
+                <b>📊 技术面</b><br>
+                MA排列: <span style="color:#f39c12; font-weight: bold;">震荡</span> | 
+                MACD: <span style="color:#e74c3c">多头</span><br>
+                RSI(14): 55.70 <span style="color:#999">(正常)</span><br>
+                近20日: -3.85% | 最大回撤: -13.87%<br>
+                支撑: 0.97 | 压力: 1.08
+            </div>
+            <div class="fund-panel" style="background: #fff; padding: 12px; border-radius: 8px;">
+                <b>💰 资金面</b><br>
+                
+                
+                
+                
+            </div>
+        </div>
+        
+        <div class="verdict" style="margin-top: 12px; padding: 12px; background: #fff; border-radius: 8px;">
+            <b>📋 综合研判</b><br>
+            <b style="color:#e74c3c">持有</b>: <br>
+            趋势: 震荡 | 
+            支撑 0.97 / 压力 1.08
+        </div>
     </div>
 </div>
 
 <div class="disclaimer">
-    <p><b>⚠️ 免责声明</b></p>
-    <p>本报告由自动化系统生成，仅供参考，不构成任何投资建议。</p>
-    <p>股市有风险，投资需谨慎。过去的表现不预示未来结果。</p>
-    <p>报告中的分析基于公开数据和量化模型，可能存在滞后和偏差。</p>
-    <p>请投资者独立判断，自行承担投资风险。</p>
-    <p>数据来源：东方财富、Sina Finance、AKShare | 生成时间：2026-07-01 15:19:45</p>
+    <strong>⚠️ 免责声明</strong><br>
+    本报告由AI系统自动生成，仅供信息参考，不构成任何投资建议。所有数据来源于公开市场数据（Sina Finance、AKShare等），可能存在数据延迟或误差。
+    涨停板分析和持仓评估基于历史数据和量化模型，不保证未来表现。股市有风险，投资需谨慎。
+    请独立判断并自行承担投资风险。报告中的操作建议仅供参考，不代表任何投资推荐。
 </div>
+
 </div>
+
+<script>
+// Industry Distribution Chart
+Plotly.newPlot('industryChart', [{
+    x: ["\u6c7d\u8f66\u96f6\u90e8", "\u5851\u6599", "\u5316\u5b66\u5236\u836f", "\u5316\u5b66\u5236\u54c1", "\u7eba\u7ec7\u5236\u9020", "\u5de5\u7a0b\u673a\u68b0", "\u4e13\u7528\u8bbe\u5907", "\u5e7f\u544a\u8425\u9500", "\u901a\u7528\u8bbe\u5907", "\u670d\u88c5\u5bb6\u7eba", "\u5316\u5b66\u7ea4\u7ef4", "\u519c\u5316\u5236\u54c1"],
+    y: [8, 6, 6, 5, 5, 4, 3, 3, 3, 3, 2, 2],
+    type: 'bar',
+    marker: { color: ['#e74c3c', '#e67e22', '#f39c12', '#3498db', '#2ecc71', '#9b59b6', '#1abc9c', '#e74c3c', '#34495e', '#e67e22', '#3498db', '#2ecc71'] },
+    text: [8, 6, 6, 5, 5, 4, 3, 3, 3, 3, 2, 2],
+    textposition: 'outside',
+}], {
+    title: { text: '涨停板行业分布 Top 12', font: { size: 16 } },
+    xaxis: { tickangle: -30 },
+    yaxis: { title: '涨停数量' },
+    margin: { t: 40, b: 100, l: 50, r: 20 },
+    plot_bgcolor: '#fafafa',
+    paper_bgcolor: '#fff',
+}, { responsive: true });
+
+// Portfolio P&L Chart
+var pColors = ["#e74c3c", "#e74c3c", "#27ae60", "#27ae60", "#27ae60", "#27ae60", "#27ae60"];
+Plotly.newPlot('portfolioChart', [{
+    x: ["\u4ea8\u901a\u5149\u7535", "\u4e2d\u5929\u79d1\u6280", "\u6728\u6797\u68ee", "\u5317\u6c7d\u84dd\u8c37", "\u6052\u751f\u533b\u7597ETF", "\u533b\u7597ETF", "\u5149\u4f0fETF"],
+    y: [20.31, 17.23, -4.8, -70.85, -55.96, -46.38, -2.1],
+    type: 'bar',
+    marker: { color: pColors },
+    text: ["20.3%", "17.2%", "-4.8%", "-70.8%", "-56.0%", "-46.4%", "-2.1%"],
+    textposition: 'outside',
+}], {
+    title: { text: '持仓盈亏明细 (%)', font: { size: 16 } },
+    xaxis: { title: '' },
+    yaxis: { title: '盈亏百分比(%)', zeroline: true, zerolinecolor: '#999' },
+    margin: { t: 40, b: 60, l: 50, r: 20 },
+    plot_bgcolor: '#fafafa',
+    paper_bgcolor: '#fff',
+    shapes: [{ type: 'line', x0: -0.5, x1: 6.5, y0: 0, y1: 0, line: { color: '#999', dash: 'dot' } }]
+}, { responsive: true });
+</script>
+
 </body>
 </html>
