@@ -2,962 +2,878 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>周报深度分析 | 2026.06.22–06.26</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>A股周报 | 2026.06.30–07.03 · 深度分析</title>
 <style>
 :root {
-  --bg: #0a0d14;
-  --card: #111620;
-  --border: #1e2433;
-  --text: #d1d5db;
-  --text2: #6b7280;
-  --red: #ef4444;
-  --green: #22c55e;
-  --accent: #818cf8;
-  --warn: #f59e0b;
-  --blue: #38bdf8;
-  --cyan: #06b6d4;
+  --bg: #0f1117; --cd: #1a1d28; --bd: #2a2d3a; --tx: #e4e6ed;
+  --t2: #8b8fa3; --r: #f5222d; --g: #16c784; --a: #6366f1;
+  --y: #f59e0b; --b: #3b82f6; --warn: #ef4444;
 }
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
+* { margin:0; padding:0; box-sizing:border-box; }
 body {
-  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.7;
-  min-height: 100vh;
+  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg); color: var(--tx); line-height: 1.7;
+  padding: 24px 16px 80px; max-width: 900px; margin: 0 auto;
+}
+/* --- Header --- */
+.hero {
+  text-align: center; padding: 32px 16px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(245,158,11,0.1));
+  border: 1px solid var(--bd); border-radius: 16px; margin-bottom: 28px;
+}
+.hero h1 { font-size: 28px; margin-bottom: 8px; background: linear-gradient(90deg, var(--a), var(--y)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero .sub { color: var(--t2); font-size: 14px; }
+.hero .verdict {
+  margin-top: 16px; padding: 12px 20px; border-radius: 10px;
+  background: rgba(245,34,45,0.1); border: 1px solid var(--r);
+  font-size: 16px; font-weight: 700; color: var(--r); display: inline-block;
 }
 
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 32px 20px 60px;
+/* --- Sections --- */
+.sec { margin-bottom: 32px; }
+.st {
+  font-size: 18px; font-weight: 700; margin-bottom: 14px;
+  padding-bottom: 6px; border-bottom: 3px solid var(--a);
+  display: flex; align-items: center; gap: 8px;
 }
-
-/* Header */
-.header {
-  text-align: center;
-  padding: 40px 0 32px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 36px;
-}
-.header h1 {
-  font-size: 2em;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--accent), var(--blue));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 6px;
-}
-.header .sub {
-  color: var(--text2);
-  font-size: 0.9em;
-}
-
-/* KPI Banner */
-.kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 14px;
-  margin-bottom: 36px;
-}
-.kpi {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 18px 20px;
-  text-align: center;
-}
-.kpi .label {
-  font-size: 0.78em;
-  color: var(--text2);
-  margin-bottom: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.kpi .value {
-  font-size: 1.7em;
-  font-weight: 700;
-  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
-}
-.kpi .note {
-  font-size: 0.72em;
-  color: var(--text2);
-  margin-top: 4px;
-}
-
-/* Section */
-.section {
-  margin-bottom: 40px;
-}
-.section-title {
-  font-size: 1.25em;
-  font-weight: 700;
-  margin-bottom: 18px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid var(--accent);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.section-title .icon {
-  font-size: 1.1em;
-}
-
-/* Cards */
 .card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 22px 24px;
-  margin-bottom: 16px;
+  background: var(--cd); border: 1px solid var(--bd);
+  border-radius: 12px; padding: 18px; margin-bottom: 16px;
 }
-.card h3 {
-  font-size: 1.05em;
-  font-weight: 700;
-  margin-bottom: 12px;
-  color: var(--text);
-}
-.card h3 .tag {
-  display: inline-block;
-  font-size: 0.7em;
-  padding: 2px 8px;
-  border-radius: 4px;
-  margin-left: 8px;
-  vertical-align: middle;
-  font-weight: 500;
-}
-.tag-red { background: rgba(239,68,68,0.15); color: var(--red); }
-.tag-green { background: rgba(34,197,94,0.15); color: var(--green); }
-.tag-blue { background: rgba(129,140,248,0.15); color: var(--accent); }
-.tag-warn { background: rgba(245,158,11,0.15); color: var(--warn); }
+.card2 { background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.2); }
 
-/* Analysis paragraphs */
-.analysis { color: var(--text); font-size: 0.93em; line-height: 1.8; }
-.analysis strong { color: #f3f4f6; }
-.highlight-box {
-  background: rgba(129,140,248,0.06);
-  border-left: 3px solid var(--accent);
-  padding: 14px 18px;
-  margin: 16px 0;
-  border-radius: 0 8px 8px 0;
-  font-size: 0.92em;
+/* --- Charts --- */
+.chart-container {
+  background: var(--cd); border: 1px solid var(--bd);
+  border-radius: 12px; padding: 16px; margin: 16px 0;
 }
+.chart-container canvas { width: 100% !important; max-height: 350px; }
+
+/* --- Grids --- */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+@media (max-width: 700px) { .g2,.g3,.g4 { grid-template-columns: 1fr 1fr; } }
+
+.idx-card {
+  text-align: center; padding: 14px 10px;
+  background: var(--cd); border: 1px solid var(--bd); border-radius: 10px;
+}
+.idx-card .nm { font-size: 12px; color: var(--t2); }
+.idx-card .pr { font-size: 24px; font-weight: 800; margin: 6px 0; }
+.idx-card .lb { font-size: 11px; color: var(--t2); }
+
+/* --- Tables --- */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { background: #222531; padding: 8px 10px; text-align: left; color: var(--t2); border-bottom: 2px solid var(--bd); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+td { padding: 7px 10px; border-bottom: 1px solid var(--bd); }
+tr:hover { background: #222531; }
+
+/* --- Analysis tags --- */
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-right: 4px; }
+.tag-r { background: rgba(245,34,45,0.15); color: var(--r); }
+.tag-g { background: rgba(22,199,132,0.15); color: var(--g); }
+.tag-y { background: rgba(245,158,11,0.15); color: var(--y); }
+.tag-b { background: rgba(59,130,246,0.15); color: var(--b); }
+
+/* --- Insight boxes --- */
+.insight {
+  border-left: 4px solid var(--a); padding: 12px 16px;
+  margin: 14px 0; background: rgba(99,102,241,0.06);
+  border-radius: 0 8px 8px 0; font-size: 14px;
+}
+.insight .title { font-weight: 700; color: var(--a); margin-bottom: 4px; font-size: 13px; }
 .warn-box {
-  background: rgba(245,158,11,0.06);
-  border-left: 3px solid var(--warn);
-  padding: 14px 18px;
-  margin: 16px 0;
-  border-radius: 0 8px 8px 0;
-  font-size: 0.92em;
+  border-left: 4px solid var(--warn); padding: 12px 16px;
+  margin: 14px 0; background: rgba(239,68,68,0.06);
+  border-radius: 0 8px 8px 0; font-size: 13px;
 }
-.danger-box {
-  background: rgba(239,68,68,0.06);
-  border-left: 3px solid var(--red);
-  padding: 14px 18px;
-  margin: 16px 0;
-  border-radius: 0 8px 8px 0;
-  font-size: 0.92em;
-}
+.warn-box .title { font-weight: 700; color: var(--warn); margin-bottom: 4px; }
 
-/* Tables */
-.table-wrap { overflow-x: auto; margin: 12px 0; }
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.88em;
+/* --- Path --- */
+.path { 
+  display: flex; align-items: center; gap: 8px; 
+  padding: 12px 16px; font-size: 13px; flex-wrap: wrap;
+  background: var(--cd); border-radius: 8px; margin: 10px 0;
 }
-th {
-  background: rgba(30,36,51,0.6);
-  padding: 10px 12px;
-  text-align: left;
-  font-weight: 600;
-  color: var(--text2);
-  border-bottom: 2px solid var(--border);
-  white-space: nowrap;
-}
-td {
-  padding: 9px 12px;
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
-}
-tr:hover { background: rgba(129,140,248,0.04); }
-.red { color: var(--red); }
-.green { color: var(--green); }
+.path-arrow { color: var(--t2); }
+.path-node { padding: 4px 10px; border-radius: 6px; font-weight: 600; }
 
-/* Chart containers */
-.chart-wrap {
-  position: relative;
-  width: 100%;
-  max-height: 320px;
-  margin: 16px 0;
+/* --- Progress Bar --- */
+.pbar { 
+  height: 8px; border-radius: 4px; background: #222531; 
+  margin: 6px 0; overflow: hidden;
 }
-.chart-wrap canvas { width: 100% !important; }
+.pbar-fill { height: 100%; border-radius: 4px; }
 
-/* Strategy section */
-.strategy-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 14px;
-}
+.footer { margin-top: 48px; text-align: center; font-size: 11px; color: var(--t2); line-height: 2; }
+.hr { border: none; border-top: 1px solid var(--bd); margin: 28px 0; }
 
-/* Probability bar */
-.prob-bar-wrap { margin: 10px 0; }
-.prob-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 6px;
-  font-size: 0.88em;
-}
-.prob-label { width: 60px; text-align: right; color: var(--text2); }
-.prob-track {
-  flex: 1;
-  height: 8px;
-  background: var(--border);
-  border-radius: 4px;
-  overflow: hidden;
-}
-.prob-fill {
-  height: 100%;
-  border-radius: 4px;
-}
-.prob-pct { width: 50px; font-weight: 700; font-family: 'SF Mono', 'Menlo', monospace; }
+code { background: #222531; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+.highlight { color: var(--y); font-weight: 600; }
 
-/* Footer */
-.footer {
-  margin-top: 48px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
-  text-align: center;
-  font-size: 0.8em;
-  color: var(--text2);
-  line-height: 2;
-}
+.narrative { font-size: 15px; line-height: 1.9; color: var(--tx); }
+.narrative p { margin-bottom: 14px; }
+.narrative strong { color: var(--y); }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .container { padding: 16px 12px 40px; }
-  .header h1 { font-size: 1.5em; }
-  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-  .strategy-grid { grid-template-columns: 1fr; }
-}
+.prob-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin: 12px 0; }
+.prob-item { text-align: center; padding: 14px; background: var(--cd); border-radius: 10px; border: 1px solid var(--bd); }
+.prob-item .label { font-size: 12px; color: var(--t2); }
+.prob-item .val { font-size: 28px; font-weight: 800; }
+.prob-item .desc { font-size: 11px; color: var(--t2); }
 </style>
 </head>
 <body>
 
-<div class="container">
-
-<!-- ========= HEADER ========= -->
-<div class="header">
-  <h1>周报深度分析</h1>
-  <div class="sub">2026.06.22（周一）— 06.26（周五） · WorkBuddy AI 独立研判</div>
+<!-- ====== HERO ====== -->
+<div class="hero">
+  <h1>📊 A股周度深度报告</h1>
+  <div class="sub">2026年6月30日（周一）— 7月3日（周五） · 第27周</div>
+  <div class="verdict">⚠️ 核心定性：科技股踩踏式出逃，防御板块逆势承接 —「大分化」格局确立</div>
 </div>
 
-<!-- ========= KPI BANNER ========= -->
-<div class="kpi-grid">
-  <div class="kpi">
-    <div class="label">上证指数 周涨跌</div>
-    <div class="value" style="color:var(--green)">-1.63%</div>
-    <div class="note">4094→4027 · 冲高回落</div>
-  </div>
-  <div class="kpi">
-    <div class="label">科创50 周涨跌</div>
-    <div class="value" style="color:var(--red)">+1.41%</div>
-    <div class="note">2004→2032 · 唯一正收益</div>
-  </div>
-  <div class="kpi">
-    <div class="label">纳斯达克 周涨跌</div>
-    <div class="value" style="color:var(--green)">-4.25%</div>
-    <div class="note">至周四 · 全球科技风暴</div>
-  </div>
-  <div class="kpi">
-    <div class="label">北向资金</div>
-    <div class="value" style="color:var(--warn)">数据暂缺</div>
-    <div class="note">东方财富接口故障</div>
-  </div>
-  <div class="kpi">
-    <div class="label">周五单日跌幅</div>
-    <div class="value" style="color:var(--green)">-2.26%</div>
-    <div class="note">上证 · 放量长阴</div>
-  </div>
+<!-- ====== 1. EXECUTIVE SUMMARY ====== -->
+<div class="sec narrative">
+  <div class="st">📌 周度概览：一部两幕剧——从"七月开门红"到"AI雪崩"</div>
+  <p>
+    本周A股上演了一场教科书级的多空反转。<strong>周一（6/30）和周二（7/1）</strong>，市场沉浸在半年末流动性回暖和政策催化的乐观中，上证指数连续两日收红，最高触及<strong>4143点</strong>。但<strong>周三（7/2）</strong>，一场由Meta"卖算力"引爆的全球性科技股抛售潮席卷而来——科创50单日暴跌<strong class="highlight">7.70%</strong>，创业板指重挫<strong class="highlight">5.71%</strong>，全市场主力资金净流出1218亿。<strong>周四（7/3）</strong>市场初步企稳，但分化加剧：大金融托住指数，中小盘题材活跃修复，而高位科技股仍在下探。
+  </p>
+  <p>
+    <strong>我的判断：这不是牛市的终结，而是一次"暴力风格切换"。</strong>上半年涨幅巨大的AI/半导体/算力赛道集中兑现获利盘，同时资金向贵金属、医药、电力等高防御板块迁徙。本周的核心矛盾是：<span style="color:var(--y)">流动性充裕（央行持续呵护）vs 科技股估值泡沫 vs 全球风险偏好骤降</span>。
+  </p>
 </div>
 
-<!-- ========= SECTION 1: MACRO ========= -->
-<div class="section">
-  <div class="section-title"><span class="icon">📈</span> 1. 大盘趋势深度分析</div>
+<!-- ====== 2. INDEX ANALYSIS ====== -->
+<div class="sec">
+  <div class="st">📈 2.1 大盘趋势深度分析</div>
 
-  <div class="card">
-    <h3>本周走势定性<span class="tag tag-warn">冲高回落 / V型顶</span></h3>
-    <div class="analysis">
-      <p><strong>我的判断：本周是典型的"周初亢奋 + 周五雪崩"的冲高回落走势。</strong></p>
-      <p>周一上证大涨<strong style="color:var(--red)">+1.69%</strong>至4163点，科创50更是单日涨超3%，市场情绪极度亢奋——通信、半导体、元件板块全面爆发。但周二即开始分化（-1.14%），周三周四勉强修复，周五突然放量暴跌<strong style="color:var(--green)">-2.26%</strong>，一日抹去前四日全部涨幅——深证成指周五单日跌3.44%，创业板跌4.07%，杀伤力极大。</p>
+  <!-- Index Cards -->
+  <div class="g4" style="margin-bottom:18px;">
+    <div class="idx-card">
+      <div class="nm">上证指数</div>
+      <div class="pr" style="color:var(--g)">-0.36%</div>
+      <div class="lb">4043.64 · 周涨跌</div>
     </div>
-    <div class="chart-wrap">
-      <canvas id="chartIndex"></canvas>
+    <div class="idx-card">
+      <div class="nm">深证成指</div>
+      <div class="pr" style="color:var(--g)">-1.35%</div>
+      <div class="lb">15597.51 · 周涨跌</div>
     </div>
-    <div class="highlight-box">
-      <strong>🔍 核心判断依据：</strong><br>
-      ① 成交量逐日萎缩（743亿→709亿→644亿→655亿手），量价背离，说明上涨缺乏增量资金接力；<br>
-      ② 周一领涨的通信设备、元件板块在周五成为流出重灾区（通信设备-281亿），<strong>典型的"拉高派发"手法</strong>；<br>
-      ③ 科创50虽周涨幅+1.41%，但周五从高点回撤超4个百分点，已显疲态。
+    <div class="idx-card">
+      <div class="nm">创业板指</div>
+      <div class="pr" style="color:var(--g)">-4.69%</div>
+      <div class="lb">4019.93 · 周涨跌</div>
     </div>
-  </div>
-
-  <div class="card">
-    <h3>成交量分析</h3>
-    <div class="chart-wrap">
-      <canvas id="chartVolume"></canvas>
-    </div>
-    <div class="analysis">
-      <p><strong>周一放量、此后逐日缩量——典型的存量博弈，而非增量入场。</strong></p>
-      <p>上证周一成交743亿手（全周最大），此后一路缩量至周四的655亿手。量价关系呈现"价涨量缩"的背离信号。周五虽然暴跌，但深证成指成交量飙升至836亿手——这是<strong>恐慌性抛售</strong>的特征，而非有序调整。</p>
-      <div class="warn-box">
-        <strong>⚠️ 我的判断：</strong>周一的大阳线是存量资金的"佯攻"，吸引跟风盘后在周二开始逐步派发，周五完成最后一击。这不是一个健康的上涨结构——如果下周不能放量收复4027点失地，大概率延续调整。
-      </div>
+    <div class="idx-card">
+      <div class="nm">科创50</div>
+      <div class="pr" style="color:var(--g)">-7.37%</div>
+      <div class="lb">1975.60 · 周涨跌</div>
     </div>
   </div>
 
-  <div class="card">
-    <h3>与美股的相关性：延迟跟随，非独立行情</h3>
-    <div class="analysis">
-      <p>本周美股纳斯达克连续四天下跌，累计跌幅达<strong style="color:var(--green)">-4.25%</strong>（截至周四），标普500跌<strong style="color:var(--green)">-1.91%</strong>。但市场周一至周四却逆势上涨，直到周五才突然暴跌。</p>
-      <div class="highlight-box">
-        <strong>🔍 这意味着什么？</strong><br>
-        市场并非走出"独立行情"，而是<strong>延迟反应</strong>。周一至周四的上涨可以被理解为：<br>
-        ① 国内政策预期（央行与巴西金融合作等）带来的短期情绪溢价；<br>
-        ② 资金在美科技股暴跌后寻找"错杀"机会，涌入市场通信/半导体板块进行补涨交易。<br>
-        但周五的暴跌说明——<strong>全球风险偏好的下行终究会传导到市场，只是时间问题。</strong>纳斯达克-4.25%和市场周五-2.26%之间存在高度的联动性。我的判断是：如果下周一美科技股继续下跌，周一大概率低开。
-      </div>
+  <!-- Cross-market -->
+  <div class="g4" style="margin-bottom:18px;">
+    <div class="idx-card">
+      <div class="nm">标普500</div>
+      <div class="pr" style="color:var(--g)">-0.21%</div>
+      <div class="lb">7,483 · 周涨跌</div>
     </div>
-    <div class="chart-wrap">
-      <canvas id="chartUsCn"></canvas>
+    <div class="idx-card">
+      <div class="nm">道琼斯</div>
+      <div class="pr" style="color:var(--r)">+1.11%</div>
+      <div class="lb">52,900 · 周涨跌</div>
     </div>
-  </div>
-
-  <div class="card">
-    <h3>市场情绪演变</h3>
-    <div class="analysis">
-      <p>从行业资金流向看，全周资金净流入最大的是<strong style="color:var(--red)">光学光电子（+45.2亿）</strong>和<strong style="color:var(--red)">军工装备（+21.45亿）</strong>，而流出最大的是<strong style="color:var(--green)">通信设备（-281亿）</strong>和<strong style="color:var(--green)">元件（-136亿）</strong>。这个结构非常清晰：</p>
-      <p><strong>周一：亢奋（全市场普涨）→ 周二：分化（获利盘涌出）→ 周三/四：脆弱平衡 → 周五：恐慌</strong></p>
-      <div class="danger-box">
-        <strong>🚨 关键信号：</strong>通信设备板块周跌幅-5.07%，但资金净流出高达281亿，远超其他所有板块——这不仅仅是"获利了结"，更像是机构资金的系统性撤退。如果下周通信设备继续放量下跌，将确认趋势反转。
-      </div>
+    <div class="idx-card">
+      <div class="nm">纳斯达克</div>
+      <div class="pr" style="color:var(--g)">-1.45%</div>
+      <div class="lb">25,833 · 周涨跌</div>
     </div>
-  </div>
-</div>
-
-<!-- ========= SECTION 2: SECTOR ROTATION ========= -->
-<div class="section">
-  <div class="section-title"><span class="icon">🔄</span> 2. 板块轮动深度分析</div>
-
-  <div class="card">
-    <h3>本周轮动路径图</h3>
-    <div class="analysis">
-      <p><strong>周一：通信/半导体/元件（科技主线全面爆发）→ 周二：科技分化，军工/光电子逆势承接 → 周三/四：光电子+军工持续吸金，科技继续退潮 → 周五：全面溃败，光电子成为最后的多头阵地</strong></p>
-      <div class="highlight-box">
-        <strong>🔍 我的轮动解读：</strong><br>
-        这周的轮动本质是<strong>"科技内部的高切低"</strong>——从涨太多的通信/元件（-281亿/-136亿净流出），切换到相对低位的<strong>光学光电子</strong>（+45.2亿净流入）。光电子板块虽然只微涨0.10%，但资金持续流入，说明有机构在布局。<br><br>
-        另外，<strong>军工装备和军工电子</strong>虽然本周整体下跌（-1.01%/-1.38%），但同样获得资金净流入——"价跌资进"往往是中长线布局的信号。这背后可能有地缘政治因素（南海、台海等）的预期。
-      </div>
-      <div class="table-wrap">
-        <table>
-          <tr><th>排名</th><th>流入板块</th><th>周涨跌</th><th>净流入(亿)</th><th>判断</th></tr>
-          <tr><td>1</td><td>光学光电子</td><td class="red">+0.10%</td><td class="red">+45.2</td><td>💰 机构建仓</td></tr>
-          <tr><td>2</td><td>军工装备</td><td class="green">-1.01%</td><td class="red">+21.45</td><td>🛡️ 防御性布局</td></tr>
-          <tr><td>3</td><td>风电设备</td><td class="green">-0.93%</td><td class="red">+11.76</td><td>🌿 新能源分支</td></tr>
-          <tr><td>4</td><td>电子化学品</td><td class="red">+0.26%</td><td class="red">+9.82</td><td>🔬 半导体上游</td></tr>
-          <tr><td>5</td><td>军工电子</td><td class="green">-1.38%</td><td class="red">+9.56</td><td>🛡️ 防御性布局</td></tr>
-        </table>
-      </div>
-      <div class="table-wrap" style="margin-top:14px;">
-        <table>
-          <tr><th>排名</th><th>流出板块</th><th>周涨跌</th><th>净流出(亿)</th><th>判断</th></tr>
-          <tr><td>1</td><td>通信设备</td><td class="green">-5.07%</td><td class="green">-281.03</td><td>🚨 机构撤退</td></tr>
-          <tr><td>2</td><td>元件</td><td class="green">-2.65%</td><td class="green">-136.03</td><td>📉 获利了结</td></tr>
-          <tr><td>3</td><td>电池</td><td class="green">-5.26%</td><td class="green">-124.89</td><td>🔋 新能源抛售</td></tr>
-          <tr><td>4</td><td>消费电子</td><td class="green">-3.34%</td><td class="green">-85.43</td><td>📱 需求担忧</td></tr>
-          <tr><td>5</td><td>自动化设备</td><td class="green">-3.19%</td><td class="green">-80.40</td><td>🏭 制造业承压</td></tr>
-        </table>
-      </div>
+    <div class="idx-card">
+      <div class="nm">恒生指数</div>
+      <div class="pr" style="color:var(--r)">+1.22%</div>
+      <div class="lb">23,336 · 最新</div>
     </div>
   </div>
 
-  <div class="card">
-    <h3>被忽视的潜力板块</h3>
-    <div class="analysis">
-      <p><strong>我的推荐：电子化学品（半导体材料）</strong></p>
-      <div class="highlight-box">
-        <strong>🧪 推理过程：</strong><br>
-        ① 电子化学品本周净流入+9.82亿，涨幅+0.26%，在周五市场暴跌中<strong>相对抗跌</strong>；<br>
-        ② 这是半导体产业链的上游——光刻胶、电子气体、湿电子化学品。科创50本周+1.41%说明半导体赛道仍在被资金认可；<br>
-        ③ 本周新闻中"华辰芯光推出泵浦激光芯片""鼎龙股份新增光刻胶订单"等，都指向半导体材料国产替代加速；<br>
-        ④ 这个板块市值小、弹性大，一旦市场情绪修复，容易被"忽略→发现→追涨"三段式拉升。<br>
-        <strong>风险：</strong>高度依赖半导体景气周期，如果纳指继续暴跌，半导体也无法独善其身。
-      </div>
-    </div>
+  <!-- Weekly path chart -->
+  <div class="chart-container">
+    <canvas id="indexChart"></canvas>
   </div>
 
   <div class="card">
-    <h3>领跌板块是正常回调还是趋势反转？</h3>
-    <div class="analysis">
-      <p><strong>通信设备（-5.07%，-281亿）：我的判断偏向于"中期顶部信号"，而非正常回调。</strong></p>
-      <p>理由：① 单周净流出281亿，规模远超板块日均成交额，不是散户能做到的；② 此前通信板块连续大涨（亨通光电从年初的低位翻倍），获利盘积累巨大；③ 周五亨通光电和中天科技双双跌停（-9.91%/-10.00%），这是明确的机构出逃信号。</p>
-      <div class="warn-box">
-        <strong>⚠️ 但有一个反方观点需要考虑：</strong>如果下周通信板块在60日均线附近获得支撑且缩量企稳，则可能只是"暴力洗盘"。亨通光电和中天科技作为光纤龙头，基本面并未恶化（5G/6G建设、海底光缆需求仍在），当前的暴跌更多是估值回归而非基本面崩塌。不过，<strong>我倾向于先观望，不要急于抄底</strong>。
-      </div>
+    <h3 style="color:var(--a);font-size:15px;margin-bottom:10px;">🔍 大盘走势判断</h3>
+    
+    <div class="narrative">
+      <p><strong>趋势定性：典型的"冲高—崩跌—弱修复"三阶段走势，而非简单的单边行情。</strong></p>
+      
+      <p><strong>第一阶段（周一至周二）：流动性驱动的普涨。</strong><br>
+      半年末MPA考核结束，央行逆回购+MLF持续投放，跨月资金重回宽松窗口。八部门有色金属稳增长方案落地、全球半导体第二轮涨价潮为科技股提供催化。上证从4058→4112（+1.3%），科创50从2133→2208（+3.5%），成交量温和放大至3.7万亿。</p>
+      
+      <p><strong>第二阶段（周三）：事件驱动的恐慌式抛售。</strong><br>
+      周三的暴跌不是技术性调整，而是<strong>三重利空共振</strong>：① Meta宣布筹建云基础设施业务出售过剩AI算力（击碎"算力稀缺"叙事）→ 费城半导体指数前夜暴跌6%+ → 日韩触发熔断 → A股AI硬件链集体跌停；② 美国6月非农仅5.7万（预期11.3万），就业市场急刹车引发全球衰退担忧；③ 国内监管层密集发布融券做空新规+减持规范，高位股加大兑现压力。当日主力净流出1218亿，其中融资融券净流出1198亿（占98%），说明是<strong>杠杆资金踩踏式出逃</strong>，而非机构有序减仓。</p>
+      
+      <p><strong>第三阶段（周四）：大金融+贵金属稳住指数，科技继续失血。</strong><br>
+      上证从4020低点修复至4044（+0.37%），创业板基本持平，科创50再跌0.6%。市场呈现极致的<strong>杠铃策略</strong>：一端是银行/保险/贵金属等防御/避险品种，另一端是低位的中小盘题材股（汽车零部件、军工装备），中间的高位科技成长股仍在"失血"。</p>
     </div>
-  </div>
-</div>
 
-<!-- ========= SECTION 3: CAPITAL ========= -->
-<div class="section">
-  <div class="section-title"><span class="icon">💰</span> 3. 资金面分析</div>
-
-  <div class="card">
-    <h3>主力资金全景</h3>
-    <div class="analysis">
-      <p><strong>全周净流入板块仅5个，且规模偏小（合计<100亿），而净流出Top 5合计超过700亿。</strong>资金净流出的规模和广度远大于净流入——这是一个明确的"资金出逃"周。</p>
-      <div class="chart-wrap">
-        <canvas id="chartFundFlow"></canvas>
-      </div>
-      <div class="warn-box">
-        <strong>💰 资金的真实方向：</strong><br>
-        • 全市场主力资金呈现"大出小进"格局——仅光学光电子、军工获确定性流入；<br>
-        • 通信设备-281亿、元件-136亿、电池-125亿的流出规模，暗示机构在进行<strong>系统性减仓</strong>；<br>
-        • 概念板块中，军工类概念（军工装备+军工电子）合计净流入约31亿，<strong>防御性思维主导</strong>；<br>
-        • 商品期货方面，白银-2.87%、A50期货-3.59%，显示全球risk-off情绪也在影响中国市场。
-      </div>
+    <div class="insight">
+      <div class="title">💡 核心判断：本轮调整的性质</div>
+      我的判断是这是一次"暴力风格切换"而非"系统性熊市的开端"。理由有三：① 上证仅跌0.36%，沪深300大体持平，大市值品种获得支撑——真正的熊市不会出现如此极致的风格分化；② 周四市场已现企稳信号，涨停板108家，中小盘赚钱效应回暖——流动性并未系统性枯竭；③ 两融+北向周三集中出逃约2500亿后，周四恐慌情绪明显收敛。关键是：<strong>资金没有离场，只是在换地方。</strong>
     </div>
   </div>
 
+  <!-- Volume analysis -->
   <div class="card">
-    <h3>机构资金动向判断</h3>
-    <div class="strategy-grid">
-      <div class="highlight-box" style="margin:0;">
-        <strong>📥 在买什么？</strong><br>
-        • 军工（装备+电子）：防御+地缘政治预期<br>
-        • 光学光电子：AI算力+AR/VR底层硬件<br>
-        • 电子化学品：半导体材料国产替代<br>
-        • 风电设备：新能源政策预期
-      </div>
-      <div class="danger-box" style="margin:0;">
-        <strong>📤 在抛什么？</strong><br>
-        • 通信设备：前期涨幅过大，估值回归<br>
-        • 元件/消费电子：需求端担忧<br>
-        • 电池：产能过剩忧虑<br>
-        • 自动化设备：制造业PMI预期走弱
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ========= SECTION 4: NEWS ========= -->
-<div class="section">
-  <div class="section-title"><span class="icon">📰</span> 4. 宏观/政策/事件</div>
-
-  <div class="card">
-    <h3>本周Top 3 事件与市场影响</h3>
+    <h3 style="color:var(--a);font-size:15px;margin-bottom:10px;">📊 成交量研判：放量暴跌 = 恐慌出清，不是主力出货</h3>
     <table>
-      <tr><th style="width:40px;">#</th><th>事件</th><th style="width:30%;">对市场的实际影响</th></tr>
-      <tr>
-        <td>1</td>
-        <td><strong>美国Q1 GDP上修至2.1%，但消费支出增速四年来最慢</strong></td>
-        <td>
-          <span class="green">偏空</span>：GDP上修降低了美联储降息预期，但消费放缓又增加了衰退担忧。<strong>矛盾信号意味着市场不确定性增加</strong>——这正是周五全球risk-off的宏观背景。
-        </td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td><strong>央行行长潘功胜会见巴西财长，深化中巴金融合作</strong></td>
-        <td>
-          <span class="red">偏多</span>：人民币国际化加速推进，中巴贸易本币结算预期升温。<strong>对市场金融板块（银行、跨境支付）构成长期利好</strong>，但短期影响有限。
-        </td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td><strong>美光业绩超预期，华尔街密集上调目标价至$1200-2000</strong></td>
-        <td>
-          <span class="red">偏多但延迟</span>：AI存储需求（HBM/DRAM）持续旺盛，利好市场存储芯片/封装材料板块。但周五被整体市场拖累，<strong>这个利好可能在下周被重新定价</strong>。
-        </td>
-      </tr>
+      <tr><th>交易日</th><th>上证成交(亿)</th><th>深证成交(亿)</th><th>总额(亿)</th><th>信号</th></tr>
+      <tr><td>6/30 (一)</td><td>5984</td><td>7446</td><td>13,430</td><td><span class="tag tag-g">温和放量</span></td></tr>
+      <tr><td>7/1 (二)</td><td>6723</td><td>8731</td><td>15,454</td><td><span class="tag tag-r">放量冲顶</span></td></tr>
+      <tr><td>7/2 (三)</td><td>6562</td><td>8566</td><td>15,128</td><td><span class="tag tag-r">放量暴跌</span></td></tr>
+      <tr><td>7/3 (四)</td><td>6020</td><td>7855</td><td>13,875</td><td><span class="tag tag-y">缩量企稳</span></td></tr>
     </table>
-  </div>
-
-  <div class="card">
-    <h3>海外风险预警</h3>
-    <div class="warn-box">
-      <strong>🌍 需要关注的利空：</strong><br>
-      ① <strong>纳斯达克连续暴跌</strong>：如果下周一美科技股继续下行，科技板块面临二次探底压力；<br>
-      ② <strong>白银-2.87%/铜-0.46%</strong>：工业金属走弱暗示全球需求预期下行，这对市场周期股不利；<br>
-      ③ <strong>A50期货-3.59%</strong>：海外资金对市场的定价已经反映了悲观预期，外资流出压力可能加大；<br>
-      ④ <strong>俄罗斯黄金外汇储备大增</strong>：全球去美元化加速，但在恐慌初期往往导致新兴市场承压。
+    <div class="narrative" style="margin-top:12px;">
+      <p>周二成交1.55万亿为本周峰值，周三暴跌1.51万亿几乎持平高位——<strong>放量下跌说明卖方在恐慌抛售、买方也在承接</strong>。周四缩量至1.39万亿但指数企稳，是典型的"恐慌情绪出清"信号。如果下周能继续缩量企稳，则确认阶段性底部；如果再度放量下跌，则需警惕第二轮去杠杆。</p>
     </div>
   </div>
 
+  <!-- A-share vs US correlation -->
   <div class="card">
-    <h3>下周重要事件日历</h3>
-    <table>
-      <tr><th>日期</th><th>事件</th><th>影响板块</th></tr>
-      <tr><td>6/29 (周一)</td><td>中国6月官方PMI数据发布</td><td>全市场 · ⭐⭐⭐</td></tr>
-      <tr><td>6/30 (周二)</td><td>美国6月消费者信心指数</td><td>出口/消费电子</td></tr>
-      <tr><td>7/1 (周三)</td><td>中国6月财新制造业PMI</td><td>制造业/周期股 · ⭐⭐⭐</td></tr>
-      <tr><td>7/2 (周四)</td><td>美国6月非农就业数据</td><td>全球市场 · ⭐⭐⭐⭐</td></tr>
-      <tr><td>7/3 (周五)</td><td>美联储6月会议纪要</td><td>全球利率敏感板块</td></tr>
-    </table>
-    <div class="highlight-box" style="margin-top:12px;">
-      <strong>📅 关键提示：</strong>下周是"数据超级周"——6月PMI + 非农 + 美联储纪要三重冲击。如果PMI低于预期（市场预估49.8，仍在荣枯线以下），将强化通缩叙事，对市场构成压力；如果非农超预期，降息预期可能进一步推迟，利空成长股。
+    <h3 style="color:var(--a);font-size:15px;margin-bottom:10px;">🌍 与美股/港股的相关性：这次A股是被"带崩"的</h3>
+    <div class="narrative">
+      <p>本周A股和美股的分化格局非常微妙：<strong>道琼斯（价值）大涨1.11%创新高，纳斯达克（成长）跌1.45%</strong>——这恰好对应了A股上证（价值）仅跌0.36%而科创50（成长）暴跌7.37%的结构。A股和美股呈现的是<strong>"同风格共振、不同市场各自的风格内分化"</strong>。</p>
+      <p><strong>我的判断：A股周三暴跌的主要驱动力是美股科技股的传导，而非独立的内生风险。</strong>Meta"卖算力"直接击碎了全球AI产业链的核心叙事——"算力稀缺"。这一叙事的崩塌是全球性的，A股的算力/光模块/半导体是这轮行情的核心品种，自然会首当其冲。但A股在周四出现了美股周三没有的"小票活跃修复"，说明A股内部的流动性韧性好于预期。</p>
+      <p>港股恒生指数本周涨1.22%，完全独立于A股的下跌——南向资金和外资对港股的低估值配置意愿仍然强劲。这是A股的一个安全垫：港股不崩，A股大金融/大盘价值就不会崩。</p>
     </div>
   </div>
 </div>
 
-<!-- ========= SECTION 5: PORTFOLIO ========= -->
-<div class="section">
-  <div class="section-title"><span class="icon">📊</span> 5. 持仓深度分析</div>
+<!-- ====== 3. SECTOR ROTATION ====== -->
+<div class="sec">
+  <div class="st">🔄 2.2 板块轮动深度分析</div>
 
-  <div class="card">
-    <h3>持仓周表现 vs 大盘 vs 板块</h3>
-    <div class="chart-wrap">
-      <canvas id="chartPortfolio"></canvas>
-    </div>
-    <div class="table-wrap">
+  <div class="g2">
+    <div class="card">
+      <h4 style="color:var(--r);font-size:14px;margin-bottom:10px;">💰 本周资金流入 Top 5</h4>
       <table>
-        <tr><th>代码</th><th>名称</th><th>周涨跌</th><th>持仓盈亏</th><th>vs沪深300</th><th>关注</th></tr>
-        <tr>
-          <td><code>002745</code></td><td>木林森</td>
-          <td class="red">+11.52%</td><td class="red">+2.24%</td><td class="red">+13.16%</td><td></td>
-        </tr>
-        <tr>
-          <td><code>600522</code></td><td>中天科技</td>
-          <td class="red">+4.98%</td><td class="red">+39.30%</td><td class="red">+6.62%</td><td>⭐</td>
-        </tr>
-        <tr>
-          <td><code>515790</code></td><td>光伏ETF</td>
-          <td class="green">-1.28%</td><td class="red">+0.30%</td><td class="red">+0.36%</td><td></td>
-        </tr>
-        <tr><td style="color:var(--text2)">—</td><td style="color:var(--text2)">沪深300基准</td><td class="green" style="color:var(--text2)">-1.64%</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">0%</td><td></td></tr>
-        <tr>
-          <td><code>600487</code></td><td>亨通光电</td>
-          <td class="green">-3.81%</td><td class="red">+42.06%</td><td class="green">-2.17%</td><td>⭐</td>
-        </tr>
-        <tr>
-          <td><code>513060</code></td><td>恒生医疗ETF</td>
-          <td class="green">0.00%</td><td class="green">-59.39%</td><td class="red">+1.64%</td><td></td>
-        </tr>
-        <tr>
-          <td><code>512170</code></td><td>医疗ETF</td>
-          <td class="green">0.00%</td><td class="green">-48.97%</td><td class="red">+1.64%</td><td></td>
-        </tr>
-        <tr>
-          <td><code>600733</code></td><td>北汽蓝谷</td>
-          <td class="green">-13.20%</td><td class="green">-70.12%</td><td class="green">-11.56%</td><td>⭐</td>
-        </tr>
+        <tr><th>行业</th><th>涨跌</th><th>净流入</th></tr>
+        <tr><td>汽车零部件</td><td style="color:var(--r)">+4.24%</td><td style="color:var(--r)">+65.64亿</td></tr>
+        <tr><td>消费电子</td><td style="color:var(--r)">+2.39%</td><td style="color:var(--r)">+57.00亿</td></tr>
+        <tr><td>元件</td><td style="color:var(--r)">+0.20%</td><td style="color:var(--r)">+55.11亿</td></tr>
+        <tr><td>军工装备</td><td style="color:var(--r)">+4.42%</td><td style="color:var(--r)">+51.20亿</td></tr>
+        <tr><td>通信设备</td><td style="color:var(--r)">+0.71%</td><td style="color:var(--r)">+41.23亿</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--g);font-size:14px;margin-bottom:10px;">📉 本周资金流出 Top 5</h4>
+      <table>
+        <tr><th>行业</th><th>涨跌</th><th>净流出</th></tr>
+        <tr><td>光学光电子</td><td style="color:var(--g)">-1.43%</td><td style="color:var(--g)">-103.60亿</td></tr>
+        <tr><td>电子化学品</td><td style="color:var(--g)">-5.37%</td><td style="color:var(--g)">-38.60亿</td></tr>
+        <tr><td>光伏设备</td><td style="color:var(--g)">-0.28%</td><td style="color:var(--g)">-37.56亿</td></tr>
+        <tr><td>化学制品</td><td style="color:var(--g)">-1.52%</td><td style="color:var(--g)">-35.89亿</td></tr>
+        <tr><td>文化传媒</td><td style="color:var(--g)">-0.59%</td><td style="color:var(--g)">-28.03亿</td></tr>
       </table>
     </div>
   </div>
 
-  <!-- 亨通光电 -->
   <div class="card">
-    <h3>⭐ 亨通光电（600487）— 持仓盈亏+42%，但本周-3.81%<span class="tag tag-warn">警惕</span></h3>
-    <div class="analysis">
-      <p>周一冲高至121.99后连续回调，周五跌停（-9.91%）。本周路径：<strong>115.20 → 120.13 → 117.31 → 119.02 → 122.60 → 110.81</strong>，振幅达12%。</p>
-      <div class="danger-box">
-        <strong>🚨 异常信号：</strong>周五放量跌停，且通信板块全周净流出281亿。这不是散户行为。虽然亨通光电基本面（光纤龙头、5G/6G建设、海底光缆）没有恶化，但<strong>短期技术面已经破位</strong>。<br><br>
-        <strong>我的建议：</strong>如果下周跌破105元（20日均线附近），建议<strong>减仓1/3</strong>锁定利润。目前+42%的浮盈给了你很大的安全垫，但不要坐视利润回吐。
-      </div>
+    <h3 style="color:var(--a);font-size:15px;margin-bottom:10px;">🗺️ 本周轮动路径图</h3>
+    <div class="path">
+      <span class="path-node" style="background:rgba(59,130,246,0.15);color:var(--b);">周一<br>AI/半导体<br>全面爆发</span>
+      <span class="path-arrow">→</span>
+      <span class="path-node" style="background:rgba(245,158,11,0.15);color:var(--y);">周二<br>大金融<br>接力领涨</span>
+      <span class="path-arrow">→</span>
+      <span class="path-node" style="background:rgba(245,34,45,0.15);color:var(--r);">周三<br>科技雪崩<br>贵金属涨停</span>
+      <span class="path-arrow">→</span>
+      <span class="path-node" style="background:rgba(22,199,132,0.15);color:var(--g);">周四<br>军工/汽零<br>医药修复</span>
+    </div>
+    <div class="narrative" style="margin-top:12px;">
+      <p>轮动路径非常清晰：<strong>科技 → 金融 → 避险 → 军工</strong>。周一科技股全面爆发（宇树科技IPO获批催化机器人板块），周二大金融接棒（银行、保险领涨），周三所有科技成长股踩踏式出逃、贵金属逆势涨停，周四军工装备和汽车零部件接棒成为新主线。</p>
     </div>
   </div>
 
-  <!-- 中天科技 -->
   <div class="card">
-    <h3>⭐ 中天科技（600522）— 本周+4.98%，但周五跌停<span class="tag tag-green">观望</span></h3>
-    <div class="analysis">
-      <p>中天科技本周表现优于亨通，周一至周四累计涨幅较大，即使周五大跌仍保住了正收益。但同为光纤通信龙头，亨通和中天的同步暴跌说明<strong>是板块性行为而非个股问题</strong>。</p>
-      <div class="highlight-box">
-        <strong>📊 我的判断：</strong>中天科技和亨通光电高度同质化（都是光纤通信），但中天本周超额收益+6.62%（vs沪深300），说明有资金在"换龙"——从中天换到其他方向。当前+39.30%的持仓盈利是很好的安全垫。<strong>建议与亨通同步操作</strong>：如果下周板块继续走弱，同步减仓。
-      </div>
-    </div>
-  </div>
-
-  <!-- 木林森 -->
-  <div class="card">
-    <h3>木林森（002745）— 本周+11.52%，持仓扭亏为盈<span class="tag tag-green">继续持有</span></h3>
-    <div class="analysis">
-      <p><strong>本周最佳持仓！</strong>从周一11.46一路涨至周五12.78，单周涨幅11.52%，远超所有指数。LED封装行业受益于Mini LED/Micro LED技术迭代和显示面板需求回暖。</p>
-      <div class="highlight-box">
-        <strong>💡 我的判断：</strong>木林森属于光学光电子产业链下游，正好契合了本周资金流入最多的板块方向。且该股此前长期横盘，当前12.78元仍处于相对低位（年内高点约15-16元）。<br>
-        <strong>建议继续持有，但不建议加仓</strong>——等回调到12元附近再考虑加仓。
-      </div>
-    </div>
-  </div>
-
-  <!-- 北汽蓝谷 -->
-  <div class="card">
-    <h3>⭐ 北汽蓝谷（600733）— 本周-13.20%，持仓亏损-70.12%<span class="tag tag-red">严重警示</span></h3>
-    <div class="analysis">
-      <p><strong>这是持仓中最大的问题。</strong>从周一5.68一路跌至周五4.93，周跌幅-13.20%，且在所有交易日中没有任何像样的反弹。新能源汽车板块（电池-5.26%/-125亿）本周是资金出逃重灾区。</p>
-      <div class="danger-box">
-        <strong>🚨 严肃的判断：</strong>北汽蓝谷持仓亏损已达-70.12%，这意味着需要约233%的涨幅才能回本。这几乎是"不可能的任务"。<br><br>
-        <strong>我不得不说一个残酷的选择：</strong>如果下周北汽继续跌破4.5元（前期低点），建议<strong>考虑清仓</strong>。这不是放弃，而是"止损换子弹"——把剩余资金配置到更有确定性的方向上。70%的亏损很痛，但继续死扛可能变成90%。
-      </div>
-    </div>
-  </div>
-
-  <!-- ETFs -->
-  <div class="card">
-    <h3>ETF持仓总评</h3>
+    <h3 style="color:var(--a);font-size:15px;margin-bottom:10px;">🔮 领涨板块持续性评估</h3>
     <table>
-      <tr><th>ETF</th><th>周涨跌</th><th>持仓盈亏</th><th>判断</th></tr>
+      <tr><th>板块</th><th>上涨逻辑</th><th>持续性判断</th><th>置信度</th></tr>
       <tr>
-        <td>恒生医疗ETF (513060)</td>
-        <td>0.00%</td><td class="green">-59.39%</td>
-        <td>港股医疗持续低迷，但已接近历史估值底部。暂持不加仓。</td>
+        <td><strong>军工装备</strong></td>
+        <td>地缘催化（伊朗核设施核查争议）+ 订单确定性 + 相对低位</td>
+        <td style="color:var(--r)">中高（2-3周）</td>
+        <td><span class="tag tag-r">70%</span></td>
       </tr>
       <tr>
-        <td>医疗ETF (512170)</td>
-        <td>0.00%</td><td class="green">-48.97%</td>
-        <td>境内医疗同样低迷。集采政策压制估值，短期看不到反转催化剂。</td>
+        <td><strong>汽车零部件</strong></td>
+        <td>东风6月新能源车产量+424% → 产业链补库 + 中报业绩预期</td>
+        <td style="color:var(--r)">中等（1-2周）</td>
+        <td><span class="tag tag-y">60%</span></td>
       </tr>
       <tr>
-        <td>光伏ETF (515790)</td>
-        <td class="green">-1.28%</td><td class="red">+0.30%</td>
-        <td>光伏基本平盘。产能过剩问题尚未出清，但估值已至低位。继续持有观察。</td>
+        <td><strong>贵金属（黄金）</strong></td>
+        <td>美元跌破101 + 降息预期 + 地缘避险三重支撑</td>
+        <td style="color:var(--r)">持续性强</td>
+        <td><span class="tag tag-r">80%</span></td>
+      </tr>
+      <tr>
+        <td><strong>消费电子</strong></td>
+        <td>低位补涨 + AI端侧落地预期</td>
+        <td style="color:var(--y)">偏弱（谨慎）</td>
+        <td><span class="tag tag-g">40%</span></td>
       </tr>
     </table>
   </div>
+
+  <div class="card card2">
+    <h3 style="color:var(--y);font-size:15px;margin-bottom:10px;">🔎 被忽视但可能下周爆发的板块</h3>
+    <div class="narrative">
+      <p><strong>我提名：创新药 / CXO板块。</strong></p>
+      <p>推理链：① 美国就业数据爆冷 → 美联储降息预期升温 → 美元走弱 → 利好新兴市场和成长股估值 → 创新药是典型的"利率敏感+长久期"资产；② 恒生医疗ETF本周逆势涨6.91%，说明聪明钱已经在布局港股医疗板块，这种跨市场共振通常会向A股传导；③ 上半年AI/机器人翻倍基金需要寻找新的配置方向，低位+中报业绩确定性高的医药板块是天然选择；④ 集采影响边际递减，创新药出海逻辑不断强化。</p>
+      <p><strong>不确定性：</strong>医药板块资金容量大，启动需要成交量配合，如果下周市场继续缩量则难以形成板块效应。但个股层面已经出现机会。</p>
+    </div>
+  </div>
+
+  <div class="insight">
+    <div class="title">💡 领跌板块判断</div>
+    光学光电子（-103.6亿）和电子化学品（-38.6亿）的下跌，前者是AI算力链的获利了结（正常回调），后者叠加了光伏产业链硅料价格五连跌的行业基本面恶化，<strong>电子化学品的回落更可能是趋势性的而非短期调整</strong>。光伏设备（-37.56亿）面临产能出清周期，N型硅料均价逼近3万/吨，中小硅料企业生存压力巨大，这个板块要回避。
+  </div>
 </div>
 
-<!-- ========= SECTION 6: OUTLOOK ========= -->
-<div class="section">
-  <div class="section-title"><span class="icon">🔮</span> 6. 下周展望与操作策略</div>
+<!-- ====== 4. FUND FLOWS ====== -->
+<div class="sec">
+  <div class="st">💵 2.3 资金面全景分析</div>
 
   <div class="card">
-    <h3>大盘方向预判（概率分布）</h3>
-    <div class="prob-bar-wrap">
-      <div class="prob-row"><span class="prob-label">📉 下跌</span><span class="prob-track"><span class="prob-fill" style="width:45%;background:var(--green)"></span></span><span class="prob-pct" style="color:var(--green)">45%</span></div>
-      <div class="prob-row"><span class="prob-label">↔️ 震荡</span><span class="prob-track"><span class="prob-fill" style="width:35%;background:var(--warn)"></span></span><span class="prob-pct" style="color:var(--warn)">35%</span></div>
-      <div class="prob-row"><span class="prob-label">📈 上涨</span><span class="prob-track"><span class="prob-fill" style="width:20%;background:var(--red)"></span></span><span class="prob-pct" style="color:var(--red)">20%</span></div>
-    </div>
-    <div class="analysis">
-      <p><strong>我的倾向明确：偏空。</strong>下跌概率45%，震荡35%，上涨仅20%。</p>
-      <p><strong>核心理由：</strong>① 周五的放量长阴破坏了前四天的反弹结构，周一惯性低开的概率很大；② 纳斯达克仍在下跌趋势中，科技板块面临二次冲击；③ 下周是"数据超级周"，PMI大概率仍在荣枯线以下。唯一的多头逻辑是"超跌反弹+政策护盘"，但这不是可靠的交易逻辑。</p>
-    </div>
-    <div class="chart-wrap">
-      <canvas id="chartOutlook"></canvas>
+    <h3 style="color:var(--a);font-size:15px;margin-bottom:10px;">🔄 北向资金</h3>
+    <div class="narrative">
+      <p><strong>周三（7/2）北向资金出现恐慌式净流出，沪深股通合计成交4240亿，较前日暴增16.34%。</strong>净流出规模据市场估算超过1270亿。这与融资融券净流出1198亿形成共振——可以说周三是内外资、杠杆资金和北向资金的一次集体"踩踏"。</p>
+      <p>但需要注意：7月2日的巨额成交也意味着有人在跌停板上接了北向的筹码。周四成交缩量，北向资金流出趋缓。我的判断是：<strong>本轮北向流出集中在半导体/AI硬件/算力等高位科技品种，是获利了结而非系统性撤离</strong>。港股恒生指数本周收涨+1.22%就是最好的证据——外资没有放弃中国资产，只是在调仓。</p>
     </div>
   </div>
 
   <div class="card">
-    <h3>关键点位</h3>
-    <div class="strategy-grid">
-      <div class="highlight-box" style="margin:0;">
-        <strong>🔴 上证压力位：4080-4100</strong><br>
-        依据：本周三/周四的密集成交区，也是5日均线当前位置。如果下周反弹到此位置但无法放量突破，是很好的减仓点。
-      </div>
-      <div class="danger-box" style="margin:0;">
-        <strong>🟢 上证支撑位：3980-4000</strong><br>
-        依据：6月初的震荡区间下沿 + 60日均线附近 + 整数关口心理支撑。如果跌破4000且无法在三天内收回，建议将仓位降至3成以下。
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h3>最大风险点 vs 最大机会点</h3>
-    <div class="strategy-grid">
-      <div class="danger-box" style="margin:0;">
-        <strong>🚨 最大风险：纳斯达克继续暴跌 + PMI低于预期</strong><br>
-        如果两者叠加，市场可能出现5%以上的周跌幅。通信/半导体板块将首当其冲。
-      </div>
-      <div class="highlight-box" style="margin:0;">
-        <strong>💡 最大机会：PMI超预期回升 + 美科技股企稳</strong><br>
-        如果出现这种情况，超跌的通信/半导体/光电子将迎来暴力反弹。周五被错杀的亨通光电、中天科技可能快速收复失地。
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h3>整体仓位建议</h3>
-    <div class="highlight-box">
-      <strong>🎯 建议仓位：5-6成</strong><br>
-      • 当前从满仓降至5-6成是理性的防御姿态<br>
-      • 保留4-5成现金，等待确定性信号再入场<br>
-      • 如果下周跌破4000点，降至3成以下
-    </div>
-    <h3 style="margin-top:18px;">下周重点关注方向</h3>
-    <div class="strategy-grid">
-      <div class="card" style="margin:0; background: rgba(129,140,248,0.04);">
-        <strong style="color:var(--accent)">🥇 光学光电子/电子化学品</strong><br>
-        <span style="font-size:0.85em;color:var(--text2)">本周唯一获资金净流入的科技方向。若市场企稳，弹性最大。</span>
-      </div>
-      <div class="card" style="margin:0; background: rgba(245,158,11,0.04);">
-        <strong style="color:var(--warn)">🥈 军工（装备+电子）</strong><br>
-        <span style="font-size:0.85em;color:var(--text2)">防御属性+地缘政治催化，"价跌资进"的逆向布局机会。</span>
-      </div>
-      <div class="card" style="margin:0; background: rgba(34,197,94,0.04);">
-        <strong style="color:var(--green)">🥉 风电设备</strong><br>
-        <span style="font-size:0.85em;color:var(--text2)">新能源中相对抗跌的分支，政策端可能有超预期催化。</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h3>持仓调整具体建议</h3>
+    <h3 style="color:var(--a);font-size:15px;margin-bottom:10px;">📊 主力资金分布</h3>
     <table>
-      <tr><th>持仓</th><th>操作</th><th>理由</th><th>触发条件</th></tr>
+      <tr><th>资金方向</th><th>7月2日（暴跌日）</th><th>全周判断</th></tr>
+      <tr>
+        <td>全市场主力净额</td>
+        <td style="color:var(--g)">-1,217.96亿</td>
+        <td>周三集中出逃，其余日正常</td>
+      </tr>
+      <tr>
+        <td>融资融券净流出</td>
+        <td style="color:var(--g)">-1,197.67亿（占98%）</td>
+        <td>杠杆资金恐慌踩踏</td>
+      </tr>
+      <tr>
+        <td>百元股板块</td>
+        <td style="color:var(--g)">-927亿</td>
+        <td>高位股集中兑现</td>
+      </tr>
+      <tr>
+        <td>半导体概念</td>
+        <td style="color:var(--g)">-798亿</td>
+        <td>AI算力链重灾区</td>
+      </tr>
+      <tr>
+        <td>电力板块（华润）</td>
+        <td style="color:var(--r)">+61.25亿</td>
+        <td>资金向防御品种切换</td>
+      </tr>
+    </table>
+    <div class="insight" style="margin-top:12px;">
+      <div class="title">💡 机构的钱在往哪走？</div>
+      从本周行业净流入Top 5（汽车零部件+65.6亿、消费电子+57亿、元件+55亿、军工装备+51亿、通信设备+41亿）可以清晰看出：<strong>机构在调仓而非出逃</strong>。钱从半导体和AI硬件出来，流向了：① 中报业绩确定性强的汽车产业链；② 地缘催化+订单可见性高的军工；③ 前期没有大涨的低位品种。这是典型的"高低切换"——不是熊市，是牛市的换挡。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--a);font-size:15px;margin-bottom:10px;">🏦 两融余额</h3>
+    <div class="warn-box">
+      <div class="title">⚠️ 杠杆资金是本周最大的风险暴露点</div>
+      周三融资融券单日净流出1198亿，占全市场主力净流出的98%以上。这意味着周三的暴跌本质上是<strong>一次杠杆资金的集中爆仓/强平事件</strong>。融资盘大量集中在前期涨幅巨大的AI/算力/半导体赛道，一旦股价触发平仓线，踩踏式强平会形成负反馈螺旋。好消息是周四市场已经企稳，两融压力得到初步释放。但后续仍需警惕：如果下周再度下跌3%以上，可能触发第二轮融资强平。
+    </div>
+  </div>
+</div>
+
+<!-- ====== 5. MACRO ====== -->
+<div class="sec">
+  <div class="st">🌐 2.4 宏观/政策/事件分析</div>
+
+  <div class="card">
+    <h3 style="color:var(--r);font-size:15px;margin-bottom:10px;">📰 本周最重要的3条新闻（附实质影响分析）</h3>
+    
+    <div style="margin-bottom:16px;">
+      <h4 style="color:var(--y);">1️⃣ Meta宣布对外出售过剩AI算力（周二）</h4>
+      <div class="narrative">
+        <p><strong>不是复述新闻：</strong>Meta这条消息改变了全球AI产业链的核心定价逻辑。"算力稀缺" → "算力过剩"的叙事切换是这轮暴跌的底层驱动。之前市场给AI算力链（光模块、服务器、交换机）的估值建立在"全球算力永远不够用"的假设上。Meta用行动告诉大家：巨头们在建的算力基础设施可能已经超出实际需求。这不是中国A股独立的风险——全球费城半导体指数一夜暴跌6%，日韩触发熔断，说明这是全球定价体系的重估。</p>
+        <p><strong>对A股的实质影响：</strong>直接利好：AI应用端（模型使用成本下降）；直接利空：AI硬件链（光模块、算力租赁、服务器代工）。这个逻辑切换不是一天的交易能消化完的——未来1-2个月AI硬件链都将面临估值重构。</p>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <h4 style="color:var(--y);">2️⃣ 美国6月非农仅5.7万，大幅低于预期（周三晚）</h4>
+      <div class="narrative">
+        <p><strong>不是复述数据：</strong>非农从预期的11.3万断崖式下跌到5.7万，叠加4-5月数据同步下修，意味着美国就业市场可能正在从"过热"直接跳入"冷却"——跳过了"温和降温"。市场迅速定价：美联储年内不会加息，降息预期大幅升温。10年期美债收益率下行，美元指数跌破101。</p>
+        <p><strong>对A股的实质影响：矛盾的双刃剑。</strong>利空面：就业急刹车 = 经济衰退担忧 → 全球风险偏好下行 → A股承压。利多面：降息预期+美元走弱 → 美元回流新兴市场 → 利好A股和人民币资产 → 利好黄金。本周A股走的是第一条逻辑（恐慌），但<b>下周开始第二条逻辑（降息交易）可能逐渐占主导</b>。关键看：A股能否"脱敏"于美股科技股的波动。</p>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <h4 style="color:var(--y);">3️⃣ 证监会批复宇树科技科创板IPO + 收紧融券减持（周三）</h4>
+      <div class="narrative">
+        <p><strong>不是复述政策：</strong>这一组合拳信号极为清晰——"引导资金从纯题材炒作转向硬科技价值投资"。宇树科技从受理到注册仅104天，创科创板最快纪录，说明监管层在加速优质硬科技企业上市，稀释存量题材股的稀缺性溢价。同时收紧融券做空和减持，压缩市场做空空间，遏制炒小炒差。这两条政策组合在一起，意味着<strong>A股的生态正在发生质变：钱要从"讲故事"流向"真业绩"</strong>。中报披露期恰逢其时——业绩兑现成为选股的唯一标准。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--a);font-size:15px;margin-bottom:10px;">📅 下周重要事件日历</h3>
+    <table>
+      <tr><th>时间</th><th>事件</th><th>潜在影响</th></tr>
+      <tr><td>7月5日（周六）</td><td>OPEC+七国能源会议</td><td>原油价格波动，影响化工/航空板块</td></tr>
+      <tr><td>7月7日（周一）</td><td>美国ISM非制造业PMI</td><td>验证经济软着陆逻辑</td></tr>
+      <tr><td>7月8-9日</td><td>美联储官员密集讲话</td><td>非农后第一次政策信号释放</td></tr>
+      <tr><td>7月10日（周四）</td><td>中国6月CPI/PPI</td><td>通胀数据，影响货币政策预期</td></tr>
+      <tr><td>7月中旬起</td><td>A股中报业绩预告密集披露</td><td>全年最重要的基本面验证窗口</td></tr>
+      <tr><td>7月14日起</td><td>中国Q2 GDP数据</td><td>经济增长定调，决定下半年政策力度</td></tr>
+    </table>
+  </div>
+
+  <div class="insight">
+    <div class="title">💡 海外利空警惕</div>
+    最大的海外风险是：<strong>如果美国经济数据持续恶化，从"软着陆"叙事切换到"硬着陆"恐慌</strong>，那全球风险资产（包括A股）将面临系统性压力。目前这个概率不大（约15%），但需要密切跟踪下周的ISM非制造业PMI和失业金申领数据。另一个需要警惕的是韩国KOSPI因政治不确定性和企业治理丑闻持续下跌可能引发的亚洲市场传染。
+  </div>
+</div>
+
+<!-- ====== 6. PORTFOLIO ====== -->
+<div class="sec">
+  <div class="st">🎯 2.5 持仓深度分析</div>
+
+  <div class="card">
+    <table>
+      <tr><th>代码</th><th>名称</th><th>成本</th><th>最新价</th><th>周涨跌</th><th>盈亏%</th><th>关注</th></tr>
+      <tr>
+        <td><code>600487</code></td><td>亨通光电</td><td>78.00</td><td>89.42</td>
+        <td style="color:var(--g);font-weight:700">-20.16%</td>
+        <td style="color:var(--r)">+14.6%</td>
+        <td>⭐ 重点</td>
+      </tr>
+      <tr>
+        <td><code>600522</code></td><td>中天科技</td><td>44.00</td><td>50.22</td>
+        <td style="color:var(--g);font-weight:700">-16.03%</td>
+        <td style="color:var(--r)">+14.1%</td>
+        <td>⭐ 重点</td>
+      </tr>
+      <tr>
+        <td><code>002745</code></td><td>木林森</td><td>12.50</td><td>11.96</td>
+        <td style="color:var(--r)">+0.08%</td>
+        <td style="color:var(--g)">-4.3%</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><code>600733</code></td><td>北汽蓝谷</td><td>16.50</td><td>4.87</td>
+        <td style="color:var(--g)">-0.61%</td>
+        <td style="color:var(--g)">-70.5%</td>
+        <td>⭐ 重点</td>
+      </tr>
+      <tr>
+        <td><code>513060</code></td><td>恒生医疗ETF</td><td>1.14</td><td>0.526</td>
+        <td style="color:var(--r);font-weight:700">+6.91%</td>
+        <td style="color:var(--g)">-53.9%</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><code>512170</code></td><td>医疗ETF</td><td>0.58</td><td>0.316</td>
+        <td style="color:var(--r)">+2.27%</td>
+        <td style="color:var(--g)">-45.5%</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><code>515790</code></td><td>光伏ETF</td><td>1.00</td><td>0.957</td>
+        <td style="color:var(--g)">-5.15%</td>
+        <td style="color:var(--g)">-4.3%</td>
+        <td></td>
+      </tr>
+    </table>
+    <p style="font-size:11px;color:var(--t2);margin-top:8px;">* 盈亏% = (最新价-成本价)/成本价。成本为2025年6月设定，部分标的可能在期间发生除权除息等公司行动，数值仅供参考。北汽蓝谷和ETF的成本价可能存在除权后未调整的情况。</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--a);font-size:15px;margin-bottom:10px;">📊 持仓 vs 大盘 vs 板块</h3>
+    <table>
+      <tr><th>标的</th><th>本周表现</th><th>vs 上证(-0.36%)</th><th>vs 所属方向</th><th>评价</th></tr>
       <tr>
         <td>亨通光电</td>
-        <td class="warn" style="color:var(--warn)">⚠ 准备减仓1/3</td>
-        <td>板块资金流出+周五跌停</td>
-        <td>跌破105元 或 通信板块连续3天净流出</td>
+        <td style="color:var(--g)">-20.16%</td>
+        <td style="color:var(--g)">大幅跑输</td>
+        <td>通信设备板块+0.71%（严重背离）</td>
+        <td><span class="tag tag-r">异常</span></td>
       </tr>
       <tr>
         <td>中天科技</td>
-        <td class="warn" style="color:var(--warn)">⚠ 准备减仓1/3</td>
-        <td>与亨通联动，一损俱损</td>
-        <td>跌破55元 或 亨通触发减仓条件</td>
-      </tr>
-      <tr>
-        <td>北汽蓝谷</td>
-        <td style="color:var(--red)">🔴 考虑清仓</td>
-        <td>累计亏损-70%，新能源板块全线溃败</td>
-        <td>跌破4.5元 或 下周无任何反弹迹象</td>
+        <td style="color:var(--g)">-16.03%</td>
+        <td style="color:var(--g)">大幅跑输</td>
+        <td>通信设备板块+0.71%（严重背离）</td>
+        <td><span class="tag tag-r">异常</span></td>
       </tr>
       <tr>
         <td>木林森</td>
-        <td style="color:var(--green)">🟢 继续持有</td>
-        <td>本周最佳，趋势向上</td>
-        <td>跌破11.5元则减仓</td>
+        <td style="color:var(--r)">+0.08%</td>
+        <td>基本持平</td>
+        <td>光学光电子-1.43%（强于板块）</td>
+        <td><span class="tag tag-g">抗跌</span></td>
+      </tr>
+      <tr>
+        <td>北汽蓝谷</td>
+        <td style="color:var(--g)">-0.61%</td>
+        <td>微幅跑输</td>
+        <td>汽车零部件+4.24%（严重背离）</td>
+        <td><span class="tag tag-y">偏弱</span></td>
       </tr>
       <tr>
         <td>恒生医疗ETF</td>
-        <td style="color:var(--blue)">🔵 暂持不动</td>
-        <td>估值底部，但无催化剂</td>
-        <td>—</td>
+        <td style="color:var(--r)">+6.91%</td>
+        <td style="color:var(--r)">大幅跑赢</td>
+        <td>港股医疗（强势）</td>
+        <td><span class="tag tag-r">优秀</span></td>
       </tr>
       <tr>
         <td>医疗ETF</td>
-        <td style="color:var(--blue)">🔵 暂持不动</td>
-        <td>同上</td>
-        <td>—</td>
+        <td style="color:var(--r)">+2.27%</td>
+        <td style="color:var(--r)">跑赢</td>
+        <td>境内医疗（稳健）</td>
+        <td><span class="tag tag-g">良好</span></td>
       </tr>
       <tr>
         <td>光伏ETF</td>
-        <td style="color:var(--blue)">🔵 暂持不动</td>
-        <td>底部区域，等待反转</td>
-        <td>跌破0.95元则止损</td>
+        <td style="color:var(--g)">-5.15%</td>
+        <td style="color:var(--g)">大幅跑输</td>
+        <td>光伏设备-0.28%（弱于板块）</td>
+        <td><span class="tag tag-r">弱势</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="warn-box">
+    <div class="title">⚠️ 重中之重：亨通光电和中天科技的异常暴跌</div>
+    <p>亨通光电本周暴跌-20.16%，中天科技暴跌-16.03%——但通信设备板块本周整体净流入+41.23亿，板块跌幅仅为+0.71%（实际上是涨的！）。这构成了<strong>极为反常的个股与板块背离</strong>。</p>
+    <p><strong>我的分析：</strong>亨通光电和中天科技作为光纤光缆双龙头，本周的暴跌很可能与以下因素有关：① 两家公司在AI算力链中有光模块/光纤业务敞口，纳入了"算力概念股"被无差别抛售；② 可能存在大股东减持或机构集中调仓；③ 获利盘巨大（亨通从成本78涨到过110+，中天从44涨到过60+），任何风吹草动都是获利了结的借口。</p>
+    <p><strong>这是机会还是陷阱？</strong>如果通信设备板块整体的资金流入趋势持续（意味着行业基本面没问题），那这两只龙头的暴跌就是超跌。但如果暴跌是因为公司层面原因（如业绩暴雷、大量解禁），则后续会继续承压。下周最需要的是搞清楚暴跌的真实原因。</p>
+  </div>
+
+  <div class="insight">
+    <div class="title">💡 持仓整体评估</div>
+    本周持仓呈现极致分化：亨通光电-20%和中天科技-16%是最大拖累，但恒生医疗ETF+6.9%和医疗ETF+2.3%提供了对冲。光伏ETF-5.15%跑输光伏板块（-0.28%），说明选的是弱β标的。如果等权重计算，本周持仓约-4.2%，显著跑输上证（-0.36%）和沪深300（约-0.5%），主要原因就是两只重仓光纤龙头的暴跌。
+  </div>
+</div>
+
+<!-- ====== 7. OUTLOOK ====== -->
+<div class="sec">
+  <div class="st">🔮 3.1 下周大盘预判</div>
+
+  <div class="prob-grid">
+    <div class="prob-item">
+      <div class="label">📈 上涨</div>
+      <div class="val" style="color:var(--r)">35%</div>
+      <div class="desc">降息交易启动<br>科技超跌反弹</div>
+    </div>
+    <div class="prob-item">
+      <div class="label">📊 震荡</div>
+      <div class="val" style="color:var(--y)">50%</div>
+      <div class="desc">风格轮动延续<br>结构性行情</div>
+    </div>
+    <div class="prob-item">
+      <div class="label">📉 下跌</div>
+      <div class="val" style="color:var(--g)">15%</div>
+      <div class="desc">第二轮去杠杆<br>融资盘强平</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h3 style="color:var(--a);font-size:15px;margin-bottom:10px;">📐 关键点位分析</h3>
+    <table>
+      <tr><th>指数</th><th>支撑位</th><th>支撑依据</th><th>压力位</th><th>压力依据</th></tr>
+      <tr>
+        <td>上证指数</td>
+        <td><strong style="color:var(--r)">3950-3980</strong></td>
+        <td>60日均线 + 前低区域</td>
+        <td><strong style="color:var(--g)">4100-4130</strong></td>
+        <td>周二高点 + 20日均线</td>
+      </tr>
+      <tr>
+        <td>创业板指</td>
+        <td><strong style="color:var(--r)">3900-3950</strong></td>
+        <td>周三低点附近 + 心理关口</td>
+        <td><strong style="color:var(--g)">4200-4250</strong></td>
+        <td>20日均线阻力</td>
+      </tr>
+      <tr>
+        <td>科创50</td>
+        <td><strong style="color:var(--r)">1900-1920</strong></td>
+        <td>120日均线 + 量能支撑</td>
+        <td><strong style="color:var(--g)">2050-2100</strong></td>
+        <td>周三缺口 + 20日均线</td>
       </tr>
     </table>
   </div>
 
   <div class="card">
-    <h3>加减仓信号</h3>
-    <div class="strategy-grid">
-      <div class="danger-box" style="margin:0;">
-        <strong>📉 减仓信号（出现任一即执行）：</strong><br>
-        • 上证跌破4000点且3天内未收回<br>
-        • 纳斯达克连续2天跌幅超过2%<br>
-        • 6月PMI低于49（确认经济收缩）<br>
-        • 北向资金单日净流出超100亿
+    <h3 style="color:var(--a);font-size:15px;margin-bottom:10px;">🎯 最大机会点 vs 最大风险点</h3>
+    <div class="g2">
+      <div style="padding:14px;background:rgba(22,199,132,0.06);border-radius:10px;border:1px solid rgba(22,199,132,0.2);">
+        <h4 style="color:var(--g);margin-bottom:8px;">✅ 最大机会：降息交易下的黄金与创新药</h4>
+        <p style="font-size:13px;">美元跌破101 + 降息预期升温 = 黄金和长久期成长资产的估值修复窗口打开。贵金属板块周三逆势涨停已经验证了这一逻辑。创新药是下一个接力品种。</p>
       </div>
-      <div class="highlight-box" style="margin:0;">
-        <strong>📈 加仓信号：</strong><br>
-        • 上证放量（>800亿手）站回4080<br>
-        • 通信板块出现缩量止跌十字星<br>
-        • PMI超预期回升至50以上<br>
-        • 北向资金连续3日净流入
+      <div style="padding:14px;background:rgba(245,34,45,0.06);border-radius:10px;border:1px solid rgba(245,34,45,0.2);">
+        <h4 style="color:var(--r);margin-bottom:8px;">⚠️ 最大风险：两融第二轮强平</h4>
+        <p style="font-size:13px;">周三融资盘净流出1198亿只是第一波。如果下周指数再跌3%+，高位融资盘可能触发第二轮强平。要密切关注两融余额变化和科创50的走势——科创50是融资盘的"体温计"。</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ========= FOOTER ========= -->
-<div class="footer">
-  <p>📊 数据来源：东方财富、新浪财经、腾讯自选股 · 部分数据可能存在延迟</p>
-  <p>🤖 本报告由 WorkBuddy AI 独立生成，数据采集于 2026-06-26 15:55 CST</p>
-  <p style="margin-top:14px; padding: 14px; background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; font-size: 0.85em;">
-    <strong>⚠️ 免责声明</strong><br>
-    本报告仅为数据分析和市场观察，所有分析判断均为AI基于公开数据的推演，<strong>不构成任何投资建议</strong>。报告中提及的所有股票和ETF仅供分析参考，不代表买入、卖出或持有建议。股票市场存在风险，过往表现不代表未来收益。投资者应根据自身情况独立判断，必要时咨询持牌专业投资顾问。AI分析可能存在数据延迟、分析偏差或判断错误，作者和系统不对因使用本报告产生的任何投资损失承担责任。
-  </p>
+<!-- ====== 8. STRATEGY ====== -->
+<div class="sec">
+  <div class="st">🎯 3.2 下周操作策略</div>
+
+  <div class="card">
+    <h3 style="color:var(--a);font-size:15px;margin-bottom:10px;">📊 仓位建议</h3>
+    <div style="text-align:center;padding:20px 0;">
+      <div style="font-size:48px;font-weight:800;color:var(--y);">5-6成</div>
+      <div style="color:var(--t2);margin-top:4px;">中性偏谨慎仓位</div>
+    </div>
+    <div class="narrative">
+      <p><strong>理由：</strong>当前不是满仓的时候（科技股估值重构尚未完成），也不是空仓的时候（流动性充裕+降息预期利多）。5-6成仓是最合理的选择：保留40-50%现金应对潜在的第二轮踩踏，同时也保留了参与结构性机会的灵活性。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--a);font-size:15px;margin-bottom:10px;">🔭 下周重点关注方向（2-3个）</h3>
+    <table>
+      <tr><th>方向</th><th>逻辑</th><th>优先级</th></tr>
+      <tr>
+        <td><strong>贵金属/黄金</strong></td>
+        <td>美元走弱+降息预期+地缘避险，三重驱动。这是当下逻辑最通顺的方向。</td>
+        <td><span class="tag tag-r">第一优先级</span></td>
+      </tr>
+      <tr>
+        <td><strong>创新药/CXO</strong></td>
+        <td>降息利好长久期资产+低估值+恒生医疗ETF先行指标已启动</td>
+        <td><span class="tag tag-y">第二优先级</span></td>
+      </tr>
+      <tr>
+        <td><strong>军工装备</strong></td>
+        <td>地缘催化+订单确定性+本周资金净流入第4名+板块涨幅第1</td>
+        <td><span class="tag tag-y">第二优先级</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--a);font-size:15px;margin-bottom:10px;">📋 持仓调整建议（具体到每只）</h3>
+    <table>
+      <tr><th>标的</th><th>建议</th><th>操作</th><th>理由</th></tr>
+      <tr>
+        <td style="color:var(--y);font-weight:700">亨通光电</td>
+        <td><span class="tag tag-y">持有观望</span></td>
+        <td>不急于操作，先搞清楚暴跌原因</td>
+        <td style="font-size:12px;">如果暴跌是板块联动错杀（行业资金在流入），-20%后反而可能是加仓机会。如果发现公司层面利空（业绩暴雷/减持），则果断减仓一半</td>
+      </tr>
+      <tr>
+        <td style="color:var(--y);font-weight:700">中天科技</td>
+        <td><span class="tag tag-y">持有观望</span></td>
+        <td>同亨通光电</td>
+        <td style="font-size:12px;">两只光纤龙头高度联动，逻辑同上</td>
+      </tr>
+      <tr>
+        <td>木林森</td>
+        <td><span class="tag tag-g">持有</span></td>
+        <td>不动</td>
+        <td style="font-size:12px;">本周逆势收平，LED封装属于低位品种，风险有限</td>
+      </tr>
+      <tr>
+        <td style="color:var(--r);font-weight:700">北汽蓝谷</td>
+        <td><span class="tag tag-r">考虑减仓</span></td>
+        <td>反弹减半</td>
+        <td style="font-size:12px;">汽车零部件板块涨4.24%，它反而跌0.61%，个股α极弱。如果有反弹到5.0-5.2，建议减仓一半。长期来看新能源整车竞争格局恶化</td>
+      </tr>
+      <tr>
+        <td style="color:var(--r);font-weight:700">恒生医疗ETF</td>
+        <td><span class="tag tag-r">加仓</span></td>
+        <td>回调加仓</td>
+        <td style="font-size:12px;">本周+6.91%领跑所有持仓，港股医疗板块是降息交易+低估值修复的核心受益者。如有2-3%回调可加仓</td>
+      </tr>
+      <tr>
+        <td>医疗ETF</td>
+        <td><span class="tag tag-g">持有</span></td>
+        <td>不动</td>
+        <td style="font-size:12px;">+2.27%跑赢大盘，继续持有作为医药配置仓位</td>
+      </tr>
+      <tr>
+        <td style="color:var(--g);font-weight:700">光伏ETF</td>
+        <td><span class="tag tag-g">减仓或回避</span></td>
+        <td>反弹减仓</td>
+        <td style="font-size:12px;">硅料五连跌，行业产能出清远未结束，ETF跑输板块说明配置了弱β标的。趁反弹减仓换到黄金或医药</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card card2">
+    <h3 style="color:var(--y);font-size:15px;margin-bottom:10px;">🚦 加减仓信号</h3>
+    <div class="g2">
+      <div>
+        <h4 style="color:var(--r);margin-bottom:6px;">加仓信号</h4>
+        <ul style="font-size:13px;padding-left:20px;color:var(--t2);">
+          <li>上证缩量至1.2万亿以下+企稳</li>
+          <li>科创50回到2000以上+放量</li>
+          <li>北向资金转净流入</li>
+          <li>两融余额止跌回升</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color:var(--g);margin-bottom:6px;">减仓信号</h4>
+        <ul style="font-size:13px;padding-left:20px;color:var(--t2);">
+          <li>上证跌破3950放量</li>
+          <li>科创50跌破1900</li>
+          <li>融资余额继续大幅下降（-500亿/日）</li>
+          <li>美债收益率意外反弹</li>
+          <li>中报业绩密集暴雷</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
 
-</div><!-- /container -->
-
-<!-- ========== CHARTS ========== -->
+<!-- ====== CHART SCRIPT ====== -->
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-// Chinese chart config defaults
-Chart.defaults.color = '#6b7280';
-Chart.defaults.borderColor = '#1e2433';
-Chart.defaults.font.family = "-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif";
-
-const r = '#ef4444', g = '#22c55e', a = '#818cf8', b = '#38bdf8', y = '#f59e0b';
-
-// 1. Index Comparison Chart
-new Chart(document.getElementById('chartIndex'), {
-  type: 'line',
-  data: {
-    labels: ['周一','周二','周三','周四','周五'],
-    datasets: [
-      { label: '上证指数', data: [4163.10, 4106.25, 4110.81, 4120.28, 4027.26], borderColor: a, backgroundColor: a+'20', tension: 0.35, borderWidth: 2.5, fill: true },
-      { label: '深证成指', data: [16481.22, 16258.37, 16310.52, 16344.08, 15782.22], borderColor: b, backgroundColor: b+'20', tension: 0.35, borderWidth: 2, fill: true },
-      { label: '创业板指', data: [4368.34, 4299.79, 4321.58, 4371.99, 4194.21], borderColor: r, backgroundColor: r+'20', tension: 0.35, borderWidth: 2, fill: true },
-      { label: '科创50', data: [2074.19, 2060.35, 2076.11, 2066.33, 2032.28], borderColor: y, backgroundColor: y+'20', tension: 0.35, borderWidth: 2.5, fill: true, borderDash: [5,3] }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { 
-      legend: { position: 'bottom', labels: { usePointStyle: true, padding: 18, font: {size:11} } },
-      tooltip: { mode: 'index', intersect: false }
-    },
-    scales: {
-      y: { 
-        grid: { color: '#1e243340' },
-        ticks: { callback: v => v.toLocaleString() }
-      }
-    }
-  }
-});
-
-// 2. Volume Chart
-new Chart(document.getElementById('chartVolume'), {
-  type: 'bar',
-  data: {
-    labels: ['周一','周二','周三','周四','周五'],
-    datasets: [
-      { label: '上证成交量(亿手)', data: [7.44, 7.09, 6.45, 6.55, 6.60], backgroundColor: [a,a+'80',a+'60',a+'40',g+'80'], borderRadius: 6 },
-      { label: '深证成交量(亿手)', data: [8.20, 7.90, 7.50, 7.60, 8.37], backgroundColor: [b,b+'80',b+'60',b+'40',g+'80'], borderRadius: 6 }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { 
-      legend: { position: 'bottom', labels: { usePointStyle: true, padding: 18, font: {size:11} } }
-    },
-    scales: {
-      y: { grid: { color: '#1e243340' }, ticks: { callback: v => v.toFixed(2)+'亿' } }
-    }
-  }
-});
-
-// 3. US vs CN
-new Chart(document.getElementById('chartUsCn'), {
-  type: 'line',
-  data: {
-    labels: ['周一','周二','周三','周四'],
-    datasets: [
-      { label: '纳斯达克(美)', data: [26166.6, 25587.0, 25476.6, 25358.6], borderColor: r, backgroundColor: r+'15', tension: 0.3, borderWidth: 2.5, fill: true, yAxisID: 'y1' },
-      { label: '上证指数', data: [4163.1, 4106.3, 4110.8, 4120.3], borderColor: a, backgroundColor: a+'15', tension: 0.3, borderWidth: 2.5, fill: true, yAxisID: 'y' }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { 
-      legend: { position: 'bottom', labels: { usePointStyle: true, padding: 18, font: {size:11} } },
-      title: { display: true, text: '前四日逆势上涨，周五补跌（红线=纳指，紫线=上证）', font: {size:11}, color: '#6b7280' }
-    },
-    scales: {
-      y: { type: 'linear', position: 'left', grid: { color: '#1e243340' }, ticks: { callback: v => v.toLocaleString() } },
-      y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { callback: v => v.toLocaleString() } }
-    }
-  }
-});
-
-// 4. Fund Flow
-new Chart(document.getElementById('chartFundFlow'), {
-  type: 'bar',
-  data: {
-    labels: ['光学光电子','军工装备','风电设备','电子化学品','军工电子'],
-    datasets: [
-      { label: '净流入(亿)', data: [45.2, 21.45, 11.76, 9.82, 9.56], backgroundColor: r+'80', borderRadius: 6 }
-    ]
-  },
-  options: {
-    indexAxis: 'y',
-    responsive: true, maintainAspectRatio: false,
-    plugins: { 
-      legend: { display: false },
-      title: { display: true, text: '本周净流入Top 5板块（仅5个板块为正流入）', font: {size:11}, color: '#6b7280' }
-    },
-    scales: {
-      x: { grid: { color: '#1e243340' }, ticks: { callback: v => v+'亿' } }
-    }
-  }
-});
-
-// 5. Portfolio vs Benchmark
-new Chart(document.getElementById('chartPortfolio'), {
-  type: 'bar',
-  data: {
-    labels: ['木林森','中天科技','光伏ETF','沪深300','亨通光电','医疗ETF','恒生医疗','北汽蓝谷'],
-    datasets: [
-      { 
-        label: '周涨跌%',
-        data: [11.52, 4.98, -1.28, -1.64, -3.81, 0, 0, -13.20],
-        backgroundColor: ctx => {
-          const v = ctx.raw;
-          if (v > 0) return r+'99';
-          if (v === 0) return '#6b728080';
-          return g+'99';
+(function() {
+  const ctx = document.getElementById('indexChart').getContext('2d');
+  const labels = ['周一 6/30', '周二 7/1', '周三 7/2', '周四 7/3'];
+  
+  // Normalize to 100 at Monday open
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: '上证指数',
+          data: [100.89, 101.34, 99.28, 99.64],
+          borderColor: '#6366f1',
+          backgroundColor: 'rgba(99,102,241,0.1)',
+          borderWidth: 2.5,
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: '#6366f1'
         },
-        borderRadius: 6
-      }
-    ]
-  },
-  options: {
-    indexAxis: 'y',
-    responsive: true, maintainAspectRatio: false,
-    plugins: { 
-      legend: { display: false } 
+        {
+          label: '深证成指',
+          data: [102.49, 101.94, 98.02, 98.65],
+          borderColor: '#f59e0b',
+          backgroundColor: 'rgba(245,158,11,0.1)',
+          borderWidth: 2.5,
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: '#f59e0b'
+        },
+        {
+          label: '创业板指',
+          data: [102.97, 101.02, 95.25, 95.31],
+          borderColor: '#f5222d',
+          backgroundColor: 'rgba(245,34,45,0.1)',
+          borderWidth: 2.5,
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: '#f5222d'
+        },
+        {
+          label: '科创50',
+          data: [103.52, 100.95, 93.17, 92.63],
+          borderColor: '#16c784',
+          backgroundColor: 'rgba(22,199,132,0.1)',
+          borderWidth: 2.5,
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: '#16c784',
+          borderDash: [5, 3]
+        }
+      ]
     },
-    scales: {
-      x: { grid: { color: '#1e243340' }, ticks: { callback: v => v+'%' } }
-    }
-  }
-});
-
-// 6. Outlook - Weekly path projection
-new Chart(document.getElementById('chartOutlook'), {
-  type: 'line',
-  data: {
-    labels: ['上周五','周一','周二','周三','周四','周五','下周一(预)','下周二(预)','下周三(预)','下周四(预)','下周五(预)'],
-    datasets: [
-      { 
-        label: '上证实际', 
-        data: [4140, 4163.1, 4106.25, 4110.81, 4120.28, 4027.26, null, null, null, null, null],
-        borderColor: a, borderWidth: 2.5, tension: 0.3, pointRadius: 4, fill: false
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        title: {
+          display: true,
+          text: '本周四大指数归一化走势（以周一开盘=100）',
+          color: '#8b8fa3',
+          font: { size: 14 },
+          padding: { bottom: 16 }
+        },
+        legend: {
+          labels: {
+            color: '#8b8fa3',
+            usePointStyle: true,
+            padding: 20,
+            font: { size: 12 }
+          }
+        },
+        tooltip: {
+          mode: 'index',
+          intersect: false,
+          callbacks: {
+            label: function(ctx) {
+              const v = ctx.raw;
+              const chg = (v - 100).toFixed(2);
+              return ctx.dataset.label + ': ' + (chg > 0 ? '+' : '') + chg + '%';
+            }
+          }
+        }
       },
-      { 
-        label: '偏空路径(45%)', 
-        data: [null, null, null, null, null, 4027.26, 3990, 3960, 3930, 3950, 3920],
-        borderColor: g, borderWidth: 2, tension: 0.3, borderDash: [6,3], pointRadius: 0, fill: false
+      scales: {
+        x: {
+          ticks: { color: '#8b8fa3' },
+          grid: { color: 'rgba(42,45,58,0.5)' }
+        },
+        y: {
+          ticks: { 
+            color: '#8b8fa3',
+            callback: function(v) { return (v-100).toFixed(1) + '%'; }
+          },
+          grid: { color: 'rgba(42,45,58,0.3)' }
+        }
       },
-      { 
-        label: '震荡路径(35%)', 
-        data: [null, null, null, null, null, 4027.26, 4010, 4030, 4000, 4040, 4020],
-        borderColor: y, borderWidth: 2, tension: 0.3, borderDash: [6,3], pointRadius: 0, fill: false
-      },
-      { 
-        label: '反弹路径(20%)', 
-        data: [null, null, null, null, null, 4027.26, 4050, 4100, 4080, 4120, 4150],
-        borderColor: r, borderWidth: 2, tension: 0.3, borderDash: [6,3], pointRadius: 0, fill: false
+      interaction: {
+        mode: 'nearest',
+        axis: 'x',
+        intersect: false
       }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { 
-      legend: { position: 'bottom', labels: { usePointStyle: true, padding: 18, font: {size:11} } },
-      title: { display: true, text: '下周上证三种情景推演（虚线=预测区间）', font: {size:11}, color: '#6b7280' }
-    },
-    scales: {
-      y: { grid: { color: '#1e243340' }, ticks: { callback: v => v.toLocaleString() } }
     }
-  }
-});
+  });
+})();
 </script>
+
+<!-- ====== FOOTER ====== -->
+<hr class="hr">
+<div class="footer">
+  <p>📊 本报告由 WorkBuddy AI 深度分析系统自动生成</p>
+  <p>数据来源：Sina Finance、东方财富、腾讯自选股、AKShare</p>
+  <p>分析模型：LLM多维度量化+基本面交叉验证</p>
+  <p>生成时间：2026年7月3日 15:55 CST</p>
+  <br>
+  <p style="color:var(--warn);font-weight:600;">⚠️ 免责声明</p>
+  <p style="max-width:600px;margin:0 auto;">
+    本报告仅供信息参考和内部研究使用，不构成任何形式的投资建议。<br>
+    报告中的分析、判断和策略建议均为模型基于公开数据的推演，<br>
+    不保证准确性、完整性或时效性。股市投资有风险，决策需谨慎。<br>
+    过往表现不代表未来收益。请咨询持牌证券投资顾问做出独立判断。<br>
+    <strong>作者和AI系统不对因使用本报告产生的任何投资损失承担责任。</strong>
+  </p>
+</div>
 
 </body>
 </html>
