@@ -190,5 +190,11 @@
     "errors": [
       "concept_flow"
     ]
+  },
+  {
+    "time": "2026-07-03 18:08",
+    "timezone": "UTC+8",
+    "report": "closing",
+    "status": "success"
   }
 ]

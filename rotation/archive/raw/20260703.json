@@ -1,75 +1,75 @@
 {
   "date": "2026-07-03",
-  "timestamp": "2026-07-03 14:55:24",
+  "timestamp": "2026-07-03 18:09:56",
   "version": "v2.19",
   "market": {
     "total_stocks": 5527,
-    "up": 3811,
-    "down": 1716,
+    "up": 3803,
+    "down": 1724,
     "limit_up": 174,
-    "fall_limit": 48,
-    "breadth": 0.6895
+    "fall_limit": 52,
+    "breadth": 0.6881
   },
   "sectors": [
     {
       "name": "贵金属",
       "bsi": 0,
-      "chg": 6.14,
-      "flow": 11.64
+      "chg": 6.17,
+      "flow": 10.79
     },
     {
       "name": "电机",
       "bsi": 0,
-      "chg": 5.7,
-      "flow": 9.73
+      "chg": 5.59,
+      "flow": 9.21
     },
     {
       "name": "军工装备",
       "bsi": 0,
-      "chg": 4.46,
-      "flow": 51.66
+      "chg": 4.42,
+      "flow": 51.2
     },
     {
       "name": "汽车零部件",
       "bsi": 0,
       "chg": 4.24,
-      "flow": 66.48
+      "flow": 65.64
     },
     {
       "name": "自动化设备",
       "bsi": 0,
-      "chg": 3.84,
-      "flow": 33.48
+      "chg": 3.83,
+      "flow": 33.05
     },
     {
       "name": "风电设备",
       "bsi": 0,
-      "chg": 3.55,
-      "flow": 14.01
+      "chg": 3.5,
+      "flow": 14.14
     },
     {
       "name": "工程机械",
       "bsi": 0,
-      "chg": 3.39,
-      "flow": 8.08
+      "chg": 3.41,
+      "flow": 7.47
     },
     {
       "name": "军工电子",
       "bsi": 0,
-      "chg": 2.89,
-      "flow": 5.83
+      "chg": 2.82,
+      "flow": 5.27
     },
     {
       "name": "白色家电",
       "bsi": 0,
-      "chg": 2.77,
-      "flow": 25.19
+      "chg": 2.73,
+      "flow": 25.42
     },
     {
       "name": "小家电",
       "bsi": 0,
-      "chg": 2.72,
-      "flow": 1.48
+      "chg": 2.55,
+      "flow": 1.54
     }
   ],
   "futures": {
@@ -78,12 +78,12 @@
       "chg": 0.75
     },
     "原油": {
-      "price": 69.0,
-      "chg": 0.8
+      "price": 68.375,
+      "chg": 0.26
     },
     "铜": {
-      "price": 13403.0,
-      "chg": 0.88
+      "price": 13383.5,
+      "chg": 0.74
     }
   },
   "flows": {},
