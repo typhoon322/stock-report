@@ -181,5 +181,14 @@
     "timezone": "UTC+8",
     "report": "midday",
     "status": "success"
+  },
+  {
+    "time": "2026-07-03 15:02",
+    "timezone": "UTC+8",
+    "report": "closing",
+    "status": "partial",
+    "errors": [
+      "concept_flow"
+    ]
   }
 ]
