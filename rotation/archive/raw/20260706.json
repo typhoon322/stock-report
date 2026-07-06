@@ -1,8 +1,15 @@
 {
   "date": "2026-07-06",
-  "timestamp": "2026-07-06 16:09:53",
+  "timestamp": "2026-07-06 19:49:33",
   "version": "v2.19",
-  "market": {},
+  "market": {
+    "total_stocks": 5526,
+    "up": 1876,
+    "down": 3650,
+    "limit_up": 104,
+    "fall_limit": 107,
+    "breadth": 0.3395
+  },
   "sectors": [
     {
       "name": "煤炭开采加工",
@@ -67,16 +74,16 @@
   ],
   "futures": {
     "黄金": {
-      "price": 4229.5,
-      "chg": 1.03
+      "price": 4291.0,
+      "chg": 0.94
     },
     "原油": {
-      "price": 67.275,
-      "chg": -0.52
+      "price": 67.2,
+      "chg": -0.63
     },
     "铜": {
-      "price": 13414.0,
-      "chg": -0.01
+      "price": 13370.5,
+      "chg": -0.34
     }
   },
   "flows": {},
