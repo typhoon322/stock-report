@@ -232,5 +232,11 @@
     "errors": [
       "stale_data: run after close, flow data skipped"
     ]
+  },
+  {
+    "time": "2026-07-07 18:28",
+    "timezone": "UTC+8",
+    "report": "closing",
+    "status": "success"
   }
 ]
