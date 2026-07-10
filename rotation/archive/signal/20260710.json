@@ -1,0 +1,38 @@
+{
+  "date": "2026-07-10",
+  "timestamp": "2026-07-10 18:28:56",
+  "version": "v2.19",
+  "signals": {
+    "bsi": {
+      "error": "cannot import name 'get_top_sectors' from 'rotation.bsi' (/h"
+    },
+    "phase": {
+      "phase": "🔄 轮动期",
+      "advice": {
+        "position": "50-80%",
+        "strategy": "进攻",
+        "action": "重点配置BSI>30的强势板块",
+        "focus": "RTI ≥ 4 的潜在新主线"
+      }
+    },
+    "mtf": {
+      "score": -3,
+      "status": "strong_bearish"
+    }
+  },
+  "meta": {
+    "score": 0,
+    "decision": "HOLD",
+    "confidence": 0
+  },
+  "position": {},
+  "weights": {
+    "rti": 0.2725,
+    "flow": 0.2305,
+    "smart_money": 0.1774,
+    "cost_basis": 0.1451,
+    "breakout": 0.1018,
+    "mtf": 0.0728
+  },
+  "regime": "🔄 轮动期"
+}
