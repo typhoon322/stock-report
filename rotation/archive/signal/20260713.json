@@ -1,0 +1,38 @@
+{
+  "date": "2026-07-13",
+  "timestamp": "2026-07-13 14:46:28",
+  "version": "v2.19",
+  "signals": {
+    "bsi": {
+      "error": "cannot import name 'get_top_sectors' from 'rotation.bsi' (/h"
+    },
+    "phase": {
+      "phase": "💨 退潮期",
+      "advice": {
+        "position": "逐步减仓",
+        "strategy": "退出",
+        "action": "减仓至30%以下，清仓弱势股",
+        "focus": "现金为王，等待冰点"
+      }
+    },
+    "mtf": {
+      "score": -3,
+      "status": "strong_bearish"
+    }
+  },
+  "meta": {
+    "score": 0,
+    "decision": "HOLD",
+    "confidence": 0
+  },
+  "position": {},
+  "weights": {
+    "rti": 0.2725,
+    "flow": 0.2305,
+    "smart_money": 0.1774,
+    "cost_basis": 0.1451,
+    "breakout": 0.1018,
+    "mtf": 0.0728
+  },
+  "regime": "💨 退潮期"
+}
