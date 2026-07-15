@@ -11,7 +11,7 @@ import os
 import time
 from datetime import datetime
 
-OUT_DIR = "/Users/yanx/WorkBuddy/automation-2026-06-24-19-35-08"
+OUT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # ============================================================
 # 工具函数

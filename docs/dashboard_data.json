@@ -1,100 +1,100 @@
 {
-  "timestamp": "2026-07-01 15:30",
+  "timestamp": "2026-07-08 15:30",
   "market": {
-    "phase": "🔄 轮动期",
-    "breadth": 0.791,
-    "limit_up": 245,
-    "fall_limit": 0,
+    "phase": "💨 退潮期",
+    "breadth": 0.296,
+    "limit_up": 83,
+    "fall_limit": 2198,
     "risk": "medium",
-    "strategy": "进攻",
-    "position_advice": "50-80%"
+    "strategy": "退出",
+    "position_advice": "逐步减仓"
   },
   "sectors": [
     {
-      "name": "保险",
+      "name": "油气开采及服务",
       "bsi": 24,
-      "chg": 7.09,
-      "flow": 31.5
+      "chg": 3.52,
+      "flow": 6.6
     },
     {
-      "name": "养殖业",
+      "name": "旅游及酒店",
       "bsi": 24,
-      "chg": 5.65,
-      "flow": 10.3
+      "chg": 1.68,
+      "flow": 0.6
     },
     {
-      "name": "化学制药",
+      "name": "IT服务",
       "bsi": 24,
-      "chg": 5.64,
-      "flow": 49.3
+      "chg": 1.61,
+      "flow": 18.5
     },
     {
-      "name": "教育",
+      "name": "软件开发",
       "bsi": 24,
-      "chg": 5.2,
-      "flow": 3.4
+      "chg": 1.54,
+      "flow": 18.4
     },
     {
-      "name": "农产品加工",
+      "name": "计算机设备",
       "bsi": 23,
-      "chg": 4.97,
-      "flow": 3.7
+      "chg": 1.21,
+      "flow": -4.5
     },
     {
-      "name": "证券",
+      "name": "通信服务",
       "bsi": 23,
-      "chg": 4.82,
-      "flow": 135.4
+      "chg": 1.1,
+      "flow": 9.1
     },
     {
-      "name": "生物制品",
+      "name": "公路铁路运输",
       "bsi": 23,
-      "chg": 4.33,
-      "flow": 10.3
+      "chg": 0.88,
+      "flow": 1.6
     },
     {
-      "name": "多元金融",
+      "name": "中药",
       "bsi": 23,
-      "chg": 4.21,
-      "flow": 5.0
+      "chg": 0.73,
+      "flow": 0.8
     },
     {
-      "name": "物流",
+      "name": "银行",
       "bsi": 23,
-      "chg": 4.21,
-      "flow": 1.7
+      "chg": 0.72,
+      "flow": 22.1
     },
     {
-      "name": "医疗服务",
+      "name": "医药商业",
       "bsi": 22,
-      "chg": 4.17,
-      "flow": 13.4
+      "chg": 0.66,
+      "flow": 1.0
     }
   ],
   "futures": {
     "黄金": {
-      "price": 4205.0,
-      "chg": 0.26,
+      "price": 4295.0,
+      "chg": -0.47,
       "code": "GC27M"
     },
     "原油": {
-      "price": 66.15,
-      "chg": 0.47,
+      "price": 66.9,
+      "chg": -0.86,
       "code": "CL27X"
     },
     "铜": {
-      "price": 6.44,
-      "chg": -1.58,
-      "code": "HG27Q"
+      "price": 6.52,
+      "chg": -0.62,
+      "code": "HG27U"
     },
     "白银": {
-      "price": 59.7,
-      "chg": -4.7,
-      "code": "SI27U"
+      "price": 59.05,
+      "chg": -7.15,
+      "code": "SI27N"
     },
     "A50": {
-      "price": 15238.0,
-      "chg": -1.78,
+      "price": 14897.0,
+      "chg": 0.05,
       "code": "CN00Y"
     }
   },
@@ -112,11 +112,11 @@
   },
   "cost_basis": {
     "dense_zone": {
-      "low": 99.3,
-      "high": 100.52,
-      "total_density": 0.516
+      "low": 99.49,
+      "high": 100.71,
+      "total_density": 0.695
     },
-    "vwap": 100.01,
+    "vwap": 100.04,
     "position": "in_cost_zone",
     "bias": "range_trading"
   },
