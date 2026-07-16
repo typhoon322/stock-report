@@ -1,0 +1,36 @@
+{
+  "date": "2026-07-16",
+  "timestamp": "2026-07-16 14:31:22",
+  "version": "v2.19",
+  "backfilled": false,
+  "note": "信号由主要指数历史推导 (phase/mtf)",
+  "signals": {
+    "bsi": {
+      "top": 0,
+      "names": [],
+      "backfilled": false
+    },
+    "phase": {
+      "phase": "🔄 轮动期",
+      "advice": {
+        "position": "50-80%",
+        "strategy": "进攻",
+        "action": "重点配置BSI>30的强势板块",
+        "focus": "RTI ≥ 4 的潜在新主线"
+      },
+      "backfilled": false
+    },
+    "mtf": {
+      "score": 0.0,
+      "backfilled": false
+    }
+  },
+  "meta": {
+    "score": 0,
+    "decision": "HOLD",
+    "confidence": 0
+  },
+  "position": {},
+  "weights": {},
+  "regime": "🔄 轮动期"
+}
