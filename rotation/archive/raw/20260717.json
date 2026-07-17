@@ -1,16 +1,16 @@
 {
   "date": "2026-07-17",
-  "timestamp": "2026-07-17 14:25:45",
+  "timestamp": "2026-07-17 17:24:57",
   "version": "v2.19",
   "backfilled": false,
   "note": "主要指数历史 + 实时广度(尽力)",
   "market": {
-    "total_stocks": 5447,
-    "up": 790,
-    "down": 4657,
-    "limit_up": 39,
-    "fall_limit": 335,
-    "breadth": 0.145,
+    "total_stocks": 5527,
+    "up": 482,
+    "down": 5045,
+    "limit_up": 44,
+    "fall_limit": 700,
+    "breadth": 0.0872,
     "source": "live_spot"
   },
   "sectors": [],
