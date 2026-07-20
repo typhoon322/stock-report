@@ -1,19 +1,13 @@
 {
   "date": "2026-07-20",
-  "timestamp": "2026-07-20 14:42:45",
+  "timestamp": "2026-07-20 18:31:18",
   "version": "v2.19",
   "backfilled": false,
   "note": "信号由主要指数历史推导 (phase/mtf)",
   "signals": {
     "bsi": {
-      "top": 5,
-      "names": [
-        "油气及炼化工程",
-        "油气开采Ⅲ",
-        "油气开采Ⅱ",
-        "油服工程",
-        "火力发电"
-      ],
+      "top": 0,
+      "names": [],
       "backfilled": false
     },
     "phase": {
@@ -27,7 +21,7 @@
       "backfilled": false
     },
     "mtf": {
-      "score": 0.0,
+      "score": -2.2,
       "backfilled": false
     }
   },

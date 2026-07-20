@@ -1,83 +1,35 @@
 {
   "date": "2026-07-20",
-  "timestamp": "2026-07-20 14:42:45",
+  "timestamp": "2026-07-20 18:31:18",
   "version": "v2.19",
   "backfilled": false,
   "note": "主要指数历史 + 实时广度(尽力)",
   "market": {
     "total_stocks": 5527,
-    "up": 1335,
-    "down": 4192,
-    "limit_up": 60,
-    "fall_limit": 753,
-    "breadth": 0.2415,
+    "up": 1739,
+    "down": 3788,
+    "limit_up": 78,
+    "fall_limit": 582,
+    "breadth": 0.3146,
     "source": "live_spot"
   },
-  "sectors": [
-    {
-      "name": "油气及炼化工程",
-      "bsi": 26,
-      "chg": 8.31,
-      "flow": null
-    },
-    {
-      "name": "油气开采Ⅲ",
-      "bsi": 25,
-      "chg": 5.98,
-      "flow": null
-    },
-    {
-      "name": "油气开采Ⅱ",
-      "bsi": 25,
-      "chg": 5.98,
-      "flow": null
-    },
-    {
-      "name": "油服工程",
-      "bsi": 25,
-      "chg": 5.88,
-      "flow": null
-    },
-    {
-      "name": "火力发电",
-      "bsi": 24,
-      "chg": 5.52,
-      "flow": null
-    },
-    {
-      "name": "纺织鞋类制造",
-      "bsi": 24,
-      "chg": 5.23,
-      "flow": null
-    },
-    {
-      "name": "电能综合服务",
-      "bsi": 23,
-      "chg": 4.99,
-      "flow": null
-    },
-    {
-      "name": "动力煤",
-      "bsi": 23,
-      "chg": 4.94,
-      "flow": null
-    },
-    {
-      "name": "煤炭开采",
-      "bsi": 22,
-      "chg": 4.89,
-      "flow": null
-    },
-    {
-      "name": "焦煤",
-      "bsi": 22,
-      "chg": 4.8,
-      "flow": null
-    }
-  ],
+  "sectors": [],
   "futures": {},
   "flows": {},
-  "indices": {},
+  "indices": {
+    "上证指数": {
+      "change": 0.8534717619226528,
+      "close": 3796.281
+    },
+    "沪深300": {
+      "change": 1.5284731276336672,
+      "close": 4598.321
+    },
+    "中证500": {
+      "change": -1.3634978904711215,
+      "close": 7411.313
+    }
+  },
   "portfolio": {
     "stocks": [
       {
