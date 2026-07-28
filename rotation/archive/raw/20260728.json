@@ -1,83 +1,35 @@
 {
   "date": "2026-07-28",
-  "timestamp": "2026-07-28 14:17:33",
+  "timestamp": "2026-07-28 17:53:43",
   "version": "v2.19",
   "backfilled": false,
   "note": "主要指数历史 + 实时广度(尽力)",
   "market": {
     "total_stocks": 5532,
-    "up": 2288,
-    "down": 3244,
-    "limit_up": 78,
-    "fall_limit": 143,
-    "breadth": 0.4136,
+    "up": 2602,
+    "down": 2930,
+    "limit_up": 82,
+    "fall_limit": 147,
+    "breadth": 0.4704,
     "source": "live_spot"
   },
-  "sectors": [
-    {
-      "name": "文字媒体",
-      "bsi": 29,
-      "chg": 5.32,
-      "flow": null
-    },
-    {
-      "name": "零食",
-      "bsi": 26,
-      "chg": 4.1,
-      "flow": null
-    },
-    {
-      "name": "图片媒体",
-      "bsi": 28,
-      "chg": 3.93,
-      "flow": null
-    },
-    {
-      "name": "纺织化学制品",
-      "bsi": 25,
-      "chg": 3.77,
-      "flow": null
-    },
-    {
-      "name": "金融信息服务",
-      "bsi": 27,
-      "chg": 3.55,
-      "flow": null
-    },
-    {
-      "name": "宠物食品",
-      "bsi": 27,
-      "chg": 3.57,
-      "flow": null
-    },
-    {
-      "name": "商用载客车",
-      "bsi": 23,
-      "chg": 3.47,
-      "flow": null
-    },
-    {
-      "name": "会展服务",
-      "bsi": 26,
-      "chg": 3.09,
-      "flow": null
-    },
-    {
-      "name": "乳品",
-      "bsi": 25,
-      "chg": 3.08,
-      "flow": null
-    },
-    {
-      "name": "汽车综合服务",
-      "bsi": 22,
-      "chg": 3.08,
-      "flow": null
-    }
-  ],
+  "sectors": [],
   "futures": {},
   "flows": {},
-  "indices": {},
+  "indices": {
+    "上证指数": {
+      "change": -1.1645191013012313,
+      "close": 3813.315
+    },
+    "沪深300": {
+      "change": -2.826263969648002,
+      "close": 4569.524
+    },
+    "中证500": {
+      "change": -3.5899421262446274,
+      "close": 7443.433
+    }
+  },
   "portfolio": {
     "stocks": [
       {
