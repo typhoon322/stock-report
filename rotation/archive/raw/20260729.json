@@ -1,83 +1,35 @@
 {
   "date": "2026-07-29",
-  "timestamp": "2026-07-29 14:23:02",
+  "timestamp": "2026-07-29 17:54:16",
   "version": "v2.19",
   "backfilled": false,
   "note": "主要指数历史 + 实时广度(尽力)",
   "market": {
     "total_stocks": 5533,
-    "up": 4102,
-    "down": 1431,
-    "limit_up": 94,
-    "fall_limit": 33,
-    "breadth": 0.7414,
+    "up": 4252,
+    "down": 1281,
+    "limit_up": 103,
+    "fall_limit": 34,
+    "breadth": 0.7685,
     "source": "live_spot"
   },
-  "sectors": [
-    {
-      "name": "教育运营及其他",
-      "bsi": 29,
-      "chg": 7.71,
-      "flow": null
-    },
-    {
-      "name": "乳品",
-      "bsi": 29,
-      "chg": 6.8,
-      "flow": null
-    },
-    {
-      "name": "饮料乳品",
-      "bsi": 28,
-      "chg": 6.68,
-      "flow": null
-    },
-    {
-      "name": "软饮料",
-      "bsi": 28,
-      "chg": 6.4,
-      "flow": null
-    },
-    {
-      "name": "电动乘用车",
-      "bsi": 27,
-      "chg": 5.36,
-      "flow": null
-    },
-    {
-      "name": "熟食",
-      "bsi": 24,
-      "chg": 5.27,
-      "flow": null
-    },
-    {
-      "name": "教育",
-      "bsi": 26,
-      "chg": 5.1,
-      "flow": null
-    },
-    {
-      "name": "培训教育",
-      "bsi": 26,
-      "chg": 5.05,
-      "flow": null
-    },
-    {
-      "name": "休闲食品",
-      "bsi": 25,
-      "chg": 4.64,
-      "flow": null
-    },
-    {
-      "name": "烘焙食品",
-      "bsi": 25,
-      "chg": 4.58,
-      "flow": null
-    }
-  ],
+  "sectors": [],
   "futures": {},
   "flows": {},
-  "indices": {},
+  "indices": {
+    "上证指数": {
+      "change": 0.39739701545769,
+      "close": 3828.469
+    },
+    "沪深300": {
+      "change": 0.6726740028063949,
+      "close": 4600.262
+    },
+    "中证500": {
+      "change": 1.0892151511271653,
+      "close": 7524.508
+    }
+  },
   "portfolio": {
     "stocks": [
       {
