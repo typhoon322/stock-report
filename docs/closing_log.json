@@ -1,6 +1,9 @@
 {
   "type": "closing",
-  "status": "success",
-  "time": "2026-07-29T17:40:52.540737+08:00",
-  "errors": []
+  "status": "partial",
+  "time": "2026-07-31T17:49:06.018612+08:00",
+  "errors": [
+    "sina_idx:s_sz399006",
+    "sina_idx:s_sh000905"
+  ]
 }
