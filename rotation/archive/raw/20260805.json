@@ -1,83 +1,35 @@
 {
   "date": "2026-08-05",
-  "timestamp": "2026-08-05 14:14:57",
+  "timestamp": "2026-08-05 17:51:49",
   "version": "v2.19",
   "backfilled": false,
   "note": "主要指数历史 + 实时广度(尽力)",
   "market": {
     "total_stocks": 5536,
-    "up": 3063,
-    "down": 2473,
-    "limit_up": 189,
-    "fall_limit": 3,
-    "breadth": 0.5533,
+    "up": 3725,
+    "down": 1811,
+    "limit_up": 199,
+    "fall_limit": 2,
+    "breadth": 0.6729,
     "source": "live_spot"
   },
-  "sectors": [
-    {
-      "name": "钨",
-      "bsi": 29,
-      "chg": 8.78,
-      "flow": null
-    },
-    {
-      "name": "半导体设备",
-      "bsi": 29,
-      "chg": 8.28,
-      "flow": null
-    },
-    {
-      "name": "半导体材料",
-      "bsi": 28,
-      "chg": 8.24,
-      "flow": null
-    },
-    {
-      "name": "白银",
-      "bsi": 25,
-      "chg": 8.19,
-      "flow": null
-    },
-    {
-      "name": "玻纤制造",
-      "bsi": 27,
-      "chg": 7.3,
-      "flow": null
-    },
-    {
-      "name": "贵金属",
-      "bsi": 24,
-      "chg": 7.38,
-      "flow": null
-    },
-    {
-      "name": "电子化学品Ⅲ",
-      "bsi": 25,
-      "chg": 6.98,
-      "flow": null
-    },
-    {
-      "name": "电子化学品Ⅱ",
-      "bsi": 25,
-      "chg": 6.98,
-      "flow": null
-    },
-    {
-      "name": "黄金",
-      "bsi": 23,
-      "chg": 7.14,
-      "flow": null
-    },
-    {
-      "name": "会展服务",
-      "bsi": 22,
-      "chg": 6.12,
-      "flow": null
-    }
-  ],
+  "sectors": [],
   "futures": {},
   "flows": {},
-  "indices": {},
+  "indices": {
+    "上证指数": {
+      "change": 1.4688857581263592,
+      "close": 3878.43
+    },
+    "沪深300": {
+      "change": 1.2437702812257312,
+      "close": 4658.155
+    },
+    "中证500": {
+      "change": 2.651598353043516,
+      "close": 7809.207
+    }
+  },
   "portfolio": {
     "stocks": [
       {
