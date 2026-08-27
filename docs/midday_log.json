@@ -1,6 +1,8 @@
 {
   "type": "midday",
-  "status": "success",
-  "time": "2026-08-26T12:24:09.151247+08:00",
-  "errors": []
+  "status": "partial",
+  "time": "2026-08-27T22:38:43.418126+08:00",
+  "errors": [
+    "stale_data: run after close, flow data skipped"
+  ]
 }
