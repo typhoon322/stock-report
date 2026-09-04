@@ -1,6 +1,6 @@
 {
   "date": "2026-09-04",
-  "timestamp": "2026-09-04 16:29:29",
+  "timestamp": "2026-09-04 20:16:47",
   "version": "v2.19",
   "backfilled": false,
   "note": "信号由主要指数历史推导 (phase/mtf)",
@@ -11,17 +11,17 @@
       "backfilled": false
     },
     "phase": {
-      "phase": "🔄 轮动期",
+      "phase": "❄️ 冰点期",
       "advice": {
-        "position": "50-80%",
-        "strategy": "进攻",
-        "action": "重点配置BSI>30的强势板块",
-        "focus": "RTI ≥ 4 的潜在新主线"
+        "position": "0-20%",
+        "strategy": "防守",
+        "action": "轻仓或空仓，等待回暖信号",
+        "focus": "逆势抗跌板块"
       },
       "backfilled": false
     },
     "mtf": {
-      "score": 0.0,
+      "score": -3.0,
       "backfilled": false
     }
   },
@@ -32,5 +32,5 @@
   },
   "position": {},
   "weights": {},
-  "regime": "🔄 轮动期"
+  "regime": "❄️ 冰点期"
 }
