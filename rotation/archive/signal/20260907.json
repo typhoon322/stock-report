@@ -1,6 +1,6 @@
 {
   "date": "2026-09-07",
-  "timestamp": "2026-09-07 16:53:15",
+  "timestamp": "2026-09-07 21:35:41",
   "version": "v2.19",
   "backfilled": false,
   "note": "信号由主要指数历史推导 (phase/mtf)",
@@ -21,7 +21,7 @@
       "backfilled": false
     },
     "mtf": {
-      "score": 0.0,
+      "score": 0.6,
       "backfilled": false
     }
   },
