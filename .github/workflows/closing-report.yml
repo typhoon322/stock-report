@@ -21,6 +21,8 @@ jobs:
         run: python cloud_scripts/cloud_closing.py
       - name: Daily Archive (raw + signal + trade)
         run: python -m rotation.archive.runner
+      - name: Generate quant daily report
+        run: python generate_quant_daily.py
       - name: Commit & push GitHub
         run: |
           git config user.name "github-actions[bot]"

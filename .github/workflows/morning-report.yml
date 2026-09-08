@@ -19,6 +19,8 @@ jobs:
         run: pip install -r requirements.txt
       - name: Generate report
         run: python cloud_scripts/cloud_morning.py
+      - name: Generate quant daily report
+        run: python generate_quant_daily.py
       - name: Commit & push GitHub
         run: |
           git config user.name "github-actions[bot]"
