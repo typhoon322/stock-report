@@ -1,11 +1,11 @@
 {
-  "signal_days": 54,
-  "raw_days": 94,
-  "trade_days": 54,
+  "signal_days": 55,
+  "raw_days": 95,
+  "trade_days": 55,
   "start_date": "20260626",
-  "last_date": "20260908",
+  "last_date": "20260909",
   "target_days": 30,
   "progress_pct": 100,
   "phase": "Phase II",
-  "updated_at": "2026-09-09 16:00"
+  "updated_at": "2026-09-10 16:00"
 }
