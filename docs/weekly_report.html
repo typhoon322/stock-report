@@ -1,132 +1,194 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>周报深度分析 | 截至 2026-09-08</title>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI 深度分析周报 · 2026-09-11</title>
 <style>
 :root{--bg:#0f1117;--cd:#1a1d28;--bd:#2a2d3a;--tx:#e4e6ed;--t2:#8b8fa3;--r:#f5222d;--g:#16c784;--a:#6366f1;--y:#f59e0b}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--tx);line-height:1.65;padding:24px 16px 60px;max-width:500px;margin:0 auto}
-h1{font-size:22px;color:var(--a);text-align:center;margin-bottom:4px}
-.sub{color:var(--t2);font-size:12px;text-align:center;margin-bottom:18px}
-.banner{background:linear-gradient(135deg,rgba(99,102,241,0.12),rgba(245,158,11,0.10));border:1px solid var(--a);border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:var(--tx)}
-.banner b{color:var(--y)}
-.sec{margin-bottom:22px}
-.st{font-size:15px;font-weight:700;margin-bottom:10px;padding-bottom:4px;border-bottom:2px solid var(--a)}
-.card{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:14px;font-size:13px}
-.card p{margin-bottom:8px;color:var(--tx)}
-.card p:last-child{margin-bottom:0}
-.hl{color:var(--y);font-weight:600}
-.up{color:var(--r)}.dn{color:var(--g)}
-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
-th{background:#222531;padding:6px 8px;text-align:left;color:var(--t2);border-bottom:2px solid var(--bd)}
-td{padding:5px 8px;border-bottom:1px solid var(--bd)}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;max-width:860px;margin:0 auto;padding:20px 14px 60px}
+.h{text-align:center;padding:24px 0 16px;border-bottom:1px solid var(--bd);margin-bottom:22px}
+.h h1{font-size:22px;color:var(--a);margin-bottom:6px}
+.h .s{color:var(--t2);font-size:12px}
+.tldr{background:linear-gradient(135deg,#1e1b4b,#1a1d28);border:1px solid var(--a);border-radius:10px;padding:14px 18px;margin-bottom:22px;font-size:14px;font-weight:600}
+.st{font-size:17px;font-weight:700;margin:26px 0 12px;padding-bottom:5px;border-bottom:2px solid var(--a);color:var(--tx)}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-bottom:14px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:700px){.g2,.g3{grid-template-columns:1fr}}
+.stat{text-align:center;padding:12px 6px}
+.stat .v{font-size:22px;font-weight:700}
+.stat .l{font-size:10px;color:var(--t2);margin-top:2px}
+table{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0}
+th{background:#222531;padding:7px 10px;text-align:left;color:var(--t2);border-bottom:2px solid var(--bd);white-space:nowrap}
+td{padding:6px 10px;border-bottom:1px solid var(--bd)}
 tr:hover{background:#222531}
-.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;margin:2px 3px 2px 0}
-.tag.r{background:rgba(245,34,45,0.12);color:var(--r);border:1px solid rgba(245,34,45,0.3)}
-.tag.g{background:rgba(22,199,132,0.12);color:var(--g);border:1px solid rgba(22,199,132,0.3)}
-.tag.a{background:rgba(99,102,241,0.12);color:var(--a);border:1px solid rgba(99,102,241,0.3)}
-.tl{font-size:12px;color:var(--t2);border-left:2px solid var(--bd);padding:4px 10px;margin-bottom:4px;border-radius:0 5px 5px 0}
-.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:6px}
-.kpi .b{background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:8px;text-align:center}
-.kpi .nm{font-size:10px;color:var(--t2)}.kpi .vv{font-size:15px;font-weight:700;margin:2px 0}
-.footer{margin-top:30px;text-align:center;font-size:10px;color:var(--t2);line-height:1.8}
-.back{display:block;text-align:center;color:var(--a);font-size:13px;margin-bottom:16px;text-decoration:none}
-.note{font-size:11px;color:var(--t2);margin-top:8px;font-style:italic}
+.up{color:var(--r);font-weight:600}.down{color:var(--g);font-weight:600}
+.muted{color:var(--t2)}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:6px;background:var(--a);color:#fff}
+.note{font-size:12px;color:var(--t2);margin-top:8px;line-height:1.5}
+.pos{color:var(--a);font-weight:600}.neg{color:var(--t2);font-weight:600}
+ul{margin:6px 0 6px 18px;font-size:13px}
+li{margin:4px 0}
+.foot{margin-top:30px;padding-top:14px;border-top:1px solid var(--bd);font-size:11px;color:var(--t2);line-height:1.6}
 </style>
 </head>
 <body>
-<a class="back" href="index.html">← 返回首页</a>
-<h1>📊 周报深度分析</h1><p class="sub">截至 2026-09-08 · 覆盖近 6 个交易日（9/1–9/8）· WorkBuddy AI 生成</p>
 
-<div class="banner">🧭 <b>一句话结论：</b>市场在 9 月初经历了一次"冰点→轮动"的快速修复。科技/半导体遭集中减仓，资金切向<span class="hl">金属资源 + 国企改革</span>双主线；当前回归轮动期（MTF 转正），可维持 50–80% 进攻仓位，但主线尚不稳固，宜用板块轮动而非追高。</div>
-
-<div class="sec"><div class="st">🌡️ 一、市场节奏：冰点已过，重回轮动</div>
-<div class="card">
-<p>近两周信号档案显示，市场绝大多数时间处于 <span class="tag a">轮动期</span>，但 9 月初出现两次明显的<span class="tag g">冰点期</span>回撤：</p>
-<table>
-<tr><th>日期</th><th>阶段</th><th>MTF 多空分</th><th>仓位建议</th></tr>
-<tr><td>8/31</td><td>轮动期</td><td class="up">+3.0</td><td>50–80% 进攻</td></tr>
-<tr><td>9/1</td><td><span class="dn">冰点期</span></td><td class="dn">−1.0</td><td>0–20% 防守</td></tr>
-<tr><td>9/2</td><td><span class="dn">冰点期</span></td><td class="dn">−2.6</td><td>0–20% 防守</td></tr>
-<tr><td>9/4</td><td><span class="dn">冰点期</span></td><td class="dn">−3.0</td><td>0–20% 防守</td></tr>
-<tr><td>9/7</td><td>轮动期</td><td class="up">+0.6</td><td>50–80% 进攻</td></tr>
-</table>
-<p class="note">MTF 多空分：&gt;0 偏多、&lt;0 偏空；冰点期（MTF≤−1）对应 0–20% 防守仓位。9/4 为近期最弱点（−3.0），此后连续回暖。</p>
-<p>节奏上，这是一轮<span class="hl">"急跌—企稳—轮动"</span>的标准结构：9/1–9/4 的冰点属于情绪与 tech 板块的集中释放，9/7 起 MTF 转正、阶段切回轮动，说明抛压已衰减、资金开始重新找方向。</p>
-</div></div>
-
-<div class="sec"><div class="st">💰 二、资金主线：金属 + 国企改革共振，科技失血</div>
-<div class="card">
-<p><b>行业净流入 Top 5（9/3–9/7）</b></p>
-<table>
-<tr><th>行业</th><th>涨跌</th><th>净流入</th></tr>
-<tr><td>工业金属</td><td class="up">+2.12%</td><td class="up">+47.1亿</td></tr>
-<tr><td>农化制品</td><td class="up">+4.71%</td><td class="up">+29.5亿</td></tr>
-<tr><td>医疗服务</td><td class="up">+3.08%</td><td class="up">+16.8亿</td></tr>
-<tr><td>银行</td><td class="up">+0.99%</td><td class="up">+16.1亿</td></tr>
-<tr><td>电力</td><td class="up">+1.30%</td><td class="up">+15.2亿</td></tr>
-</table>
-<p><b>行业净流出 Top 5</b></p>
-<table>
-<tr><th>行业</th><th>涨跌</th><th>净流出</th></tr>
-<tr><td>消费电子</td><td class="dn">−1.08%</td><td class="dn">−45.4亿</td></tr>
-<tr><td>计算机设备</td><td class="dn">−0.57%</td><td class="dn">−41.3亿</td></tr>
-<tr><td>半导体</td><td class="dn">−1.28%</td><td class="dn">−41.2亿</td></tr>
-<tr><td>光学光电子</td><td class="dn">−0.21%</td><td class="dn">−35.1亿</td></tr>
-<tr><td>IT服务</td><td class="dn">−0.05%</td><td class="dn">−33.2亿</td></tr>
-</table>
-<p><b>概念资金</b>：
-<span class="tag r">国企改革 +66.4亿</span><span class="tag r">金属铜 +55.4亿</span><span class="tag r">小金属 +54.3亿</span><span class="tag r">西部大开发 +51.7亿</span><span class="tag r">煤化工 +50.4亿</span></p>
-<p class="hl">解读：</b>资金明显从 TMT（消费电子/计算机/半导体/光学）撤出，转向"资源 + 红利 + 改革"三条防御兼顺周期线索。国企改革以 +66 亿居首，叠加金属铜/小金属，构成当前最清晰的主线；医疗服务、银行、电力等低波红利亦获承接，说明资金偏好"确定性"而非高弹性成长。</p>
-</div></div>
-
-<div class="sec"><div class="st">🛢️ 三、大宗商品与汇率</div>
-<div class="card">
-<div class="kpi">
-<div class="b"><div class="nm">黄金</div><div class="vv">4685</div><div class="dn">−0.17%</div></div>
-<div class="b"><div class="nm">白银</div><div class="vv">71.0</div><div class="up">+1.35%</div></div>
-<div class="b"><div class="nm">铜</div><div class="vv">7.02</div><div class="dn">−0.41%</div></div>
-<div class="b"><div class="nm">原油</div><div class="vv">70.8</div><div class="dn">−0.04%</div></div>
-<div class="b"><div class="nm">A50</div><div class="vv">14569</div><div class="dn">−0.68%</div></div>
-<div class="b"><div class="nm">美元/人民币</div><div class="vv">6.71</div><div class="t2">稳</div></div>
+<div class="h">
+  <h1>🤖 AI 深度分析周报</h1>
+  <div class="s">生成日期：2026-09-11（周五）｜数据覆盖：资金/大宗/汇率 09-03~09-07，市场节奏信号 08-31~09-11</div>
 </div>
-<p>人民币在岸 9/8 收盘报 <span class="up">6.7108</span>，基本平稳。大宗整体偏弱震荡，白银逆势走强（避险+工业属性共振）；A50 微跌与境内冰点期节奏一致。海外扰动：美联储方面 Marathon 资管释放"通胀受控即可允许经济偏热"的鸽派信号，俄罗斯表态不主动去美元化——均对风险偏好影响中性偏正。</p>
-</div></div>
 
-<div class="sec"><div class="st">🤖 四、Phase II 模型动态（权重再平衡）</div>
+<div class="tldr">
+  📌 本周（截至 09-07 资金口径）市场呈「冰点 ↔ 轮动」高频切换的震荡格局：近 10 个交易日中轮动期 5 次、冰点期 4 次、试探期 1 次，MTF 多空动量在 -3.0~+3.0 间反复，均值约 -0.46，无明显单边趋势。资金主线集中在<b>工业金属/农化/国企改革/金属铜</b>等周期与资源方向，科技电子（半导体、消费电子、计算机设备）遭集中净流出。Phase II 模型于 09-08 再训练，权重由 RTI/flow 向 breakout/mtf 倾斜，但训练样本 52 个交易日盈利日 0、夏普 0，反映策略在震荡市中尚未获取超额收益。
+</div>
+
+<!-- ============ 1. 市场节奏 ============ -->
+<div class="st">📊 一、市场节奏（冰点/轮动 Regime 与 MTF 趋势）</div>
 <div class="card">
-<p>Phase II 训练已累计 <span class="hl">53 个自然日 / 52 个交易日记账</span>，但目前仍处<span class="tag a">模拟训练期</span>（账面 PnL 为 0、Sharpe 0、单边成本 20bps），尚未切实盘——属正常校准阶段，不构成收益承诺。</p>
-<p><b>最新权重 vs 上一版（rotation  regime）</b></p>
-<table>
-<tr><th>因子</th><th>旧权重</th><th>新权重</th><th>变化</th></tr>
-<tr><td>RTI（相对强度）</td><td>0.273</td><td>0.220</td><td class="dn">↓ 降配</td></tr>
-<tr><td>资金流 flow</td><td>0.231</td><td>0.220</td><td class="dn">略降</td></tr>
-<tr><td>聪明钱 smart_money</td><td>0.177</td><td>0.180</td><td class="up">↑ 微升</td></tr>
-<tr><td>成本基 cost_basis</td><td>0.145</td><td>0.140</td><td class="dn">略降</td></tr>
-<tr><td>突破 breakout</td><td>0.102</td><td>0.140</td><td class="up">↑ 升配</td></tr>
-<tr><td>MTF 多空</td><td>0.073</td><td>0.100</td><td class="up">↑ 升配</td></tr>
-</table>
-<p class="hl">解读：</b>模型在轮动市中主动<span class="hl">降低 RTI 权重、提升 MTF 与突破因子</span>——本质是从"追强势"转向"看多空转折 + 等突破确认"，与近期冰点→轮动的节奏高度吻合，属自适应修正，方向合理。</p>
-</div></div>
+  <p style="font-size:13px;margin-bottom:8px">数据来源：<span class="muted">rotation/archive/signal/ 近 10 个交易日信号档案（phase / mtf / regime）</span></p>
+  <table>
+    <tr><th>日期</th><th>Regime 阶段</th><th>MTF 动量</th><th>仓位建议</th></tr>
+    <tr><td>08-31</td><td>🔄 轮动期</td><td class="up">+3.0</td><td>50-80% 进攻</td></tr>
+    <tr><td>09-01</td><td>❄️ 冰点期</td><td class="down">-1.0</td><td>0-20% 防守</td></tr>
+    <tr><td>09-02</td><td>❄️ 冰点期</td><td class="down">-2.6</td><td>0-20% 防守</td></tr>
+    <tr><td>09-03</td><td>🔄 轮动期</td><td class="down">-1.0</td><td>50-80% 进攻</td></tr>
+    <tr><td>09-04</td><td>❄️ 冰点期</td><td class="down">-3.0</td><td>0-20% 防守</td></tr>
+    <tr><td>09-07</td><td>🔄 轮动期</td><td class="up">+0.6</td><td>50-80% 进攻</td></tr>
+    <tr><td>09-08</td><td>🔍 试探期</td><td class="down">-0.6</td><td>20-50% 试探</td></tr>
+    <tr><td>09-09</td><td>🔄 轮动期</td><td class="up">+2.2</td><td>50-80% 进攻</td></tr>
+    <tr><td>09-10</td><td>❄️ 冰点期</td><td class="down">-2.2</td><td>0-20% 防守</td></tr>
+    <tr><td>09-11</td><td>🔄 轮动期</td><td class="muted">0.0</td><td>50-80% 进攻</td></tr>
+  </table>
+  <div class="g3" style="margin-top:12px">
+    <div class="stat"><div class="v" style="color:var(--a)">5 / 4 / 1</div><div class="l">轮动 / 冰点 / 试探 天数</div></div>
+    <div class="stat"><div class="v" style="color:var(--t2)">-0.46</div><div class="l">MTF 10 日均值</div></div>
+    <div class="stat"><div class="v" style="color:var(--y)">-3.0~+3.0</div><div class="l">MTF 波动区间</div></div>
+  </div>
+  <p class="note">趋势解读：周初（09-01~09-04）连续冰点、MTF 探至 -3.0，中期（09-07~09-09）回暖至轮动、MTF 反弹至 +2.2，临近周末（09-10）再度冰点（-2.2），09-11 回到轮动但 MTF 归零。整体为<b>无持续方向、快速来回切换</b>的存量博弈市；09-11 中性开局，下周大概率延续「冰点低吸、轮动高抛」的箱体节奏。</p>
+</div>
 
-<div class="sec"><div class="st">📌 五、持仓与关注（自选池）</div>
+<!-- ============ 2. 资金主线 ============ -->
+<div class="st">💰 二、资金主线（行业 / 概念 流入流出 Top 5）</div>
+<div class="g2">
+  <div class="card">
+    <h4 style="color:var(--r);margin-bottom:8px">🔺 行业净流入 Top 5</h4>
+    <table>
+      <tr><th>行业</th><th>涨跌幅</th><th>净流入(亿)</th></tr>
+      <tr><td>工业金属</td><td class="up">+2.12%</td><td class="up">+47.09</td></tr>
+      <tr><td>农化制品</td><td class="up">+4.71%</td><td class="up">+29.46</td></tr>
+      <tr><td>医疗服务</td><td class="up">+3.08%</td><td class="up">+16.75</td></tr>
+      <tr><td>银行</td><td class="up">+0.99%</td><td class="up">+16.08</td></tr>
+      <tr><td>电力</td><td class="up">+1.30%</td><td class="up">+15.16</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4 style="color:var(--g);margin-bottom:8px">🔻 行业净流出 Top 5</h4>
+    <table>
+      <tr><th>行业</th><th>涨跌幅</th><th>净流入(亿)</th></tr>
+      <tr><td>消费电子</td><td class="down">-1.08%</td><td class="down">-45.41</td></tr>
+      <tr><td>计算机设备</td><td class="down">-0.57%</td><td class="down">-41.33</td></tr>
+      <tr><td>半导体</td><td class="down">-1.28%</td><td class="down">-41.21</td></tr>
+      <tr><td>光学光电子</td><td class="down">-0.21%</td><td class="down">-35.07</td></tr>
+      <tr><td>IT服务</td><td class="down">-0.05%</td><td class="down">-33.18</td></tr>
+    </table>
+  </div>
+</div>
 <div class="card">
-<p>当前重点关注标的（来自持仓配置，非买卖建议）：</p>
-<p><span class="tag r">亨通光电 600487</span> 光纤龙头 · <span class="tag r">中天科技 600522</span> 光纤通信 —— 双焦点，契合"西部大开发/算力基建"线索；</p>
-<p><span class="tag r">北汽蓝谷 600733</span> 新能源汽车（焦点）；<span class="tag a">木林森</span> LED 封装；</p>
-<p><span class="tag a">恒生医疗ETF 513060</span> · <span class="tag a">医疗ETF 512170</span> · <span class="tag a">光伏ETF 515790</span> —— 医药/光伏左侧配置，与本周医疗服务流入、低位修复逻辑呼应。</p>
-<p class="note">光纤双标的是当前最贴合"国企改革+基建+资源"共振方向的聚焦项；医药/光伏 ETF 属低位承接，适合定投式分批，不宜追高。</p>
-</div></div>
+  <h4 style="color:var(--a);margin-bottom:8px">🌟 概念净流入 Top 5</h4>
+  <table>
+    <tr><th>概念</th><th>涨跌幅</th><th>净流入(亿)</th></tr>
+    <tr><td>国企改革</td><td class="up">+1.40%</td><td class="up">+66.42</td></tr>
+    <tr><td>金属铜</td><td class="up">+1.97%</td><td class="up">+55.44</td></tr>
+    <tr><td>小金属概念</td><td class="up">+0.98%</td><td class="up">+54.34</td></tr>
+    <tr><td>西部大开发</td><td class="up">+1.29%</td><td class="up">+51.73</td></tr>
+    <tr><td>煤化工概念</td><td class="up">+2.92%</td><td class="up">+50.36</td></tr>
+  </table>
+  <p class="note">主线结论：资金呈明显「跷跷板」——<b>周期/资源/政策</b>方向（工业金属、农化、金属铜、小金属、煤化工、国企改革）合计获净流入约 <b>278 亿</b>（概念口径），而<b>科技成长</b>（消费电子、计算机设备、半导体、光学光电子、IT服务）合计净流出约 <b>-196 亿</b>（行业口径）。资源品 + 国企改革是本周最确定的资金共识。</p>
+</div>
 
-<div class="sec"><div class="st">🔭 六、下周策略展望</div>
+<!-- ============ 3. 大宗商品与汇率 ============ -->
+<div class="st">🛢️ 三、大宗商品与汇率</div>
 <div class="card">
-<p><b>基调：</b>冰点已过、轮动回归，但主线（金属+国企改革）仍偏"资源/改革"而非全面风险偏好，定性为<span class="hl">结构性轮动</span>而非趋势主升。</p>
-<p><b>仓位：</b>按信号建议维持 <b>50–80%</b> 进攻仓位；若出现 MTF 再度转负（≤−1）回落冰点，果断降至 0–20% 防守。</p>
-<p><b>方向：</b>① 延续关注金属资源（铜/小金属）与国企改革的交集；② 医疗服务、银行、电力等低波红利作为回撤缓冲；③ 对 TMT（半导体/消费电子）保持观察，待 MTF 与 RTI 同步转正再考虑回补；④ 医药/光伏 ETF 维持左侧分批。</p>
-<p><b>风险：</b>轮动期主线易一日游，避免单日追高；Phase II 仍模拟训练，实盘前以信号与仓位纪律为准。</p>
-</div></div>
+  <table>
+    <tr><th>品种</th><th>价格</th><th>周涨跌幅</th></tr>
+    <tr><td>黄金</td><td>4685.0</td><td class="down">-0.17%</td></tr>
+    <tr><td>原油</td><td>70.83</td><td class="down">-0.04%</td></tr>
+    <tr><td>铜</td><td>7.0185</td><td class="down">-0.41%</td></tr>
+    <tr><td>白银</td><td>71.02</td><td class="up">+1.35%</td></tr>
+    <tr><td>A50（富时中国A50）</td><td>14569.0</td><td class="down">-0.68%</td></tr>
+  </table>
+  <p class="note">贵金属内部分化：白银周涨 +1.35% 强于黄金（-0.17%）；基本金属铜小幅走弱 -0.41%；A50 微跌 -0.68%，与 A 股震荡基调一致。新闻面提示：沙特南部能源设施遭袭、布伦特原油一度逼近 100 美元/桶（年内涨幅超六成），中东冲突对能源端构成上行风险，需密切关注原油周度数据后续修正。</p>
+</div>
+<div class="card">
+  <h4 style="color:var(--y);margin-bottom:8px">💱 外汇</h4>
+  <p>USD/CNY：<strong>717.71</strong>（数据源字段值，详见下方说明）</p>
+  <p class="note">新闻摘要口径：9 月 8 日 16:30 在岸人民币兑美元即期收盘报 <b>6.7108</b>，较上一交易日下跌 2 点（人民币小幅走弱）。说明：weekly_data.json 中 fx_weekly 字段 USD_CNY 记为 717.71，与即期收盘 6.7108 存在口径/量级差异（疑似数据源缩放异常），本报告如实并列两项，实际研判请以在岸即期 6.7108 为准。</p>
+</div>
 
-<div class="footer">
-⚠️ 本报告由 WorkBuddy AI 基于公开行情与项目信号档案自动生成，仅供研究参考，不构成任何投资建议。<br>
-数据截至 2026-09-08 16:30 · 生成时间 2026-09-08 · 每日/每周自动更新
-</div></body></html>
+<!-- ============ 4. Phase II 模型权重变化 ============ -->
+<div class="st">🧠 四、Phase II 模型权重变化</div>
+<div class="card">
+  <p style="font-size:12px" class="muted">再训练日期 2026-09-08｜训练 Regime：rotation｜样本：53 日（成交 52 日）｜交易成本 20bps</p>
+  <table>
+    <tr><th>信号模块</th><th>旧权重(06-26)</th><th>新权重(09-08)</th><th>变化</th></tr>
+    <tr><td>rti（轮动时序）</td><td>0.2725</td><td>0.2200</td><td class="neg">↓ 下调 -5.25pp</td></tr>
+    <tr><td>flow（资金流）</td><td>0.2305</td><td>0.2200</td><td class="neg">↓ 下调 -1.05pp</td></tr>
+    <tr><td>smart_money（聪明钱）</td><td>0.1774</td><td>0.1800</td><td class="pos">↑ 上调 +0.26pp</td></tr>
+    <tr><td>cost_basis（成本基准）</td><td>0.1451</td><td>0.1400</td><td class="neg">↓ 下调 -0.51pp</td></tr>
+    <tr><td>breakout（突破）</td><td>0.1018</td><td>0.1400</td><td class="pos">↑ 上调 +3.82pp</td></tr>
+    <tr><td>mtf（多周期）</td><td>0.0728</td><td>0.1000</td><td class="pos">↑ 上调 +2.72pp</td></tr>
+  </table>
+  <p class="note">权重迁移解读：模型在「rotation」训练态下，显著<b>减配 RTI（-5.25pp）与 flow（-1.05pp）</b>，转而<b>加配 breakout（+3.82pp）与 mtf（+2.72pp）</b>。含义：在冰点↔轮动高频切换、纯轮动择时（RTI）失效的市况下，模型更依赖「突破确认 + 多周期动量共振」来过滤噪音、提高信号质量。需警惕：训练样本 52 个成交日<b>盈利日 0、累计收益 0bps、夏普 0</b>，说明本窗口策略未捕获超额收益，本次权重再平衡属「适应性防守」而非绩效驱动的胜利，实盘仍需观察新权重在后续行情的验证效果。</p>
+</div>
+
+<!-- ============ 5. 持仓关注池 ============ -->
+<div class="st">🎯 五、持仓关注池</div>
+<div class="card">
+  <p style="font-size:12px" class="muted">来源：weekly_data.json → portfolio_config（★ 为重点关注）</p>
+  <table>
+    <tr><th>代码</th><th>名称</th><th>关注</th><th>成本</th><th>备注</th></tr>
+    <tr><td>600487</td><td>亨通光电</td><td><span class="tag">★</span></td><td>78.00</td><td>光纤龙头</td></tr>
+    <tr><td>600522</td><td>中天科技</td><td><span class="tag">★</span></td><td>44.00</td><td>光纤通信</td></tr>
+    <tr><td>002745</td><td>木林森</td><td class="muted">—</td><td>12.50</td><td>LED封装</td></tr>
+    <tr><td>600733</td><td>北汽蓝谷</td><td><span class="tag">★</span></td><td>16.50</td><td>新能源汽车</td></tr>
+    <tr><td>513060</td><td>恒生医疗ETF</td><td class="muted">—</td><td>1.14</td><td>港股医疗</td></tr>
+    <tr><td>512170</td><td>医疗ETF</td><td class="muted">—</td><td>0.58</td><td>境内医疗</td></tr>
+    <tr><td>515790</td><td>光伏ETF</td><td class="muted">—</td><td>1.00</td><td>光伏产业</td></tr>
+  </table>
+  <p class="note">重点关注（★）3 只：亨通光电、中天科技（光纤/通信，与资源基建主线有一定协同）、北汽蓝谷（新能源汽车）。医疗与光伏类 ETF 为观察仓。说明：weekly_data.json 中 portfolio_weekly 字段为空，<b>本周持仓盈亏数据暂缺</b>，故未列示收益率；以上为持仓结构与成本基准，非实时市值。</p>
+</div>
+
+<!-- ============ 6. 下周策略展望 ============ -->
+<div class="st">🔭 六、下周策略展望</div>
+<div class="card">
+  <ul>
+    <li><b>节奏判断：</b>09-11 收官于「轮动期 + MTF 0.0」，中性开局。结合近 10 日高频切换特征，下周大概率延续<b>冰点低吸、轮动高抛</b>的箱体震荡，单日冰点（MTF 转负）是分批低吸窗口，轮动冲高（MTF &gt; +2）则需控仓。</li>
+    <li><b>主线方向：</b>资金共识在<b>资源/周期 + 国企改革</b>（工业金属、金属铜、小金属、农化、煤化工、西部大开发）。若中东能源扰动延续推升大宗，资源品或仍有脉冲；国企改革具备政策催化持续性，可沿回踩承接。</li>
+    <li><b>回避方向：</b>科技成长（半导体、消费电子、计算机设备、光学光电子、IT服务）本周净流出约 -196 亿且未见回流信号，暂以观望为主，等待 MTF 与资金流同步转正再加回。</li>
+    <li><b>模型信号：</b>Phase II 权重已向 breakout + mtf 倾斜，实操上优先选择「突破形态 + 多周期动量共振」的标的，降低对单一轮动择时（RTI）的依赖。</li>
+    <li><b>持仓应对：</b>重点关注池（亨通/中天/北汽蓝谷）结合冰点低吸策略分批；医疗/光伏 ETF 观察仓暂持有，待行业资金流向转暖再加码。</li>
+  </ul>
+</div>
+
+<!-- ============ 7. 风险提示 ============ -->
+<div class="st">⚠️ 七、风险提示</div>
+<div class="card">
+  <ul>
+    <li><b>模型失效风险：</b>Phase II 训练样本 52 成交日盈利日 0、夏普 0，新权重尚未经实盘验证，再平衡效果存在不确定性。</li>
+    <li><b>地缘与能源风险：</b>沙特能源设施遇袭、布伦特逼近 100 美元，若冲突升级将推升通胀与波动，波及有色、化工及整体风险偏好。</li>
+    <li><b>汇率风险：</b>在岸人民币即期 6.7108 小幅走弱，若美元走强将压制外资风险偏好与港股（恒生医疗 ETF）表现。</li>
+    <li><b>震荡踩踏风险：</b>冰点↔轮动高频切换易致追涨杀跌，单日 MTF 波动可达 ±3，需严格执行仓位纪律（冰点 0-20%、轮动 50-80%）。</li>
+    <li><b>数据口径风险：</b>fx_weekly USD/CNY 717.71 与即期 6.7108 存在差异，外汇研判请以即期为准；daily_indices / portfolio_weekly 字段为空，指数点位与持仓周收益暂不可得。</li>
+  </ul>
+</div>
+
+<div class="foot">
+  📄 本报告由 AI 自动生成，数据来源：docs/weekly_data.json、docs/phase2_data.json、rotation/archive/signal/（近 10 交易日）。所有数字均取自上述真实文件，未作虚构。<br>
+  ⚠️ 免责声明：本报告仅供参考，不构成任何投资建议。股市有风险，投资需谨慎。
+</div>
+
+</body>
+</html>
