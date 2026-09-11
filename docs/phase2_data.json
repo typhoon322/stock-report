@@ -1,7 +1,7 @@
 {
   "summary": {
-    "total_days": 53,
-    "traded_days": 52,
+    "total_days": 57,
+    "traded_days": 56,
     "profitable_days": 0,
     "total_pnl_bps": 0,
     "avg_pnl_bps": 0,
@@ -11,17 +11,12 @@
   "training": {
     "regime": "rotation",
     "old_weights": {
-      "version": "weights_rotation_20260626_0039.json",
-      "timestamp": "2026-06-26T00:39:13.821386",
-      "regime": "rotation",
-      "weights": {
-        "rti": 0.2725,
-        "flow": 0.2305,
-        "smart_money": 0.1774,
-        "cost_basis": 0.1451,
-        "breakout": 0.1018,
-        "mtf": 0.0728
-      }
+      "rti": 0.22,
+      "flow": 0.22,
+      "smart_money": 0.18,
+      "cost_basis": 0.14,
+      "breakout": 0.14,
+      "mtf": 0.1
     },
     "learned_raw": {
       "rti": 0.22,
@@ -48,21 +43,21 @@
       "mtf": 0.1
     },
     "summary": {
-      "total_days": 53,
-      "traded_days": 52,
+      "total_days": 57,
+      "traded_days": 56,
       "profitable_days": 0,
       "total_pnl_bps": 0,
       "avg_pnl_bps": 0,
       "sharpe": 0,
       "transaction_cost_bps": 20
     },
-    "training_date": "2026-09-08T16:33:18.764286+08:00"
+    "training_date": "2026-09-11T20:23:20.151980+08:00"
   },
   "module_details": {
     "rti": {
-      "old_weight": 0,
+      "old_weight": 0.22,
       "new_weight": 0.22,
-      "delta": 0.22,
+      "delta": 0.0,
       "win_rate": 0,
       "avg_pnl_bps": 0,
       "total_pnl_bps": 0,
@@ -70,9 +65,9 @@
       "days_traded": 0
     },
     "flow": {
-      "old_weight": 0,
+      "old_weight": 0.22,
       "new_weight": 0.22,
-      "delta": 0.22,
+      "delta": 0.0,
       "win_rate": 0,
       "avg_pnl_bps": 0,
       "total_pnl_bps": 0,
@@ -80,9 +75,9 @@
       "days_traded": 0
     },
     "smart_money": {
-      "old_weight": 0,
+      "old_weight": 0.18,
       "new_weight": 0.18,
-      "delta": 0.18,
+      "delta": 0.0,
       "win_rate": 0,
       "avg_pnl_bps": 0,
       "total_pnl_bps": 0,
@@ -90,9 +85,9 @@
       "days_traded": 0
     },
     "cost_basis": {
-      "old_weight": 0,
+      "old_weight": 0.14,
       "new_weight": 0.14,
-      "delta": 0.14,
+      "delta": 0.0,
       "win_rate": 0,
       "avg_pnl_bps": 0,
       "total_pnl_bps": 0,
@@ -100,9 +95,9 @@
       "days_traded": 0
     },
     "breakout": {
-      "old_weight": 0,
+      "old_weight": 0.14,
       "new_weight": 0.14,
-      "delta": 0.14,
+      "delta": 0.0,
       "win_rate": 0,
       "avg_pnl_bps": 0,
       "total_pnl_bps": 0,
@@ -110,9 +105,9 @@
       "days_traded": 0
     },
     "mtf": {
-      "old_weight": 0,
+      "old_weight": 0.1,
       "new_weight": 0.1,
-      "delta": 0.1,
+      "delta": 0.0,
       "win_rate": 0,
       "avg_pnl_bps": 0,
       "total_pnl_bps": 0,
