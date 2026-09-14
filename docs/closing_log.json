@@ -1,9 +1,6 @@
 {
   "type": "closing",
-  "status": "partial",
-  "time": "2026-09-10T20:09:51.744205+08:00",
-  "errors": [
-    "concept_flow",
-    "industry_flow"
-  ]
+  "status": "success",
+  "time": "2026-09-14T21:45:49.213421+08:00",
+  "errors": []
 }
