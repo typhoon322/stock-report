@@ -1,18 +1,39 @@
 {
   "date": "2026-09-17",
-  "timestamp": "2026-09-17 17:09:05",
+  "timestamp": "2026-09-17 20:45:06",
   "version": "v2.19",
   "backfilled": false,
   "note": "主要指数历史 + 实时广度(尽力)",
   "market": {
     "backfilled": false,
     "note": "指数推导广度",
-    "breadth": 0.5
+    "breadth": 0.0
   },
   "sectors": [],
   "futures": {},
   "flows": {},
-  "indices": {},
+  "indices": {
+    "上证指数": {
+      "change": -0.4110647520133792,
+      "close": 3875.604
+    },
+    "深证成指": {
+      "change": -0.33322821550735293,
+      "close": 13409.908
+    },
+    "创业板指": {
+      "change": -0.3975269019173999,
+      "close": 3298.31
+    },
+    "沪深300": {
+      "change": -0.4489017174865495,
+      "close": 4460.156
+    },
+    "中证500": {
+      "change": -0.3708090224859295,
+      "close": 7654.979
+    }
+  },
   "portfolio": {
     "stocks": [
       {
