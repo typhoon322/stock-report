@@ -1,22 +1,104 @@
 {
   "date": "2026-10-13",
-  "timestamp": "2026-10-13 00:49:38",
+  "timestamp": "2026-10-13 19:06:33",
   "version": "v2.19",
   "backfilled": false,
   "note": "主要指数历史 + 实时广度(尽力)",
   "market": {
-    "total_stocks": 5572,
-    "up": 1166,
-    "down": 4406,
-    "limit_up": 60,
-    "fall_limit": 44,
-    "breadth": 0.2093,
+    "total_stocks": 5573,
+    "up": 2909,
+    "down": 2664,
+    "limit_up": 87,
+    "fall_limit": 13,
+    "breadth": 0.522,
     "source": "live_spot"
   },
-  "sectors": [],
+  "sectors": [
+    {
+      "name": "其他数字媒体",
+      "bsi": 29,
+      "chg": 11.94,
+      "flow": null
+    },
+    {
+      "name": "印制电路板",
+      "bsi": 24,
+      "chg": 6.08,
+      "flow": null
+    },
+    {
+      "name": "纺织化学制品",
+      "bsi": 25,
+      "chg": 5.43,
+      "flow": null
+    },
+    {
+      "name": "元件",
+      "bsi": 23,
+      "chg": 4.77,
+      "flow": null
+    },
+    {
+      "name": "地面兵装Ⅲ",
+      "bsi": 27,
+      "chg": 4.54,
+      "flow": null
+    },
+    {
+      "name": "地面兵装Ⅱ",
+      "bsi": 27,
+      "chg": 4.54,
+      "flow": null
+    },
+    {
+      "name": "航海装备Ⅲ",
+      "bsi": 26,
+      "chg": 4.36,
+      "flow": null
+    },
+    {
+      "name": "航海装备Ⅱ",
+      "bsi": 26,
+      "chg": 4.36,
+      "flow": null
+    },
+    {
+      "name": "防水材料",
+      "bsi": 25,
+      "chg": 4.28,
+      "flow": null
+    },
+    {
+      "name": "电商服务",
+      "bsi": 25,
+      "chg": 4.22,
+      "flow": null
+    }
+  ],
   "futures": {},
   "flows": {},
-  "indices": {},
+  "indices": {
+    "上证指数": {
+      "change": 0.09538501891634965,
+      "close": 3800.864
+    },
+    "深证成指": {
+      "change": -0.2516780758843762,
+      "close": 12353.699
+    },
+    "创业板指": {
+      "change": -0.18489626914418578,
+      "close": 2958.344
+    },
+    "沪深300": {
+      "change": -0.28684835283745436,
+      "close": 4275.68
+    },
+    "中证500": {
+      "change": -0.11184233065149041,
+      "close": 7085.088
+    }
+  },
   "portfolio": {
     "stocks": [
       {
