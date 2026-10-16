@@ -1,6 +1,6 @@
 {
   "date": "2026-10-16",
-  "timestamp": "2026-10-16 16:33:10",
+  "timestamp": "2026-10-16 20:24:07",
   "version": "v2.19",
   "backfilled": false,
   "note": "主要指数历史 + 实时广度(尽力)",
@@ -13,71 +13,31 @@
     "breadth": 0.592,
     "source": "live_spot"
   },
-  "sectors": [
-    {
-      "name": "燃料电池",
-      "bsi": 24,
-      "chg": 6.56,
-      "flow": null
-    },
-    {
-      "name": "航空装备Ⅲ",
-      "bsi": 25,
-      "chg": 5.98,
-      "flow": null
-    },
-    {
-      "name": "航空装备Ⅱ",
-      "bsi": 25,
-      "chg": 5.98,
-      "flow": null
-    },
-    {
-      "name": "地面兵装Ⅲ",
-      "bsi": 24,
-      "chg": 5.97,
-      "flow": null
-    },
-    {
-      "name": "地面兵装Ⅱ",
-      "bsi": 24,
-      "chg": 5.97,
-      "flow": null
-    },
-    {
-      "name": "纺织鞋类制造",
-      "bsi": 27,
-      "chg": 4.93,
-      "flow": null
-    },
-    {
-      "name": "航海装备Ⅲ",
-      "bsi": 21,
-      "chg": 4.72,
-      "flow": null
-    },
-    {
-      "name": "航海装备Ⅱ",
-      "bsi": 21,
-      "chg": 4.72,
-      "flow": null
-    },
-    {
-      "name": "航天装备Ⅲ",
-      "bsi": 20,
-      "chg": 4.58,
-      "flow": null
-    },
-    {
-      "name": "航天装备Ⅱ",
-      "bsi": 20,
-      "chg": 4.58,
-      "flow": null
-    }
-  ],
+  "sectors": [],
   "futures": {},
   "flows": {},
-  "indices": {},
+  "indices": {
+    "上证指数": {
+      "change": 0.23757402610293799,
+      "close": 3716.284
+    },
+    "深证成指": {
+      "change": -0.12125968579617119,
+      "close": 11802.459
+    },
+    "创业板指": {
+      "change": -0.38772265488157265,
+      "close": 2772.384
+    },
+    "沪深300": {
+      "change": 0.11044135254532073,
+      "close": 4170.613
+    },
+    "中证500": {
+      "change": 0.051733936295161875,
+      "close": 6772.753
+    }
+  },
   "portfolio": {
     "stocks": [
       {
