@@ -1,7 +1,7 @@
 {
   "summary": {
-    "total_days": 82,
-    "traded_days": 81,
+    "total_days": 87,
+    "traded_days": 86,
     "profitable_days": 0,
     "total_pnl_bps": 0,
     "avg_pnl_bps": 0,
@@ -43,15 +43,15 @@
       "mtf": 0.1
     },
     "summary": {
-      "total_days": 82,
-      "traded_days": 81,
+      "total_days": 87,
+      "traded_days": 86,
       "profitable_days": 0,
       "total_pnl_bps": 0,
       "avg_pnl_bps": 0,
       "sharpe": 0,
       "transaction_cost_bps": 20
     },
-    "training_date": "2026-10-16T20:46:15.758087+08:00"
+    "training_date": "2026-10-23T20:53:42.096824+08:00"
   },
   "module_details": {
     "rti": {
