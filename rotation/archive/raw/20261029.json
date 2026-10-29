@@ -1,0 +1,87 @@
+{
+  "date": "2026-10-29",
+  "timestamp": "2026-10-29 18:36:17",
+  "version": "v2.19",
+  "backfilled": false,
+  "note": "主要指数历史 + 实时广度(尽力)",
+  "market": {
+    "total_stocks": 5576,
+    "up": 781,
+    "down": 4795,
+    "limit_up": 48,
+    "fall_limit": 151,
+    "breadth": 0.1401,
+    "source": "live_spot"
+  },
+  "sectors": [],
+  "futures": {},
+  "flows": {},
+  "indices": {
+    "上证指数": {
+      "change": -0.815842806227618,
+      "close": 3651.434
+    },
+    "沪深300": {
+      "change": -1.0292198331484537,
+      "close": 4041.838
+    },
+    "中证500": {
+      "change": -2.8184927020324158,
+      "close": 6453.717
+    }
+  },
+  "portfolio": {
+    "stocks": [
+      {
+        "code": "600487",
+        "name": "亨通光电",
+        "focus": true,
+        "cost": 78,
+        "note": "光纤龙头"
+      },
+      {
+        "code": "600522",
+        "name": "中天科技",
+        "focus": true,
+        "cost": 44,
+        "note": "光纤通信"
+      },
+      {
+        "code": "002745",
+        "name": "木林森",
+        "focus": false,
+        "cost": 12.5,
+        "note": "LED封装"
+      },
+      {
+        "code": "600733",
+        "name": "北汽蓝谷",
+        "focus": true,
+        "cost": 16.5,
+        "note": "新能源汽车"
+      },
+      {
+        "code": "513060",
+        "name": "恒生医疗ETF",
+        "focus": false,
+        "cost": 1.14,
+        "note": "港股医疗"
+      },
+      {
+        "code": "512170",
+        "name": "医疗ETF",
+        "focus": false,
+        "cost": 0.58,
+        "note": "境内医疗"
+      },
+      {
+        "code": "515790",
+        "name": "光伏ETF",
+        "focus": false,
+        "cost": 1.0,
+        "note": "光伏产业"
+      }
+    ],
+    "updated": "2025-06-25"
+  }
+}
