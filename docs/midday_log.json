@@ -1,7 +1,7 @@
 {
   "type": "midday",
   "status": "partial",
-  "time": "2026-10-29T18:23:23.844892+08:00",
+  "time": "2026-10-30T18:26:37.027854+08:00",
   "errors": [
     "stale_data: run after close, flow data skipped"
   ]
