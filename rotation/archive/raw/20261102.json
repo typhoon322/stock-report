@@ -1,0 +1,152 @@
+{
+  "date": "2026-11-02",
+  "timestamp": "2026-11-03 00:57:45",
+  "version": "v2.19",
+  "backfilled": true,
+  "note": "从历史指数/板块K线重建 (index_zh_a_hist / stock_board_industry_hist_em)",
+  "market": {
+    "backfilled": true,
+    "note": "全市场涨跌家数无法从历史接口重建",
+    "breadth": 1.0
+  },
+  "sectors": [
+    {
+      "name": "视频媒体",
+      "bsi": 26,
+      "chg": 20.0,
+      "flow": null
+    },
+    {
+      "name": "教育运营及其他",
+      "bsi": 29,
+      "chg": 13.51,
+      "flow": null
+    },
+    {
+      "name": "文字媒体",
+      "bsi": 23,
+      "chg": 11.69,
+      "flow": null
+    },
+    {
+      "name": "图片媒体",
+      "bsi": 23,
+      "chg": 9.99,
+      "flow": null
+    },
+    {
+      "name": "数字媒体",
+      "bsi": 22,
+      "chg": 9.75,
+      "flow": null
+    },
+    {
+      "name": "影视动漫制作",
+      "bsi": 24,
+      "chg": 9.71,
+      "flow": null
+    },
+    {
+      "name": "影视院线",
+      "bsi": 23,
+      "chg": 9.3,
+      "flow": null
+    },
+    {
+      "name": "游戏Ⅲ",
+      "bsi": 25,
+      "chg": 9.06,
+      "flow": null
+    },
+    {
+      "name": "游戏Ⅱ",
+      "bsi": 25,
+      "chg": 9.06,
+      "flow": null
+    },
+    {
+      "name": "门户网站",
+      "bsi": 20,
+      "chg": 8.68,
+      "flow": null
+    }
+  ],
+  "futures": {},
+  "flows": {},
+  "indices": {
+    "上证指数": {
+      "change": 1.0840182194193693,
+      "close": 3638.031
+    },
+    "深证成指": {
+      "change": 1.6327997678373452,
+      "close": 11010.678
+    },
+    "创业板指": {
+      "change": 1.8672712334828478,
+      "close": 2458.698
+    },
+    "沪深300": {
+      "change": 0.7882823263624772,
+      "close": 4016.918
+    },
+    "中证500": {
+      "change": 2.458273268895428,
+      "close": 6420.227
+    }
+  },
+  "portfolio": {
+    "stocks": [
+      {
+        "code": "600487",
+        "name": "亨通光电",
+        "focus": true,
+        "cost": 78,
+        "note": "光纤龙头"
+      },
+      {
+        "code": "600522",
+        "name": "中天科技",
+        "focus": true,
+        "cost": 44,
+        "note": "光纤通信"
+      },
+      {
+        "code": "002745",
+        "name": "木林森",
+        "focus": false,
+        "cost": 12.5,
+        "note": "LED封装"
+      },
+      {
+        "code": "600733",
+        "name": "北汽蓝谷",
+        "focus": true,
+        "cost": 16.5,
+        "note": "新能源汽车"
+      },
+      {
+        "code": "513060",
+        "name": "恒生医疗ETF",
+        "focus": false,
+        "cost": 1.14,
+        "note": "港股医疗"
+      },
+      {
+        "code": "512170",
+        "name": "医疗ETF",
+        "focus": false,
+        "cost": 0.58,
+        "note": "境内医疗"
+      },
+      {
+        "code": "515790",
+        "name": "光伏ETF",
+        "focus": false,
+        "cost": 1.0,
+        "note": "光伏产业"
+      }
+    ],
+    "updated": "2025-06-25"
+  }
+}

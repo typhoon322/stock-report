@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-02",
+  "timestamp": "2026-11-03 00:57:45",
+  "version": "v2.19",
+  "backfilled": true,
+  "note": "信号由指数历史推导的相位(BSI/phase)与多周期(MTF)重建",
+  "signals": {
+    "bsi": {
+      "top": 5,
+      "names": [
+        "教育运营及其他",
+        "视频媒体",
+        "游戏Ⅲ",
+        "游戏Ⅱ",
+        "影视动漫制作"
+      ],
+      "backfilled": true
+    },
+    "phase": {
+      "phase": "🔄 轮动期",
+      "advice": {
+        "position": "50-80%",
+        "strategy": "进攻",
+        "action": "重点配置BSI>30的强势板块",
+        "focus": "RTI ≥ 4 的潜在新主线"
+      },
+      "backfilled": true
+    },
+    "mtf": {
+      "score": -1.0,
+      "backfilled": true
+    }
+  },
+  "meta": {
+    "score": 0,
+    "decision": "HOLD",
+    "confidence": 0
+  },
+  "position": {},
+  "weights": {},
+  "regime": "🔄 轮动期"
+}
