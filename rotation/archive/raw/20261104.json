@@ -1,6 +1,6 @@
 {
   "date": "2026-11-04",
-  "timestamp": "2026-11-04 19:36:38",
+  "timestamp": "2026-11-04 23:17:53",
   "version": "v2.19",
   "backfilled": false,
   "note": "主要指数历史 + 实时广度(尽力)",
@@ -13,68 +13,7 @@
     "breadth": 0.8368,
     "source": "live_spot"
   },
-  "sectors": [
-    {
-      "name": "半导体设备",
-      "bsi": 29,
-      "chg": 15.22,
-      "flow": null
-    },
-    {
-      "name": "半导体材料",
-      "bsi": 29,
-      "chg": 11.89,
-      "flow": null
-    },
-    {
-      "name": "半导体",
-      "bsi": 28,
-      "chg": 10.64,
-      "flow": null
-    },
-    {
-      "name": "集成电路制造",
-      "bsi": 28,
-      "chg": 10.63,
-      "flow": null
-    },
-    {
-      "name": "黄金",
-      "bsi": 27,
-      "chg": 10.59,
-      "flow": null
-    },
-    {
-      "name": "贵金属",
-      "bsi": 27,
-      "chg": 10.45,
-      "flow": null
-    },
-    {
-      "name": "数字芯片设计",
-      "bsi": 26,
-      "chg": 10.29,
-      "flow": null
-    },
-    {
-      "name": "白银",
-      "bsi": 26,
-      "chg": 10.0,
-      "flow": null
-    },
-    {
-      "name": "集成电路封测",
-      "bsi": 25,
-      "chg": 9.3,
-      "flow": null
-    },
-    {
-      "name": "电子化学品Ⅲ",
-      "bsi": 24,
-      "chg": 8.99,
-      "flow": null
-    }
-  ],
+  "sectors": [],
   "futures": {},
   "flows": {},
   "indices": {
