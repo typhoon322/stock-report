@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-04",
+  "timestamp": "2026-11-04 19:36:38",
+  "version": "v2.19",
+  "backfilled": false,
+  "note": "信号由主要指数历史推导 (phase/mtf)",
+  "signals": {
+    "bsi": {
+      "top": 5,
+      "names": [
+        "半导体设备",
+        "半导体材料",
+        "半导体",
+        "集成电路制造",
+        "黄金"
+      ],
+      "backfilled": false
+    },
+    "phase": {
+      "phase": "🔄 轮动期",
+      "advice": {
+        "position": "50-80%",
+        "strategy": "进攻",
+        "action": "重点配置BSI>30的强势板块",
+        "focus": "RTI ≥ 4 的潜在新主线"
+      },
+      "backfilled": false
+    },
+    "mtf": {
+      "score": 1.8,
+      "backfilled": false
+    }
+  },
+  "meta": {
+    "score": 0,
+    "decision": "HOLD",
+    "confidence": 0
+  },
+  "position": {},
+  "weights": {},
+  "regime": "🔄 轮动期"
+}
