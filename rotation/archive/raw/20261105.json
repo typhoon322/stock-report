@@ -1,15 +1,80 @@
 {
   "date": "2026-11-05",
-  "timestamp": "2026-11-05 19:33:26",
+  "timestamp": "2026-11-05 23:19:09",
   "version": "v2.19",
   "backfilled": false,
   "note": "主要指数历史 + 实时广度(尽力)",
   "market": {
-    "backfilled": false,
-    "note": "指数推导广度",
-    "breadth": 1.0
+    "total_stocks": 5577,
+    "up": 4868,
+    "down": 709,
+    "limit_up": 138,
+    "fall_limit": 6,
+    "breadth": 0.8729,
+    "source": "live_spot"
   },
-  "sectors": [],
+  "sectors": [
+    {
+      "name": "光伏辅材",
+      "bsi": 29,
+      "chg": 9.94,
+      "flow": null
+    },
+    {
+      "name": "光伏加工设备",
+      "bsi": 29,
+      "chg": 9.58,
+      "flow": null
+    },
+    {
+      "name": "视频媒体",
+      "bsi": 25,
+      "chg": 9.27,
+      "flow": null
+    },
+    {
+      "name": "光伏电池组件",
+      "bsi": 28,
+      "chg": 8.83,
+      "flow": null
+    },
+    {
+      "name": "光伏设备",
+      "bsi": 27,
+      "chg": 8.45,
+      "flow": null
+    },
+    {
+      "name": "涂料",
+      "bsi": 27,
+      "chg": 8.01,
+      "flow": null
+    },
+    {
+      "name": "白银",
+      "bsi": 26,
+      "chg": 7.27,
+      "flow": null
+    },
+    {
+      "name": "氨纶",
+      "bsi": 26,
+      "chg": 5.99,
+      "flow": null
+    },
+    {
+      "name": "品牌消费电子",
+      "bsi": 21,
+      "chg": 5.93,
+      "flow": null
+    },
+    {
+      "name": "硅料硅片",
+      "bsi": 24,
+      "chg": 5.93,
+      "flow": null
+    }
+  ],
   "futures": {},
   "flows": {},
   "indices": {

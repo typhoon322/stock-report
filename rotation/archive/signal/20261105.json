@@ -1,13 +1,19 @@
 {
   "date": "2026-11-05",
-  "timestamp": "2026-11-05 19:33:26",
+  "timestamp": "2026-11-05 23:19:09",
   "version": "v2.19",
   "backfilled": false,
   "note": "信号由主要指数历史推导 (phase/mtf)",
   "signals": {
     "bsi": {
-      "top": 0,
-      "names": [],
+      "top": 5,
+      "names": [
+        "光伏辅材",
+        "光伏加工设备",
+        "光伏电池组件",
+        "光伏设备",
+        "涂料"
+      ],
       "backfilled": false
     },
     "phase": {
