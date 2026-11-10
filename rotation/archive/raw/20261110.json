@@ -1,22 +1,43 @@
 {
   "date": "2026-11-10",
-  "timestamp": "2026-11-10 01:20:55",
+  "timestamp": "2026-11-10 19:50:34",
   "version": "v2.19",
   "backfilled": false,
   "note": "主要指数历史 + 实时广度(尽力)",
   "market": {
-    "total_stocks": 5578,
-    "up": 2242,
-    "down": 3336,
-    "limit_up": 76,
-    "fall_limit": 6,
-    "breadth": 0.4019,
+    "total_stocks": 5579,
+    "up": 4272,
+    "down": 1307,
+    "limit_up": 135,
+    "fall_limit": 2,
+    "breadth": 0.7657,
     "source": "live_spot"
   },
   "sectors": [],
   "futures": {},
   "flows": {},
-  "indices": {},
+  "indices": {
+    "上证指数": {
+      "change": 0.0800919582429227,
+      "close": 3663.724
+    },
+    "深证成指": {
+      "change": 0.8617476665449431,
+      "close": 11241.536
+    },
+    "创业板指": {
+      "change": 1.4575593375314444,
+      "close": 2494.397
+    },
+    "沪深300": {
+      "change": 0.07403649015262914,
+      "close": 4059.111
+    },
+    "中证500": {
+      "change": 0.9066110592853782,
+      "close": 6645.887
+    }
+  },
   "portfolio": {
     "stocks": [
       {
