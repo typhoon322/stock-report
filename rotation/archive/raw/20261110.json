@@ -1,6 +1,6 @@
 {
   "date": "2026-11-10",
-  "timestamp": "2026-11-10 19:50:34",
+  "timestamp": "2026-11-10 23:30:50",
   "version": "v2.19",
   "backfilled": false,
   "note": "主要指数历史 + 实时广度(尽力)",
@@ -13,7 +13,68 @@
     "breadth": 0.7657,
     "source": "live_spot"
   },
-  "sectors": [],
+  "sectors": [
+    {
+      "name": "其他数字媒体",
+      "bsi": 26,
+      "chg": 9.8,
+      "flow": null
+    },
+    {
+      "name": "文字媒体",
+      "bsi": 26,
+      "chg": 9.03,
+      "flow": null
+    },
+    {
+      "name": "影视动漫制作",
+      "bsi": 25,
+      "chg": 8.03,
+      "flow": null
+    },
+    {
+      "name": "影视院线",
+      "bsi": 25,
+      "chg": 7.05,
+      "flow": null
+    },
+    {
+      "name": "其他黑色家电",
+      "bsi": 24,
+      "chg": 6.42,
+      "flow": null
+    },
+    {
+      "name": "其他家电Ⅲ",
+      "bsi": 23,
+      "chg": 5.18,
+      "flow": null
+    },
+    {
+      "name": "其他家电Ⅱ",
+      "bsi": 23,
+      "chg": 5.18,
+      "flow": null
+    },
+    {
+      "name": "汽车综合服务",
+      "bsi": 23,
+      "chg": 5.04,
+      "flow": null
+    },
+    {
+      "name": "数字媒体",
+      "bsi": 22,
+      "chg": 4.84,
+      "flow": null
+    },
+    {
+      "name": "钨",
+      "bsi": 20,
+      "chg": 4.73,
+      "flow": null
+    }
+  ],
   "futures": {},
   "flows": {},
   "indices": {

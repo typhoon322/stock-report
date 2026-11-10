@@ -1,13 +1,19 @@
 {
   "date": "2026-11-10",
-  "timestamp": "2026-11-10 19:50:34",
+  "timestamp": "2026-11-10 23:30:50",
   "version": "v2.19",
   "backfilled": false,
   "note": "信号由主要指数历史推导 (phase/mtf)",
   "signals": {
     "bsi": {
-      "top": 0,
-      "names": [],
+      "top": 5,
+      "names": [
+        "其他数字媒体",
+        "文字媒体",
+        "影视动漫制作",
+        "影视院线",
+        "其他黑色家电"
+      ],
       "backfilled": false
     },
     "phase": {
