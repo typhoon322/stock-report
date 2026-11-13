@@ -1,6 +1,8 @@
 {
   "type": "closing",
-  "status": "success",
-  "time": "2026-11-12T23:51:41.850324+08:00",
-  "errors": []
+  "status": "partial",
+  "time": "2026-11-13T23:12:40.091654+08:00",
+  "errors": [
+    "news"
+  ]
 }
